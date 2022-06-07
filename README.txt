@@ -34,3 +34,18 @@ Outputs: Root files per event number containing:
     * Information on all photons killed
         - Position where they where killed
 
+
+Schematics of the code:
+    * sim.cc (main)
+        ->  construction.*
+            ->  detector.*
+        ->  physics.*
+        ->  action.*
+            -> generator.*
+            -> run.*
+            -> event.*
+            -> stepping.*
+            -> tracking.*
+
+
+

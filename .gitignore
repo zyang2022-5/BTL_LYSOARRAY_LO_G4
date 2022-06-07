@@ -1,0 +1,9 @@
+# ignore ALL .log files
+*.log
+# ignore ALL root files
+*.root
+# ignore ALL files in ANY directore named temp
+temp/
+# ignore ALL files in the build directory
+buildSing/
+

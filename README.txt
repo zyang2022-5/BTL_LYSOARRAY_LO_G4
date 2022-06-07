@@ -10,11 +10,13 @@ Summary:
 This code generates different geometries of LYSO scintillators to estimate their Light Output (LO) with respect to the SiPM detectors.
 
 The code is expected to work with the Singularity container that can be downloaded through the command: singularity pull library://grealesguti/test/test
+If this provides an error try the UNIQE ID as: singularity pull library:sha256.4fa8d22a3afd9f8ba6f20494e629965887344f672f5a3f726ad9b7160396ae4b
+The G4 version used is G4 v11.0.0
 
 An example of how to run within a cluster with HTcondor can be found in the folder "HTexample".
 
 How to run:
-* Download Container stated above
+* Download the Singularity Container stated above
 * Modify SingAction.sh for your Container folder
 * Create buildSing and buildSing/Results folder within the folder that contains this repository
 * cd into the folder that contain this repository

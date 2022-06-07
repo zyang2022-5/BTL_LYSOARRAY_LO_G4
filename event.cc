@@ -56,12 +56,13 @@ void MyEventAction::BeginOfEventAction(const G4Event *anEvent)
     const MyDetectorConstruction *detectorConstruction = static_cast<const MyDetectorConstruction*> (G4RunManager::GetRunManager()->GetUserDetectorConstruction());
     G4int GeomConfig  = detectorConstruction->GetGC();
 
-    /*G4double LYSO_L  = detectorConstruction->GetLYSOL();
+    // Minimum distance to the edge of the LYSO to generate the particle gun
+    G4double LYSO_L  = detectorConstruction->GetLYSOL();
     LYSO_L=LYSO_L-LYSO_L*0.01;
     G4double LYSO_T  = detectorConstruction->GetLYSOT();
     LYSO_T=LYSO_T-LYSO_T*0.01;// This should go at the end of the run or with the rest of geometry changes
 
-    G4cout<< "Data from construction: "<< LYSO_L << " " << LYSO_T << " " << GeomConfig << G4endl;*/
+    G4cout<< "Data from construction: "<< LYSO_L << " " << LYSO_T << " " << GeomConfig << G4endl;
     
 
     // Change of gun position between events depending on geometry (LYSO bar/tile)

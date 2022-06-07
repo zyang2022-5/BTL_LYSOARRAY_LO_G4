@@ -20,7 +20,6 @@ void MySteppingAction::UserSteppingAction(const G4Step *step)
 //////////////////////////////////////////////////////////////////////////////
     G4LogicalVolume *fScoringVolume  = detectorConstruction->GetScoringVolume();
     G4LogicalVolume *fDetectorVolume  = detectorConstruction->GetDetectorVolume();
-    //if(step -> GetTrack() -> GetTrackID() != 1) {
     if(step -> GetTrack() -> GetDefinition() == G4Electron::Definition()) {
         if(volume != fScoringVolume)
             return;
@@ -44,7 +43,7 @@ void MySteppingAction::UserSteppingAction(const G4Step *step)
         fEventAction->AddLO(1.);
         G4ThreeVector momPhoton = preStepPoint->GetMomentum();
         G4double wlen = (1.239841939*eV/momPhoton.mag())*1E+03;
-        //G4double PDElim =detectorConstruction->PDE->Value(wlen);
+
     }
 
     if(step -> GetTrack() -> GetDefinition() == G4Gamma::Definition()) {
@@ -59,11 +58,7 @@ void MySteppingAction::UserSteppingAction(const G4Step *step)
     if(track -> GetTrackStatus() != fAlive) {                     
                             TlengthK =  track->GetTrackLength();
                             TimeK=preStepPoint->GetGlobalTime();
-                            //VolK = track->GetVolume();
-                            //StEnd=track-> GetCurrentStepNumber();
-                            //preSP = aStep->GetPreStepPoint();
                             TranslVol     =  preStepPoint->GetPosition();
-                            //TranslVol = VolK ->GetTranslation();
                             man->FillNtupleDColumn(3, 0,  TlengthK/mm);
                             man->FillNtupleDColumn(3, 1,  TimeK/ps);// D==double
                             man->FillNtupleDColumn(3, 2,  TranslVol[0]/mm);

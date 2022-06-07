@@ -2,80 +2,61 @@
 
 MyDetectorConstruction::MyDetectorConstruction()
 {// constructor
-    // Initialization of variables in the constructor
+
+    // Initialization of variables in the constructor and messenger definitions for later modification in between runs
     LYSO_L = 57./2.;
-    //LYSO_L = 4./2.;
-    // Declare folder for new messengers
     fMessenger = new G4GenericMessenger(this, "/detector/","Detector Construction");
-    // name for new messengers
     fMessenger->DeclareProperty("LYSO_L", LYSO_L, "Length of LYSO crystal in mm");
 
     LYSO_thick=3./2.;
-    //LYSO_thick=10./2.;
-    // Declare folder for new messengers
     fMessenger_thick = new G4GenericMessenger(this, "/detector/","Detector Construction");
-    // name for new messengers
     fMessenger_thick->DeclareProperty("LYSO_thick", LYSO_thick, "Section dimension for the LYSO in mm");
 
     LYSO_YIELD=40000.;
-    // Declare folder for new messengers
     fMessenger_YIELD = new G4GenericMessenger(this, "/detector/","Detector Construction");
-    // name for new messengers
     fMessenger_YIELD->DeclareProperty("LYSO_YIELD", LYSO_YIELD, "Ammount of photons created per MeV deposited in the crystal");
 
     LYSO_SCALERESOLUTION=0.;
-    // Declare folder for new messengers
     fMessenger_SR = new G4GenericMessenger(this, "/detector/","Detector Construction");
-    // name for new messengers
     fMessenger_SR->DeclareProperty("LYSO_SCALERESOLUTION", LYSO_SCALERESOLUTION, " ");
 
-    Vovcon=3.5;
-    // Declare folder for new messengers
+    Vovcon=3.5; // is it working??
     fMessenger_vov = new G4GenericMessenger(this, "/detector/","Detector Construction");
-    // name for new messengers
     fMessenger_vov->DeclareProperty("Vov", Vovcon, "SiPM detection overvoltage");
 
     GLUE_L = 0.15+0.1*G4UniformRand();   GLUE_L=GLUE_L/2.;
     RESIN_L =0.3+0.4*G4UniformRand();   RESIN_L=RESIN_L/2.;
 
-    // Declare folder for new messengers
+
     fMessenger_ResinL = new G4GenericMessenger(this, "/detector/","Detector Construction");
-    // name for new messengers
     fMessenger_ResinL->DeclareProperty("GLUE_L", GLUE_L, "Glue thickness");
 
 
-    // Declare folder for new messengers
     fMessenger_GlueL = new G4GenericMessenger(this, "/detector/","Detector Construction");
-    // name for new messengers
     fMessenger_GlueL->DeclareProperty("RESIN_L", RESIN_L, "Resin thickness");
 
     XposTol = -0.05+G4UniformRand()*0.1;
     YposTol = -0.05+G4UniformRand()*0.1;
-    // Declare folder for new messengers
     fMessenger_XPos = new G4GenericMessenger(this, "/detector/","Detector Construction");
-    // name for new messengers
     fMessenger_XPos->DeclareProperty("XposTol", XposTol, "Glue average thickness");
 
     fMessenger_YPos = new G4GenericMessenger(this, "/detector/","Detector Construction");
-    // name for new messengers
     fMessenger_YPos->DeclareProperty("YposTol", YposTol, "Glue average thickness");
 
     GeomConfig=1;
     fMessenger_GC = new G4GenericMessenger(this, "/detector/","Detector Construction");
-    // name for new messengers
     fMessenger_GC->DeclareProperty("GeomConfig", GeomConfig, "1 == Bar ; 2 == Tile");
     
     perincr=0.;
     fMessenger_pi = new G4GenericMessenger(this, "/detector/","Detector Construction");
-    // name for new messengers
     fMessenger_pi->DeclareProperty("PerIncr", perincr, "LYSO section geometry parameter");
 
     ESRtrue=1;
     fMessenger_ESR = new G4GenericMessenger(this, "/detector/","Detector Construction");
-    // name for new messengers
     fMessenger_ESR->DeclareProperty("ESR", ESRtrue, "LYSO covered by ESR?");
 
-    DefineMaterial(); // Run material function in the constructor
+    // Run material function in the constructor
+    DefineMaterial(); 
 
 }
 
@@ -92,7 +73,6 @@ void MyDetectorConstruction::DefineMaterial() // function to define a single tim
 
     // Find material in G4 database: Air
     worldMat = nist -> FindOrBuildMaterial("G4_AIR");
-        // Material requirements for Cherenkov light
     G4double energyWorld[2] = {1.239841939*eV/0.9,1.239841939*eV/0.2};   // Calculate momentum from wavelength [0.2,0.9]nm to energy
     G4double rindexWorld[2] ={1.0, 1.0};                          // Define Refractive index for aerogel (constant, without dispersion in this case)
         //Refer material properties to material 
@@ -112,66 +92,9 @@ void MyDetectorConstruction::DefineMaterial() // function to define a single tim
     mptSiO2->AddProperty("ABSLENGTH", energySiO2, ABSSiO2,2);
     SiO2->SetMaterialPropertiesTable(mptSiO2);
 
-
-    // Define material class: Water -> G4Material (name, density, number of components)
-    H2O = new G4Material("H2O", 1.000*g/cm3, 2);
-    H2O -> AddElement(nist->FindOrBuildElement("H"),2);
-    H2O -> AddElement(nist->FindOrBuildElement("O"),1);
-
     // Define Element class: Carbon -> element
     C = nist->FindOrBuildElement("C");
-    
-    // Complex material example !!!!!!!
-    // Define material class: Aerogel -> G4Material (name, density, number of components)
-    Aerogel = new G4Material("Aerogel", 0.2*g/cm3, 3);
-    Aerogel ->AddMaterial(SiO2,62.5*perCent); /*perCent: unit converting to right proportions*/
-    Aerogel ->AddMaterial(H2O,37.4*perCent);
-    Aerogel ->AddElement(C,0.1*perCent);
-        // Material requirements for Cherenkov light
-    G4double energy[2] = {1.239841939*eV/0.9,1.239841939*eV/0.2};   // Calculate momentum from wavelength [0.2,0.9]nm to energy
-    G4double rindexAerogel[2] ={1.1, 1.1};                          // Define Refractive index for aerogel (constant, without dispersion in this case)
-        //Refer material properties to material 
-    G4MaterialPropertiesTable *mptAerogel = new G4MaterialPropertiesTable();
-    mptAerogel->AddProperty("RINDEX", energy, rindexAerogel, 2);    // AddProperty("Mat Prop name", energy, values, num points)
-    Aerogel->SetMaterialPropertiesTable(mptAerogel);
  
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // First Scintillator  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    Na = nist -> FindOrBuildElement("Na");
-    I = nist -> FindOrBuildElement("I");
-    NaI = new G4Material("NaI", 3.67*g/cm3,2);
-    NaI->AddElement(Na, 1);
-    NaI->AddElement(I,1);
-
-    G4double NaI_energy[3] = {1.239841939*eV/0.9,1.239841939*eV/0.5,1.239841939*eV/0.2};   // Calculate momentum from wavelength [0.2,0.9]nm to energy
-    G4double NaI_rindex[3] ={1.78, 1.78, 1.78};                          // Define Refractive index for NaI (constant, without dispersion in this case)
-    G4double NaI_scint[3] = { 0.1, 1.0, 0.1 };   
-    G4double NaI_absl[3] ={35. * cm, 35. * cm, 35. * cm};                        
-    G4MaterialPropertiesTable *mptNaI = new G4MaterialPropertiesTable();
-//mptAerogel->AddProperty("RINDEX", energy, rindexAerogel, 2);    // AddProperty("Mat Prop name", energy, values, num points)
-  mptNaI->AddProperty("RINDEX", NaI_energy, NaI_rindex,3);
-  mptNaI->AddProperty("SCINTILLATIONCOMPONENT1", NaI_energy, NaI_scint,3);
-  //mptNaI->AddProperty("SCINTILLATIONCOMPONENT2", NaI_energy, NaI_scint,3);
-  mptNaI->AddProperty("ABSLENGTH", NaI_energy, NaI_absl,3);
-  mptNaI->AddConstProperty("SCINTILLATIONYIELD", 12000. / MeV);
-  mptNaI->AddConstProperty("RESOLUTIONSCALE", 1.0);
-  mptNaI->AddConstProperty("SCINTILLATIONTIMECONSTANT1", 20. * ns);
-  //mptNaI->AddConstProperty("SCINTILLATIONTIMECONSTANT2", 45. * ns);
-  mptNaI->AddConstProperty("SCINTILLATIONYIELD1", 1.0);
-  //mptNaI->AddConstProperty("SCINTILLATIONYIELD2", 0.0);
-NaI-> SetMaterialPropertiesTable(mptNaI);
-/**/
-
-/*    mptNaI -> AddProperty("FASTCOMPONENT", energyNaI, rindexFC, 2);
-    mptNaI -> AddConstProperty("SCINTILLATIONYIELD", 38./keV);
-    mptNaI -> AddConstProperty("RESOLUTIONSCLAE", 1.);
-    mptNaI -> AddConstProperty("FASTTIMECONSTANT", 250*ns);
-    mptNaI -> AddConstProperty("YIELDRATIO", 1.);
-    NaI-> SetMaterialPropertiesTable(mptNaI);
-*/
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // LYSO  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -289,7 +212,7 @@ G4MaterialPropertiesTable *mptScint= new G4MaterialPropertiesTable();
     mptRESIN->AddProperty("ABSLENGTH", EPOXY_ene,    EPOXY_ABSLEN,     numEP); // fraction of the light reflected (all=1)
     EPOXY-> SetMaterialPropertiesTable(mptRESIN);
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //FR4 (Glass + Epoxy)  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -478,8 +401,6 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct()
     logicFR4 = new G4LogicalVolume(solidFR4, SiO2, "logicFR4");
 
     //G4LogicalSkinSurface *skinGlue = new G4LogicalSkinSurface("skin",logicGlue,SurfGlue);
-
-    //G4LogicalSkinSurface *skinResin = new G4LogicalSkinSurface("skin",logicResin,SurfResin);
 
     G4LogicalSkinSurface *skinFR4 = new G4LogicalSkinSurface("skin",logicFR4,SurfFR4);
    

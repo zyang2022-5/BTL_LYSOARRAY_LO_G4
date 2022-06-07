@@ -13,7 +13,7 @@ simargsprev="-m"
 Sopt="~/software/geant4/geant4-v11.0.0-install/share/Geant4-11.0.0/geant4make/"
 Valg=0
 # Read optional arguments
-while getopts ":s:m:f:b:a:n:v:" arg; do
+while getopts ":s:m:f:b:a:n:v:o:" arg; do
     case $arg in
         a) simargs=$OPTARG
             echo "*** Change of Simulation Arguments"
@@ -36,6 +36,9 @@ while getopts ":s:m:f:b:a:n:v:" arg; do
         v) Valg=$OPTARG
             echo "*** Segmentation errors check change default"
             echo $Valg;; # Change G4 source directory
+        o) OutName=$OPTARG
+            echo "*** Segmentation errors check change default"
+            echo $OutName;; # Change G4 source directory
     esac
 done
 
@@ -49,7 +52,7 @@ if [ $Valg = 0 ]; then
     cd $BASEDIR
     cd ./$fbuild
     echo $(pwd)
-    ./$SimName $simargsprev $macname
+    ./$SimName $simargsprev $macname -o $OutName
     cd $BASEDIR
 fi
 

@@ -1,7 +1,9 @@
 #include "run.hh"
 
-MyRunAction :: MyRunAction()
+MyRunAction :: MyRunAction(G4String OutName)
 { // Constructor
+
+    OutputName=OutName;
     G4AnalysisManager *man = G4AnalysisManager::Instance();
     // Content of output.root (tuples created only once in the constructor)
     man->CreateNtuple("Photons","Photons");   // rows
@@ -69,7 +71,7 @@ void MyRunAction::BeginOfRunAction(const G4Run* run)
     strRunID << runID;
 
 
-    man->OpenFile("output"+strRunID.str()+".root");
+    man->OpenFile("./Results/"+OutputName+strRunID.str()+".root");
 
 //UImanager->ApplyCommand("/run/reinitializeGeometry");
 

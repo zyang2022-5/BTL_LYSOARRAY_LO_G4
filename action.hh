@@ -12,11 +12,13 @@ class MyActionInitialization : public G4VUserActionInitialization
 {
 
 public:
-    MyActionInitialization();
+    MyActionInitialization(G4String OutName);
     ~MyActionInitialization();
     
     virtual void Build() const; /*Run particle gun and computes stepping etc...*/
 
+private:
+    G4String OutputName;
 };
 
 #endif

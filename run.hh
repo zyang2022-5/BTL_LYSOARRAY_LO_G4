@@ -16,13 +16,13 @@
 class MyRunAction : public G4UserRunAction
 {
 public:
-    MyRunAction();
+    MyRunAction(G4String OutName);
     ~MyRunAction();
 
     virtual void BeginOfRunAction(const G4Run*);
     virtual void EndOfRunAction(const G4Run*);
 private :
-    G4String command ;
+    G4String command, OutputName;
 };
 
 #endif

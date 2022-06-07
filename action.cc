@@ -1,7 +1,10 @@
 #include "action.hh"
 
-MyActionInitialization:: MyActionInitialization()
-{}
+MyActionInitialization:: MyActionInitialization(G4String OutName)
+{
+OutputName=OutName;
+}
+
 
 MyActionInitialization:: ~MyActionInitialization()
 {}
@@ -12,7 +15,7 @@ void MyActionInitialization::Build() const
     MyPrimaryGenerator *generator = new MyPrimaryGenerator();
     SetUserAction(generator);
 
-    MyRunAction *runAction = new MyRunAction();
+    MyRunAction *runAction = new MyRunAction(OutputName);
     SetUserAction(runAction);
 
     MyEventAction *eventAction = new MyEventAction(runAction);

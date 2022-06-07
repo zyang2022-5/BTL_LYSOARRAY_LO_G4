@@ -23,7 +23,22 @@ int main(int argc, char** argv) /* argc, argv are the argument passed to the sim
     
     runManager -> SetUserInitialization(new MyDetectorConstruction()); /*Define geometry*/
     runManager -> SetUserInitialization(new MyPhysicsList()); /*Define physics*/
-    runManager -> SetUserInitialization(new MyActionInitialization()); /*Define actions*/
+
+    G4int Oin=0; 
+    G4String OutName;
+    for (int j = 1; j < argc; j=j+1){
+                if(strcmp(argv[j],"-o")==0)
+                {   
+                    OutName = argv[j+1];      
+                    G4cout<< " ### Changed Ouput name to : " << OutName<<G4endl;            
+                    Oin=1;         
+                }
+        }
+
+    if (Oin == 0 ) {  OutName = "WhateverTestName";   }
+
+    runManager -> SetUserInitialization(new MyActionInitialization(OutName)); /*Define actions*/
+
 
     runManager -> Initialize();
     

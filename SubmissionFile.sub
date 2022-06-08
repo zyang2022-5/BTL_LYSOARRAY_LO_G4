@@ -9,6 +9,7 @@ WHEN_TO_TRANSFER_OUTPUT = ON_EXIT_OR_EVICT
 +RunAsOwner = True
 +InteractiveUser = True
 +SingularityImage = "/cvmfs/singularity.opensciencegrid.org/cmssw/cms:rhe17"
++SingularityBindCVMFS = True
 +run_as_owner = True
 RequestDisk = 2000000
 RequestMemory = 2500

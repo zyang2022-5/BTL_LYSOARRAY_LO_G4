@@ -39,13 +39,13 @@ MyEventAction::~MyEventAction()
 void MyEventAction::BeginOfEventAction(const G4Event *anEvent)
 {
     // Need to reinitialize vis options if the geometry is reinitialized. To set at the end of the run to be more efficient. Not required for the use in the cluster.
-    G4UImanager *UImanager = G4UImanager::GetUIpointer();
-    command="/vis/initialize ";
-    UImanager->ApplyCommand(command);  G4cout<< command << G4endl;
-    command="/vis/drawVolume";
-    UImanager->ApplyCommand(command);  G4cout<< command << G4endl;
-    command="/vis/scene/add/trajectories smooth";
-    UImanager->ApplyCommand(command);  G4cout<< command << G4endl;
+    //G4UImanager *UImanager = G4UImanager::GetUIpointer();
+    //command="/vis/initialize ";
+    //UImanager->ApplyCommand(command);  G4cout<< command << G4endl;
+    //command="/vis/drawVolume";
+    //UImanager->ApplyCommand(command);  G4cout<< command << G4endl;
+    //command="/vis/scene/add/trajectories smooth";
+    //UImanager->ApplyCommand(command);  G4cout<< command << G4endl;
 
      // Run status
       G4int eventID=anEvent->GetEventID();

@@ -15,12 +15,22 @@ The G4 version used is G4 v11.0.0
 
 An example of how to run within a cluster with HTcondor can be found in the folder "HTexample".
 
-How to run:
+How to run in your machine:
 * Download the Singularity Container stated above
 * Modify SingAction.sh for your Container folder
 * Create buildSing and buildSing/Results folder within the folder that contains this repository
 * cd into the folder that contain this repository
+* modify the run.mac file (These are the commands that will be executed by G4)
 * run the command: sh SingAction.sh
+
+How to run in TierII:
+* download the repository in a new folder in your node
+* create a Results folder
+* run Geant4SourceCVMFS.sh
+* run the Makefile
+* modify the run.mac file (These are the commands that will be executed by G4)
+* modify the G4SimScriptCVMFS.sh if required
+* run G4SimScriptCVMFS.sh
 
 Arguments:
 -m Macroname.mac    : run one time a macro file

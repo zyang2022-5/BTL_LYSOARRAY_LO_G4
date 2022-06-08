@@ -1,15 +1,22 @@
 #!/bin/bash
 # Default values for optional arguments
 BASEDIR=$(pwd)          # Current folder where the G4 files can be found
-G4Source="/usr/Geant4/geant4v11.p0/share/Geant4-11.0.0/geant4make/"     # G4 Installation folder in the container
-SingCont="/home/guillermo/localdev/ubuntutest/" # location of the container
+
+G4Source="/usr/Geant4/geant4v11.p0/share/Geant4-11.0.0/geant4make/"     # G4 Installation folder in the container (HOME VM)
+SingCont="/home/guillermo/localdev/ubuntutest/" 			# location of the container (HOME VM)
+ContName="test1"        						# Name of the singularity container (HOME VM)
+
+#G4Source="/usr/Geant4/geant4v11.p0/share/Geant4-11.0.0/geant4make/" 	# G4 Installation folder in the container (Tier II greales)
+#SingCont="/storage/af/user/greales/SingDir"				# location of the container (Tier II greales)
+#ContName="G4SingCont.sif"						# Name of the singularity container (Tier II greales)
+
 buildfol="buildSing"    # bulding folder name
-ContName="test1"        # Name of the singularity container
 SimName="LYSObarsim"    # Name of the G4 executable
 MacroName="run.mac"     # Name of the macro file to run with the G4 executable
 SimArgs="-m"            # Arguments for the G4 executable (any)
 OutPut="WhateverNameTest"   # Name of the Root output files from the G4 executable 
 cd $SingCont
+
 
 #### sigularity exec examples
 #singularity exec test1 sh /usr/TestFolder/test.sh

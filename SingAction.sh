@@ -1,6 +1,7 @@
 #!/bin/bash
 # Default values for optional arguments
 BASEDIR=$(pwd)          # Current folder where the G4 files can be found
+#BASEDIR="/storage/af/user/greales/simG4/SingLYSO/"
 
 G4Source="/usr/Geant4/geant4v11.p0/share/Geant4-11.0.0/geant4make/"     # G4 Installation folder in the container (HOME VM)
 SingCont="/home/guillermo/localdev/ubuntutest/" 			# location of the container (HOME VM)

@@ -1,0 +1,24 @@
+executable = SingAction.sh
+arguments = 10
+output  = /storage/af/user/greales/simG4/outputs/Out_job$(Cluster).out
+error   = /storage/af/user/greales/simG4/errors/error_job$(Cluster).out
+log     = /storage/af/user/greales/simG4/logs/log_job$(Cluster).out
+WHEN_TO_TRANSFER_OUTPUT = ON_EXIT_OR_EVICT
++JobQueue = "Short"
++MaxRuntime = 7000
++RunAsOwner = True
++InteractiveUser = True
++SingularityImage = "/cvmfs/singularity.opensciencegrid.org/cmssw/cms:rhe17"
++run_as_owner = True
+RequestDisk = 2000000
+RequestMemory = 2500
+RequestCpus = 1
+x509userproxy = $ENV(X509_USER_PROXY)
+on_exit_remove = ((ExitBySignal == False) && (ExitCode == 0)) || (JobStatus=?=3)
+on_exit_hold = (ExitBySignal == True) || (ExitCode != 0)
+peridic_release = (NumJobStarts <2) && ((CurrentTime - EnteredCurrentStatus) > (60*20))
++PeriodicRemove = ((JobStatus =?= 2) && ((MemoryUsage =!= UNDEFINED && MemoryUsage > 2.5*RequestMemory)))
+max_retries = 3
+requirements = Machine =!= LastRemoteHost
+universe = vanilla
+queue = 1

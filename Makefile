@@ -16,7 +16,7 @@ sim: action.o construction.o detector.o event.o generator.o physics.o run.o sim.
 
 install:
 	@mkdir -p $(INSTALL_BIN)
-	$(INSTALL) fit $(INSTALL_BIN)
+	$(INSTALL) sim $(INSTALL_BIN)
 	$(INSTALL) zdab-cat $(INSTALL_BIN)
 
 test: 

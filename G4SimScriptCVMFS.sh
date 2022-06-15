@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Default values for optional arguments
 Mopt=1
 Copt=0
@@ -45,7 +45,7 @@ done
 echo "*** Sourcing G4:"
 #cd $Sopt
 #. ./geant4make.sh
-sh $Sopt/G4SourceCVMFS.sh
+. $Sopt/G4SourceCVMFS.sh
 #echo $(pwd)
 
 ### Running sim

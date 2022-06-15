@@ -15,6 +15,10 @@ The G4 version used is G4 v11.0.0
 
 An example of how to run within a cluster with HTcondor can be found in the folder "HTexample".
 
+How to compile in your machine
+* Follow the steps in the Yvideo -> https://www.youtube.com/watch?v=Lxb4WZyKeCE&list=PLLybgCU6QCGWgzNYOV0SKen9vqg4KXeVL
+	- Use G4 version 11.0.0
+
 How to run in your machine:
 * Download the Singularity Container stated above
 * Modify SingAction.sh for your Container folder

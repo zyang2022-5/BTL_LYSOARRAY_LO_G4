@@ -34,6 +34,7 @@ public:
     G4LogicalVolume *GetDetectorVolume() const {return fDetectorVolume;}
     G4double GetLYSOL() const {return LYSO_L;}
     G4double GetLYSOT() const {return LYSO_thick;}
+    G4double GetLYSOT2() const {return LYSO_thick2;}
     G4double GetGLUEL() const {return GLUE_L;}
     G4double GetRESINL() const {return RESIN_L;}
     G4double GetXPOS() const {return XposTol;}
@@ -51,9 +52,9 @@ private: // it is not accessed from outside
     G4LogicalVolume *logicDetector; // We need to refer to this volume. Needs to be outside of the construction.
 
     G4int nCols, nRows, GeomConfig, ESRtrue;
-    G4double LYSO_L, LYSO_YIELD, LYSO_SCALERESOLUTION, Vovcon, LYSO_thick, perincr;
+    G4double LYSO_L, LYSO_YIELD, LYSO_SCALERESOLUTION, Vovcon, LYSO_thick, LYSO_thick2, perincr;
     virtual void ConstructSDandField(); // SD==Sensitive Detector
-    G4GenericMessenger *fMessenger,*fMessenger_thick, *fMessenger_SR, *fMessenger_YIELD, *fMessenger_vov, *fMessenger_GlueL, *fMessenger_ResinL, *fMessenger_XPos, *fMessenger_YPos, *fMessenger_GC, *fMessenger_pi, *fMessenger_ESR;
+    G4GenericMessenger *fMessenger,*fMessenger_thick,*fMessenger_thick2, *fMessenger_SR, *fMessenger_YIELD, *fMessenger_vov, *fMessenger_GlueL, *fMessenger_ResinL, *fMessenger_XPos, *fMessenger_YPos, *fMessenger_GC, *fMessenger_pi, *fMessenger_ESR;
 
     G4Box *solidWorld, *solidDetector, *solidGlue, *solidResin, *solidFR4;
     G4UnionSolid *solidLYSO;

@@ -1,5 +1,5 @@
-CXXFLAGS=-fdiagnostics-color -O2 -g $(shell geant4-config --cflags | rev | cut -c 4- | rev) -I${VC__HOME}/include -I${VECGEOM__HOME}/include -I${VECCORE__HOME}/include -DVECCORE_ENABLE_VC 
-LDLIBS=-Wl,--copy-dt-needed-entries -fdiagnostics-color -lm $(shell geant4-config --libs-without-gui | tr ' ' '\n' | grep -v G4interface | tr '\n' ' ') -L ${VECGEOM__HOME}/lib64 -l vecgeom -l vgdml -L ${VECGEOM__CORE}/lib64  -L${VC__HOME}/lib -lVc
+CXXFLAGS=-fdiagnostics-color -O2 -g $(shell geant4-config --cflags) -I${VC__HOME}/include -I${VECGEOM__HOME}/include -I${VECCORE__HOME}/include -DVECCORE_ENABLE_VC 
+LDLIBS=-Wl,--copy-dt-needed-entries -fdiagnostics-color -lm $(shell geant4-config --libs | tr ' ' '\n' | grep -v G4interface | tr '\n' ' ') -L ${VECGEOM__HOME}/lib64 -l vecgeom -L ${VECGEOM__CORE}/lib64  -L${VC__HOME}/lib
 
 PREFIX?=$(HOME)/local
 INSTALL_BIN=$(PREFIX)/build

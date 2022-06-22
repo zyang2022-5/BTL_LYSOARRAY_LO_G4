@@ -30,6 +30,7 @@ MyRunAction :: MyRunAction(G4String OutName)
             man->CreateNtupleDColumn("fPDE");
             man->CreateNtupleDColumn("fwlen");
             man->CreateNtupleDColumn("fMeanPath");
+
             man->FinishNtuple(1); // Finish our first tuple or Ntuple number 0
 
          // Tuple containing all data fregarding the estimations written to screen at the end of each event
@@ -46,6 +47,8 @@ MyRunAction :: MyRunAction(G4String OutName)
             man->CreateNtupleDColumn("fDetXpos");
             man->CreateNtupleDColumn("fDetYpos");
             man->CreateNtupleDColumn("fevt");
+	    man->CreateNtupleDColumn("iX");
+	    man->CreateNtupleDColumn("iZ");
             man->FinishNtuple(2); // Finish our first tuple or Ntuple number 0
 
         // Tuple containing all information regarding all killed photons

@@ -5,9 +5,9 @@
 /*All packages used must be included*/
 #include "G4RunManager.hh" /* Run */
 #include "G4UImanager.hh"
-//#include "G4VisManager.hh" /* Vis -> Visualizer*/
-//#include "G4VisExecutive.hh"
-//#include "G4UIExecutive.hh"
+#include "G4VisManager.hh" /* Vis -> Visualizer*/
+#include "G4VisExecutive.hh"
+#include "G4UIExecutive.hh"
 
 /*Simulation created files*/
 #include "construction.hh"
@@ -35,28 +35,28 @@ int main(int argc, char** argv) /* argc, argv are the argument passed to the sim
                 }
         }
 
-    if (Oin == 0 ) {  OutName = "WhateverTestName";   }
+    if (Oin == 0 ) {  OutName = "5000 entries";   }
 
     runManager -> SetUserInitialization(new MyActionInitialization(OutName)); /*Define actions*/
 
 
     runManager -> Initialize();
-    
-    //G4UIExecutive *ui = 0; // ui initialization
+   
+    G4UIExecutive *ui = 0; // ui initialization
     // Show *user interface only if we do not use a macro, or it will be inefficient    
-    //if (argc ==1) // argc only one option introduced
-    //{
-     //   ui = new G4UIExecutive(argc,argv); // ui definition-declaration
-    //}   
+    if (argc ==1) // argc only one option introduced
+    {
+        ui = new G4UIExecutive(argc,argv); // ui definition-declaration
+    }   
     /* Vis -> Visualizer*/  // Initialization
-    //G4VisManager *visManager = new G4VisExecutive();
-    //visManager->Initialize();
+    G4VisManager *visManager = new G4VisExecutive();
+    visManager->Initialize();
     G4UImanager *UImanager = G4UImanager::GetUIpointer();
-    //if(ui)
-    //{
-    //    UImanager->ApplyCommand("/control/execute vis.mac");
-    //    ui->SessionStart();
-    //}
+    if(ui)
+    {
+        UImanager->ApplyCommand("/control/execute vis.mac");
+        ui->SessionStart();
+    }
     //else
     //{
         /*for (int j = 1; j <= argc; j=j+1){

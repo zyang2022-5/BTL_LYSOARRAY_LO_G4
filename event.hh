@@ -38,6 +38,8 @@ private :
     G4String PZ ;
     G4String GLUE_Lstr;
     G4String command ;
+    G4double GenX;
+    G4double GenZ;
 
 };
 

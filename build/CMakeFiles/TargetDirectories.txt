@@ -1,0 +1,4 @@
+/home/guillermo/geant4sim/SingLYSO/build/CMakeFiles/edit_cache.dir
+/home/guillermo/geant4sim/SingLYSO/build/CMakeFiles/LYSObarsim.dir
+/home/guillermo/geant4sim/SingLYSO/build/CMakeFiles/rebuild_cache.dir
+/home/guillermo/geant4sim/SingLYSO/build/CMakeFiles/Simulation_Guillermo.dir

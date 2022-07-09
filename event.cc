@@ -1,13 +1,14 @@
 #include "event.hh"
 
-MyEventAction::MyEventAction(MyRunAction*)
+MyEventAction::MyEventAction(MyRunAction*,MyG4Args* MainArgs)
 {
+    PassArgs=MainArgs;
     fEdep=0.;
     fPhCount=0;
     fLO=0;
 
     PDE = new G4PhysicsOrderedFreeVector();
-    G4double Vov=3.5;
+    G4double Vov=PassArgs->GetVov();
     std::ifstream datafile;
     datafile.open("eff.dat");
     G4double wlendat, queffdat;
@@ -39,18 +40,12 @@ MyEventAction::~MyEventAction()
 void MyEventAction::BeginOfEventAction(const G4Event *anEvent)
 {
     G4UImanager *UImanager = G4UImanager::GetUIpointer();
-    //command="/run/reinitializeGeometry";
-    //UImanager->ApplyCommand(command);  G4cout<< command << G4endl;
-    //command="/run/initialize";
-    //UImanager->ApplyCommand(command);  G4cout<< command << G4endl;
     command="/vis/initialize ";
     UImanager->ApplyCommand(command);  G4cout<< command << G4endl;
     command="/vis/drawVolume";
     UImanager->ApplyCommand(command);  G4cout<< command << G4endl;
     command="/vis/scene/add/trajectories smooth";
     UImanager->ApplyCommand(command);  G4cout<< command << G4endl;
-//UImanager->ApplyCommand("/run/reinitializeGeometry");
-
 
  // Run status
   G4int eventID=anEvent->GetEventID();
@@ -58,39 +53,45 @@ void MyEventAction::BeginOfEventAction(const G4Event *anEvent)
   G4int nOfEvents = run->GetNumberOfEventToBeProcessed();
   G4double perCent = 10.; // status increment in percent
 
+   
+// Randomizing the impact point of the initial particle gun
+if(PassArgs->GetRnd_Part()==1)
+{
     const MyDetectorConstruction *detectorConstruction = static_cast<const MyDetectorConstruction*> (G4RunManager::GetRunManager()->GetUserDetectorConstruction());
     G4int GeomConfig  = detectorConstruction->GetGC();
 
+// Setting limits to the randomizer for the particle gun
     G4double LYSO_L  = detectorConstruction->GetLYSOL();
     LYSO_L=LYSO_L-LYSO_L*0.01;
     G4double LYSO_T  = detectorConstruction->GetLYSOT();
     LYSO_T=LYSO_T-LYSO_T*0.01;
-    G4double LYSO_T2  = detectorConstruction->GetLYSOT2();
+    G4double LYSO_T2  = detectorConstruction->GetLYSOT();
     LYSO_T2=LYSO_T2-LYSO_T2*0.01;
 
-    G4cout<< "Data from construction: "<< LYSO_L << " " << LYSO_T << " " << GeomConfig << G4endl;
-    
+    //G4cout<< "Data from construction: "<< LYSO_L << " " << LYSO_T << " " << GeomConfig << G4endl;
     if (GeomConfig == 1){
-    G4double GenX=(-LYSO_T+LYSO_T*2*G4UniformRand())/1000.;
-    G4double GenZ=(-LYSO_L+LYSO_L*2*G4UniformRand())/1000.;
-    command = "/gun/position "+std::to_string(GenX)+" 0.05 "+std::to_string(GenZ)+" m"; 
-    G4cout<< command << G4endl;
-    UImanager->ApplyCommand(command);     
-    command = "/gun/direction 0. -1. 0."; 
-    G4cout<< command << G4endl;
-    UImanager->ApplyCommand(command); 
-}else if (GeomConfig == 2){
-    G4double GenX=(-LYSO_T2+LYSO_T2*2*G4UniformRand())/1000.;
-    G4double GenZ=(-LYSO_T+LYSO_T2*2*G4UniformRand())/1000.;
-    command = "/gun/position "+std::to_string(GenX)+" "+std::to_string(GenZ)+" -0.05 "+"m"; 
-    G4cout<< command << G4endl;
-    UImanager->ApplyCommand(command);     
-    command = "/gun/direction 0. 0. 1."; 
-    G4cout<< command << G4endl;
-    UImanager->ApplyCommand(command); 
+        G4double GenX=(-LYSO_T+LYSO_T*2*G4UniformRand())/1000.;
+        G4double GenZ=(-LYSO_L+LYSO_L*2*G4UniformRand())/1000.;
+        command = "/gun/position "+std::to_string(GenX)+" 0.05 "+std::to_string(GenZ)+" m"; 
+        G4cout<< command << G4endl;
+        UImanager->ApplyCommand(command);     
+        command = "/gun/direction 0. -1. 0."; 
+        G4cout<< command << G4endl;
+        UImanager->ApplyCommand(command); 
+    }else if (GeomConfig == 2){
+        G4double GenX=(-LYSO_T2+LYSO_T2*2*G4UniformRand())/1000.;
+        G4double GenZ=(-LYSO_T+LYSO_T2*2*G4UniformRand())/1000.;
+        command = "/gun/position "+std::to_string(GenX)+" "+std::to_string(GenZ)+" -0.05 "+"m"; 
+        G4cout<< command << G4endl;
+        UImanager->ApplyCommand(command);     
+        command = "/gun/direction 0. 0. 1."; 
+        G4cout<< command << G4endl;
+        UImanager->ApplyCommand(command); 
+    }
 }
 
 
+    // Writing to screen when a certain number out of all the total events asked for are done
   if(fmod(eventID,double(nOfEvents*perCent*0.01))==0)
   {
     time_t my_time = time(NULL);
@@ -99,9 +100,11 @@ void MyEventAction::BeginOfEventAction(const G4Event *anEvent)
     std::cout << "=> Event " << eventID << " start ("<< status << "%, "<< ltm->tm_hour << ":" <<  ltm->tm_min << ":" << ltm->tm_sec << ")" << std::endl;
   }
 
-    fEdep=0.;
-    fPhCount=0;
-    fLO=0;
+
+    // Initialization of properties counters per event
+    fEdep=0.;   // Energy deposited in the LYSO
+    fPhCount=0; // Total photon count arriving to the photodetectors
+    fLO=0;      // Light Output (Photons detected)
 
 
 
@@ -112,19 +115,13 @@ void MyEventAction::EndOfEventAction(const G4Event*)
 {
         G4UImanager *UImanager = G4UImanager::GetUIpointer();
     const MyDetectorConstruction *detectorConstruction = static_cast<const MyDetectorConstruction*> (G4RunManager::GetRunManager()->GetUserDetectorConstruction());
-    //const MyDetectorConstruction *detectorConstruction = static_cast<const MyDetectorConstruction*> (G4RunManager::GetRunManager()->GetUserDetectorConstruction());
     G4double LYSO_L  = detectorConstruction->GetLYSOL();
     G4double GLUEL  = detectorConstruction->GetGLUEL();
     G4double RESINL  = detectorConstruction->GetRESINL();
     G4double XPOS  = detectorConstruction->GetXPOS();
     G4double YPOS  = detectorConstruction->GetYPOS();
     G4int GeomConfig  = detectorConstruction->GetGC();
-    
-    //G4int count  = detectorConstruction->GetDetCount();
-
-    // store glue and resin thickness and position of detector displacement/not centered
-    //G4cout<< "PX PZ: " << PXd <<" " <<PZd << G4endl;
-    //G4cout<< "PX PZ: " << PX <<" " <<PZ << G4endl;
+   
     
     G4int evt = G4RunManager::GetRunManager()->GetCurrentEvent()->GetEventID();
     if(fEdep>0){
@@ -157,45 +154,25 @@ void MyEventAction::EndOfEventAction(const G4Event*)
     G4cout<< "#####################" << G4endl;
         }
     }
+
+if(PassArgs->GetTree_EndOfEvent()==1){
     G4AnalysisManager *man = G4AnalysisManager::Instance();
-    man->FillNtupleDColumn(2, 0, fEdep/MeV);
-    man->FillNtupleDColumn(2, 1, fPhCount);
-    man->FillNtupleDColumn(2, 2, fLO);
-    man->FillNtupleDColumn(2, 3, PDE420);
-    man->FillNtupleDColumn(2, 4, fLO*PDE420/(fEdep/MeV)/2.);
-    man->FillNtupleDColumn(2, 5, PXd*1000);
-    man->FillNtupleDColumn(2, 6, PZd*1000);
-    man->FillNtupleDColumn(2, 7, GLUEL/mm);
-    man->FillNtupleDColumn(2, 8, RESINL/mm);
-    man->FillNtupleDColumn(2, 9, XPOS/mm);
-    man->FillNtupleDColumn(2, 10, YPOS/mm);
-    man->FillNtupleDColumn(2, 11, evt);
+    man->FillNtupleDColumn(4, 0, fEdep/MeV);
+    man->FillNtupleDColumn(4, 1, fPhCount);
+    man->FillNtupleDColumn(4, 2, fLO);
+    man->FillNtupleDColumn(4, 3, PDE420);
+    man->FillNtupleDColumn(4, 4, fLO*PDE420/(fEdep/MeV)/2.);
+    man->FillNtupleDColumn(4, 5, PXd*1000);
+    man->FillNtupleDColumn(4, 6, PZd*1000);
+    man->FillNtupleDColumn(4, 7, GLUEL/mm);
+    man->FillNtupleDColumn(4, 8, RESINL/mm);
+    man->FillNtupleDColumn(4, 9, XPOS/mm);
+    man->FillNtupleDColumn(4, 10, YPOS/mm);
+    man->FillNtupleDColumn(4, 11, evt);
     /*get ev number from detector!!!*/
     /*Write down particle gun position and angle (x,z,alpha_yz)*/
-    man->AddNtupleRow(2);
+    man->AddNtupleRow(4);
+}
 
-    //detectorConstruction->RandGLUEL();
-    //detectorConstruction->RandRESINL();
-    //detectorConstruction->RandXPOS();
-    //detectorConstruction->RandYPOS();
 
-//    UImanager->ApplyCommand("/vis/initialize "); 
-//    UImanager->ApplyCommand("/vis/drawVolume"); 
-//UImanager->ApplyCommand("/vis/viewer/set/autoRefresh true"); 
-//UImanager->ApplyCommand("/vis/scene/add/trajectories smooth"); 
-//UImanager->ApplyCommand("/vis/scene/add/scale 10 cm"); 
-//UImanager->ApplyCommand("/vis/scene/add/axes"); 
-//UImanager->ApplyCommand("/vis/scene/add/eventID"); 
-//UImanager->ApplyCommand("/vis/scene/endOfEventAction accumulate"); 
-
-   /* PXd=(-1.4+2.8*G4UniformRand())/1000.;
-    PZd=(-57/2.+57*G4UniformRand())/1000.;
-    PX = std::to_string(PXd);
-    PZ = std::to_string(PZd);
-    G4String P0 = std::to_string(0.);
-    //G4cout<< "PX PZ: " << PX <<" " <<PZ << G4endl;
-    G4UImanager *UImanager = G4UImanager::GetUIpointer();
-    command = "/gun/position "+PX+" 0.05 "+PZ+" m"; 
-    UImanager->ApplyCommand(command); */
-//UImanager->ApplyCommand("/run/reinitializeGeometry");
 }

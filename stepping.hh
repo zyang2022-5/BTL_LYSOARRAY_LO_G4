@@ -12,17 +12,19 @@
 #include "G4Gamma.hh"
 #include "G4Electron.hh"
 //#include "G4Photon.hh"
+#include "G4Args.hh"
 
 class MySteppingAction : public G4UserSteppingAction
 {
 public:
-    MySteppingAction(MyEventAction* eventAction);
+    MySteppingAction(MyEventAction* eventAction,MyG4Args*);
     ~MySteppingAction();
 
     virtual void UserSteppingAction(const G4Step*);
 
 private:
     MyEventAction *fEventAction;
+    MyG4Args* PassArgs;
 };
 
 

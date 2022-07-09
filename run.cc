@@ -1,8 +1,9 @@
 #include "run.hh"
 
-MyRunAction :: MyRunAction(G4String OutName)
+MyRunAction :: MyRunAction(G4String OutName,MyG4Args* MainArgs)
 { // Constructor
     
+    PassArgs=MainArgs;
     // Saving output name from args
     OutputName=OutName;
 
@@ -11,7 +12,7 @@ MyRunAction :: MyRunAction(G4String OutName)
     // Content of output.root (tuples created only once in the constructor)
 
         // Tuple containing all data from the Photons arriving to the detector
-            man->CreateNtuple("Photons","Photons");   // rows
+            man->CreateNtuple("Arrivals","Arrivals");   // Photons
             man->CreateNtupleIColumn("fEvent"); // columns ,I == Integer
             man->CreateNtupleDColumn("fX");
             man->CreateNtupleDColumn("fY");
@@ -21,7 +22,7 @@ MyRunAction :: MyRunAction(G4String OutName)
             man->FinishNtuple(0); // Finish our first tuple or Ntuple number 0
 
         // Tuple containing all data from the Photons being detected
-            man->CreateNtuple("Hits","Hits");   // rows
+            man->CreateNtuple("Detected","Detected");   // Hits
             man->CreateNtupleIColumn("fEvent"); // columns ,I == Integer
             man->CreateNtupleDColumn("fX");
             man->CreateNtupleDColumn("fY");
@@ -32,8 +33,22 @@ MyRunAction :: MyRunAction(G4String OutName)
             man->CreateNtupleDColumn("fMeanPath");
             man->FinishNtuple(1); // Finish our first tuple or Ntuple number 0
 
+        // Tuple containing all information regarding all killed photons
+            man->CreateNtuple("Stepping","Stepping");   // rows
+            man->CreateNtupleDColumn("fKilledLength"); 
+            man->CreateNtupleDColumn("ftime");
+            man->CreateNtupleDColumn("fX");
+            man->CreateNtupleDColumn("fY");
+            man->CreateNtupleDColumn("fZ");
+            man->FinishNtuple(2); // Finish our first tuple or Ntuple number 0
+
+        // Tuple containing all information regarding all killed photons
+            man->CreateNtuple("Tracking","Tracking");   // rows
+            man->CreateNtupleDColumn("test");
+            man->FinishNtuple(3); // Finish our first tuple or Ntuple number 0
+
          // Tuple containing all data fregarding the estimations written to screen at the end of each event
-            man->CreateNtuple("Scoring","Scoring");   // rows
+            man->CreateNtuple("EndOfEvent","EndOfEvent");   // Scoring
             man->CreateNtupleDColumn("fEdep"); 
             man->CreateNtupleDColumn("fPhot"); 
             man->CreateNtupleDColumn("fHits"); 
@@ -46,16 +61,7 @@ MyRunAction :: MyRunAction(G4String OutName)
             man->CreateNtupleDColumn("fDetXpos");
             man->CreateNtupleDColumn("fDetYpos");
             man->CreateNtupleDColumn("fevt");
-            man->FinishNtuple(2); // Finish our first tuple or Ntuple number 0
-
-        // Tuple containing all information regarding all killed photons
-            man->CreateNtuple("ScoringKilled","ScoringKilled");   // rows
-            man->CreateNtupleDColumn("fKilledLength"); 
-            man->CreateNtupleDColumn("ftime");
-            man->CreateNtupleDColumn("fX");
-            man->CreateNtupleDColumn("fY");
-            man->CreateNtupleDColumn("fZ");
-            man->FinishNtuple(3); // Finish our first tuple or Ntuple number 0
+            man->FinishNtuple(4); // Finish our first tuple or Ntuple number 0
 
 }
 MyRunAction :: ~MyRunAction()
@@ -93,19 +99,22 @@ void MyRunAction::EndOfRunAction(const G4Run*)
 
     // Modify random parameter in the geometry 
     //  #### This does nothing unless we do another run, the geometry can only be changed in between runs not events !!!
-    G4double GLUE_L = 0.05+0.1*G4UniformRand();   GLUE_L=GLUE_L/2.;
-    G4double RESIN_L =0.3 +0.4*G4UniformRand();   RESIN_L=RESIN_L/2.;
-    G4double XposTol = -0.15+G4UniformRand()*0.3;
-    G4double YposTol = -0.15+G4UniformRand()*0.3;
+    if(PassArgs->GetRnd_Geom()==1)
+        {
+        G4double GLUE_L = 0.15+0.1*G4UniformRand();   GLUE_L=GLUE_L/2.;
+        G4double RESIN_L =0.3+0.4*G4UniformRand();   RESIN_L=RESIN_L/2.;
+        G4double XposTol = -0.05+G4UniformRand()*0.1;
+        G4double YposTol = -0.05+G4UniformRand()*0.1;
+        command="/detector/GLUE_L " + std::to_string(GLUE_L);
+        UImanager->ApplyCommand(command);  G4cout<< command << G4endl;
+        command="/detector/RESIN_L " + std::to_string(RESIN_L);
+        UImanager->ApplyCommand(command);  G4cout<< command << G4endl;
+        command="/detector/XposTol " + std::to_string(XposTol);
+        UImanager->ApplyCommand(command);  G4cout<< command << G4endl;
+        command="/detector/YposTol " + std::to_string(YposTol);
+        UImanager->ApplyCommand(command);  G4cout<< command << G4endl;
+        }
 
-    command="/detector/GLUE_L " + std::to_string(GLUE_L);
-    UImanager->ApplyCommand(command);  G4cout<< command << G4endl;
-    command="/detector/RESIN_L " + std::to_string(RESIN_L);
-    UImanager->ApplyCommand(command);  G4cout<< command << G4endl;
-    command="/detector/XposTol " + std::to_string(XposTol);
-    UImanager->ApplyCommand(command);  G4cout<< command << G4endl;
-    command="/detector/YposTol " + std::to_string(YposTol);
-    UImanager->ApplyCommand(command);  G4cout<< command << G4endl;
 
     // Close the output file for this event
     G4AnalysisManager *man = G4AnalysisManager::Instance();

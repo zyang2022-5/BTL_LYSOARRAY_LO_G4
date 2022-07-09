@@ -10,13 +10,13 @@
 #include "G4TrackingManager.hh"
 #include "event.hh"
 //#include "groot.hh"
-
+#include "G4Args.hh"
 #include "run.hh"
 
 class MyTrackingAction : public G4UserTrackingAction
 {
 public :
-    MyTrackingAction(MyEventAction* eventAction);
+    MyTrackingAction(MyEventAction* eventAction,MyG4Args*);
     ~MyTrackingAction();
 
     virtual void PreUserTrackingAction(const G4Track*);
@@ -25,6 +25,7 @@ public :
 private :
     G4double trPhCount;
     MyEventAction *fEventAction;
+    MyG4Args* PassArgs;
 };
 
 #endif

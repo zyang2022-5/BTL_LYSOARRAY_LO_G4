@@ -9,12 +9,13 @@
 #include "G4GenericMessenger.hh"
 #include "G4SystemOfUnits.hh"
 #include "event.hh"
+#include "G4Args.hh"
 //#include "event.hh"
 class MySensitiveDetector : public G4VSensitiveDetector
 {
 
 public:
-    MySensitiveDetector(G4String,G4double);
+    MySensitiveDetector(G4String,MyG4Args*);
     ~MySensitiveDetector();
     G4int GetDetCount() const {return countdet;}
 
@@ -23,6 +24,7 @@ private:
     G4PhysicsOrderedFreeVector *PDE;    
     G4int countdet;
     G4double Vov;
+    MyG4Args* PassArgs;
     
     //MyEventAction *fEventAction;
 

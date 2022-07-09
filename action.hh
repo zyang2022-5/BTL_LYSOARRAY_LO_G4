@@ -7,18 +7,20 @@
 #include "event.hh"
 #include "stepping.hh"
 #include "tracking.hh"
+#include "G4Args.hh"
 
 class MyActionInitialization : public G4VUserActionInitialization
 {
 
 public:
-    MyActionInitialization(G4String OutName);
+    MyActionInitialization(MyG4Args*);
     ~MyActionInitialization();
     
     virtual void Build() const; /*Run particle gun and computes stepping etc...*/
 
 private:
     G4String OutputName;
+    MyG4Args* PassArgs;
 };
 
 #endif

@@ -12,11 +12,12 @@
 #include "run.hh"
 #include "construction.hh"
 #include <string.h>
+#include "G4Args.hh"
 
 class MyEventAction : public G4UserEventAction
 {
 public :
-    MyEventAction(MyRunAction*);
+    MyEventAction(MyRunAction*,MyG4Args*);
     ~MyEventAction();
 
     virtual void BeginOfEventAction(const G4Event*);
@@ -38,6 +39,7 @@ private :
     G4String PZ ;
     G4String GLUE_Lstr;
     G4String command ;
+    MyG4Args* PassArgs;
 
 };
 

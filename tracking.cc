@@ -1,8 +1,9 @@
 #include "tracking.hh"
 
 
-MyTrackingAction::MyTrackingAction(MyEventAction *eventAction)
+MyTrackingAction::MyTrackingAction(MyEventAction *eventAction,MyG4Args *MainArgs)
 {
+    PassArgs=MainArgs;
     trPhCount=0.;
     fEventAction = eventAction;
 }

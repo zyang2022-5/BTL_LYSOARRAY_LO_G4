@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
 
-project(LYSObar_v0)
+project(sim)
 
 find_package(Geant4 REQUIRED ui_all vis_all)
 

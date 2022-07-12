@@ -363,33 +363,31 @@ else if (GeomConfig == 2)
     physDetector = new G4PVPlacement(0,G4ThreeVector(XposTol*mm,YposTol*mm,+1*(+LYSO_L*mm+RESIN_L*mm*2+2*GLUE_L*mm+DET_L)),logicDetector,"physDetector",logicWorld,false,0,true); 
     physFR41 = new G4PVPlacement    (0,G4ThreeVector(XposTol*mm,YposTol*mm+(RESIN_W-0.5*mm-DET_T),+1*(+LYSO_L*mm+GLUE_L*mm*2+2*(RESIN_L*mm+DET_L)+FR4_L)),logicFR4,"physResin1",logicWorld,false,0,true); 
 }
-//////////////////////
-// BORDER SURFACE //
-//////////////////////
-if(GeomConfig == 1){
-    if(ESRtrue==1){
-    G4LogicalBorderSurface *LYSO_Air_Border = new G4LogicalBorderSurface("LYSO_Glue_Border",physLYSO,physWorld,mirrorSurface);   
-    }
-    G4LogicalBorderSurface *Glue_Air_Border1 = new G4LogicalBorderSurface("Glue_Air_Border1",physGlue1,physWorld,groundSurface);   
-    G4LogicalBorderSurface *Glue_Air_Border2 = new G4LogicalBorderSurface("Glue_Air_Border2",physGlue2,physWorld,groundSurface);  
-    G4LogicalBorderSurface *Resin_Air_Border1 = new G4LogicalBorderSurface("Glue_Air_Border1",physResin1,physWorld,groundSurface);   
-    G4LogicalBorderSurface *Resin_Air_Border2 = new G4LogicalBorderSurface("Glue_Air_Border1",physResin2,physWorld,groundSurface);   
-    G4LogicalBorderSurface *Glue_LYSO_Border1 = new G4LogicalBorderSurface("Glue_LYSO_Border1",physGlue1,physLYSO,groundSurface);   
-    G4LogicalBorderSurface *Glue_LYSO_Border2 = new G4LogicalBorderSurface("Glue_LYSO_Border2",physGlue2,physLYSO,groundSurface);   
-    G4LogicalBorderSurface *Glue_Resin_Border1 = new G4LogicalBorderSurface("Glue_LYSO_Border1",physGlue1,physResin1,groundSurface);   
-    G4LogicalBorderSurface *Glue_Resin_Border2 = new G4LogicalBorderSurface("Glue_LYSO_Border2",physGlue2,physResin2,groundSurface); 
-}
-else if (GeomConfig == 2)
-{
-    if(ESRtrue==1){
-    G4LogicalBorderSurface *LYSO_Air_Border = new G4LogicalBorderSurface("LYSO_Glue_Border",physLYSO,physWorld,mirrorSurface);   
-    }
-    G4LogicalBorderSurface *Glue_Air_Border1 = new G4LogicalBorderSurface("Glue_Air_Border1",physGlue1,physWorld,groundSurface);   
-    G4LogicalBorderSurface *Resin_Air_Border1 = new G4LogicalBorderSurface("Glue_Air_Border1",physResin1,physWorld,groundSurface);   
-    G4LogicalBorderSurface *Glue_LYSO_Border1 = new G4LogicalBorderSurface("Glue_LYSO_Border1",physGlue1,physLYSO,groundSurface);   
-    G4LogicalBorderSurface *Glue_Resin_Border1 = new G4LogicalBorderSurface("Glue_LYSO_Border1",physGlue1,physResin1,groundSurface);   
 
-}  
+    //////////////////////
+    // BORDER SURFACE //
+    //////////////////////
+    if (GeomConfig == 1) {
+        if (ESRtrue==1) {
+            new G4LogicalBorderSurface("LYSO_Glue_Border",physLYSO,physWorld,mirrorSurface);
+        }
+        new G4LogicalBorderSurface("Glue_Air_Border1",physGlue1,physWorld,groundSurface);
+        new G4LogicalBorderSurface("Glue_Air_Border2",physGlue2,physWorld,groundSurface);
+        new G4LogicalBorderSurface("Resin_Air_Border1",physResin1,physWorld,groundSurface);
+        new G4LogicalBorderSurface("Resin_Air_Border1",physResin2,physWorld,groundSurface);
+        new G4LogicalBorderSurface("Glue_LYSO_Border1",physGlue1,physLYSO,groundSurface);
+        new G4LogicalBorderSurface("Glue_LYSO_Border2",physGlue2,physLYSO,groundSurface);
+        new G4LogicalBorderSurface("Glue_Resin_Border1",physGlue1,physResin1,groundSurface);
+        new G4LogicalBorderSurface("Glue_Resin_Border2",physGlue2,physResin2,groundSurface);
+    } else if (GeomConfig == 2) {
+        if (ESRtrue==1) {
+            new G4LogicalBorderSurface("LYSO_Glue_Border",physLYSO,physWorld,mirrorSurface);
+        }
+        G4LogicalBorderSurface("Glue_Air_Border1",physGlue1,physWorld,groundSurface);
+        G4LogicalBorderSurface("Resin_Air_Border1",physResin1,physWorld,groundSurface);
+        G4LogicalBorderSurface("Glue_LYSO_Border1",physGlue1,physLYSO,groundSurface);
+        G4LogicalBorderSurface("Glue_Resin_Border1",physGlue1,physResin1,groundSurface);
+    }
 
 //////////////////////
 //  //

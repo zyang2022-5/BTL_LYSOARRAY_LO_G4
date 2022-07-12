@@ -61,12 +61,12 @@ Now, go grab a cup of coffee because it takes a long time to build geant4 and ro
 
 Afterwards, run:
 
-    $ source ./geant4.10.07.p03/geant4-install/bin/geant4.sh
+    $ source ./geant4-v11.0.2/geant4-install/bin/geant4.sh
     $ source ./root-v6.24.04/root-install/bin/thisroot.sh
 
 Finally, add these lines to your .bashrc script:
 
-    $ echo "source ./geant4.10.07.p03/geant4-install/bin/geant4.sh" >> ~/.bashrc
+    $ echo "source ./geant4-v11.0.2/geant4-install/bin/geant4.sh" >> ~/.bashrc
     $ echo "source ./root-v6.24.04/root-install/bin/thisroot.sh" >> ~/.bashrc
 
 Finally, compile the software:

@@ -47,7 +47,6 @@ install-deps: geant4 root
 install:
 	@mkdir -p $(INSTALL_BIN)
 	$(INSTALL) sim $(INSTALL_BIN)
-	$(INSTALL) zdab-cat $(INSTALL_BIN)
 
 test: 
 	@echo $(LDLIBS)

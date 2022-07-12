@@ -6,4 +6,9 @@
 temp/
 # ignore ALL files in the build directory
 buildSing/
-
+*.swp
+geant4.10.07.p03.tar.gz
+geant4.10.07.p03
+root_v6.26.04.source.tar.gz
+root-6.26.04
+Makefile.dep

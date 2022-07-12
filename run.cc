@@ -1,4 +1,8 @@
 #include "run.hh"
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <stdio.h>
 
 MyRunAction :: MyRunAction(G4String OutName,MyG4Args* MainArgs)
 { // Constructor
@@ -88,6 +92,13 @@ void MyRunAction::BeginOfRunAction(const G4Run* run)
     G4int runID = run->GetRunID();
     std::stringstream strRunID;
     strRunID << runID;
+
+    struct stat st = {0};
+
+    if (stat("Results", &st) == -1) {
+        printf("Creating directory \"Results\" since it doesn't exist.\n");
+        mkdir("Results", 0700);
+    }
 
     // Creation of Output file
     man->OpenFile("./Results/"+OutputName+strRunID.str()+".root");

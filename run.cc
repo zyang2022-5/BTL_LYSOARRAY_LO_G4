@@ -79,7 +79,7 @@ void MyRunAction::BeginOfRunAction(const G4Run* run)
     G4int timeseed1=time(NULL);
     G4int timeseed2=time(NULL)+128493729;
     G4int timeseed3=time(NULL)/23839;
-    G4String command ="/random/setSeeds "+std::to_string(timeseed1)+" "+std::to_string(timeseed2)+" "+std::to_string(timeseed3);
+    command ="/random/setSeeds "+std::to_string(timeseed1)+" "+std::to_string(timeseed2)+" "+std::to_string(timeseed3);
     UImanager->ApplyCommand(command); 
     G4cout<<command<< G4endl;
     G4double rand=G4UniformRand();  // Test of random number written to screen
@@ -93,7 +93,7 @@ void MyRunAction::BeginOfRunAction(const G4Run* run)
     std::stringstream strRunID;
     strRunID << runID;
 
-    struct stat st = {0};
+    struct stat st;
 
     if (stat("Results", &st) == -1) {
         printf("Creating directory \"Results\" since it doesn't exist.\n");

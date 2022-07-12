@@ -29,7 +29,7 @@ MyEventAction::MyEventAction(MyRunAction*,MyG4Args* MainArgs)
     datafile.close();
     PDE420 = PDE->Value(420.);
     G4UImanager *UImanager = G4UImanager::GetUIpointer();
-UImanager->ApplyCommand("/run/reinitializeGeometry");
+    UImanager->ApplyCommand("/run/reinitializeGeometry");
 }
 
 MyEventAction::~MyEventAction()
@@ -51,7 +51,7 @@ void MyEventAction::BeginOfEventAction(const G4Event *anEvent)
   G4int eventID=anEvent->GetEventID();
   G4Run* run = static_cast<G4Run*>( G4RunManager::GetRunManager()->GetNonConstCurrentRun() );
   G4int nOfEvents = run->GetNumberOfEventToBeProcessed();
-  G4double perCent = 10.; // status increment in percent
+  G4double _perCent = 10.; // status increment in percent
 
    
 // Randomizing the impact point of the initial particle gun
@@ -92,7 +92,7 @@ if(PassArgs->GetRnd_Part()==1)
 
 
     // Writing to screen when a certain number out of all the total events asked for are done
-  if(fmod(eventID,double(nOfEvents*perCent*0.01))==0)
+  if(fmod(eventID,double(nOfEvents*_perCent*0.01))==0)
   {
     time_t my_time = time(NULL);
     tm *ltm = localtime(&my_time);
@@ -113,9 +113,7 @@ if(PassArgs->GetRnd_Part()==1)
 
 void MyEventAction::EndOfEventAction(const G4Event*)
 {
-        G4UImanager *UImanager = G4UImanager::GetUIpointer();
     const MyDetectorConstruction *detectorConstruction = static_cast<const MyDetectorConstruction*> (G4RunManager::GetRunManager()->GetUserDetectorConstruction());
-    G4double LYSO_L  = detectorConstruction->GetLYSOL();
     G4double GLUEL  = detectorConstruction->GetGLUEL();
     G4double RESINL  = detectorConstruction->GetRESINL();
     G4double XPOS  = detectorConstruction->GetXPOS();

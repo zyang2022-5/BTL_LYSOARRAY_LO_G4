@@ -36,15 +36,12 @@ void MySteppingAction::UserSteppingAction(const G4Step *step)
     G4StepPoint *preStepPoint = step->GetPreStepPoint();
     G4double TlengthK;
     G4double TimeK;
-    G4VPhysicalVolume *VolK;
     G4ThreeVector TranslVol;
     G4Track *track = step -> GetTrack();
 
-    if(volume == fDetectorVolume)
-        {
+    if (volume == fDetectorVolume) {
         fEventAction->AddLO(1.);
         G4ThreeVector momPhoton = preStepPoint->GetMomentum();
-        G4double wlen = (1.239841939*eV/momPhoton.mag())*1E+03;
     }
 
 

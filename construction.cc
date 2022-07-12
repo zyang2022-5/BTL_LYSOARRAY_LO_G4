@@ -370,7 +370,7 @@ else if (GeomConfig == 2)
     if (GeomConfig == 1) {
         /* FIXME: potential memory leaks here since we create the
          * G4LogicalBorderSurface with `new`, but don't delete the memory
-         * anywhere.  Could potentially be a problem if the geometry is
+         * anywhere. Could potentially be a problem if the geometry is
          * reinitialized many times?. */
         if (ESRtrue==1) {
             new G4LogicalBorderSurface("LYSO_Glue_Border",physLYSO,physWorld,mirrorSurface);
@@ -387,10 +387,10 @@ else if (GeomConfig == 2)
         if (ESRtrue==1) {
             new G4LogicalBorderSurface("LYSO_Glue_Border",physLYSO,physWorld,mirrorSurface);
         }
-        G4LogicalBorderSurface("Glue_Air_Border1",physGlue1,physWorld,groundSurface);
-        G4LogicalBorderSurface("Resin_Air_Border1",physResin1,physWorld,groundSurface);
-        G4LogicalBorderSurface("Glue_LYSO_Border1",physGlue1,physLYSO,groundSurface);
-        G4LogicalBorderSurface("Glue_Resin_Border1",physGlue1,physResin1,groundSurface);
+        new G4LogicalBorderSurface("Glue_Air_Border1",physGlue1,physWorld,groundSurface);
+        new G4LogicalBorderSurface("Resin_Air_Border1",physResin1,physWorld,groundSurface);
+        new G4LogicalBorderSurface("Glue_LYSO_Border1",physGlue1,physLYSO,groundSurface);
+        new G4LogicalBorderSurface("Glue_Resin_Border1",physGlue1,physResin1,groundSurface);
     }
 
 //////////////////////

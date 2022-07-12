@@ -23,7 +23,7 @@ geant4:
 	mkdir -p geant4-build && \
 	mkdir -p geant4-install && \
 	cd geant4-build && \
-	cmake -DCMAKE_INSTALL_PREFIX=../geant4-install .. && \
+	cmake -DGEANT4_INSTALL_DATA=ON -DCMAKE_INSTALL_PREFIX=../geant4-install .. && \
 	make -j4 && \
 	make install
 

@@ -87,6 +87,11 @@ G4cout<< " ### Processing Command line Arguments to the sim : " <<G4endl;
                     LYSOProps[3] = atof(mainargv[j+1]);
                     G4cout<< " ### LYSO_DecayT modified to :"<< LYSOProps[3] <<G4endl;         
                 }
+                else if(strcmp(mainargv[j],"-GeomConfig")==0)
+                {   
+                    GeomConfig = atoi(mainargv[j+1]); 
+                    G4cout<< " ### Geometry Configuration Changed to :"<< GeomConfig <<G4endl;         
+                }
         }
 
     if (Oin == 0 ) {  OutName = DefOutName;   }

@@ -26,6 +26,7 @@ public:
     G4int GetTree_Stepping() const {return MainTrees[2];}
     G4int GetTree_Tracking() const {return MainTrees[3];}
     G4int GetTree_EndOfEvent() const {return MainTrees[4];}
+    G4int GetGeomConfig() const {return GeomConfig;}
 
 private:
 
@@ -40,6 +41,7 @@ private:
     G4double Detection[2]={0.35,1};//Options to modify photon detection
     G4String DefOutName="DefaultOutputName_Run";
     G4int KillSim[4]={0,0,0,0}; // Options on how to kill the simulation {Method(0 = all tracks have been killed, 1= nphotons have been detected at each SiPM, 2= x time has passed, 3= kills all photons after x local time, 4= use all parameters to kill the simulation) ,nphotons, global time, local time...}
+    G4int GeomConfig=1;
 
 };
 

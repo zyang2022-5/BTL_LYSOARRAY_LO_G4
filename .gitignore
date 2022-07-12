@@ -6,6 +6,7 @@
 temp/
 # ignore ALL files in the build directory
 buildSing/
+build/
 *.swp
 geant4-v11.0.2.tar.gz
 geant4-v11.0.2

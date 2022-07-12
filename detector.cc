@@ -1,4 +1,5 @@
 #include "detector.hh"
+#include "util.hh"
 
 
 MySensitiveDetector::MySensitiveDetector(G4String name, MyG4Args* MainArgs) : G4VSensitiveDetector(name)
@@ -32,6 +33,7 @@ MySensitiveDetector::~MySensitiveDetector()
 {}
 G4bool MySensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *ROhist)
 {
+    UNUSED(ROhist);
     G4Track *track = aStep->GetTrack();
     G4double Tlength = track->GetTrackLength();
 
@@ -41,6 +43,7 @@ G4bool MySensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *ROhis
     
     G4StepPoint *preStepPoint = aStep->GetPreStepPoint();
     G4StepPoint *postStepPoint = aStep->GetPostStepPoint();
+    UNUSED(postStepPoint);
 
     G4ThreeVector posPhoton = preStepPoint->GetPosition();
     G4ThreeVector momPhoton = preStepPoint->GetMomentum();
@@ -50,13 +53,13 @@ G4bool MySensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *ROhis
 
 
     const G4VTouchable *touchable = aStep->GetPreStepPoint()->GetTouchable();
-    G4int copyNo=touchable ->GetCopyNumber(); // print unique identifier of the volume that detects the photon, copy number of the volume
 
     G4VPhysicalVolume *physVol=touchable->GetVolume();
     G4ThreeVector posDetector = physVol ->GetTranslation(); // Translated position of the volume
 
     G4double timeG=preStepPoint->GetGlobalTime();// time restarted every time an event starts
     G4double timeL=preStepPoint->GetLocalTime(); // starts counting when the particle is created. Differece in case of decay.
+    UNUSED(timeL);
     G4int evt = G4RunManager::GetRunManager()->GetCurrentEvent()->GetEventID();
 
     // Fill columns of output file

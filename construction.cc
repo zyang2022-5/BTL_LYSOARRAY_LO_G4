@@ -69,23 +69,11 @@ void MyDetectorConstruction::DefineMaterial() // function to define a single tim
     scintillator->AddMaterial(prelude,(100-Cecont*100)*perCent);
     scintillator->AddElement(nist->FindOrBuildElement("Ce"), (Cecont*100)*perCent);
 
-    G4MaterialPropertiesTable *mpt = new G4MaterialPropertiesTable();
-
     const G4int num = 32;
     G4double LYSO_ene[num]   =  {1.5*eV, 2.*eV ,  2.05*eV ,2.1*eV , 2.15*eV ,2.2*eV , 2.25*eV, 2.3*eV,  2.35*eV ,2.4*eV , 2.45*eV,2.5*eV , 2.55*eV ,2.6*eV , 2.65*eV, 2.7*eV , 2.75*eV, 2.8*eV , 2.85*eV ,2.9*eV ,2.95*eV ,3.*eV ,  3.05*eV, 3.1*eV , 3.15*eV ,3.2*eV , 3.25*eV, 3.3*eV , 3.35*eV ,3.4*eV , 3.45*eV, 5*eV};
 
-    G4double LYSO_eneMin[num]   =  {1.5*eV, 2.17546938*eV, 2.23475776*eV, 2.29430737*eV, 2.35411993*eV, 2.4141972*eV ,
-       2.47454094*eV, 2.53515292*eV, 2.59603493*eV, 2.65718878*eV, 2.71861631*eV,
-       2.78031934*eV, 2.84229974*eV, 2.90455938*eV, 2.96710015*eV, 3.02992397*eV,
-       3.09303275*eV, 3.15642844*eV, 3.220113  *eV, 3.28408842*eV, 3.34835668*eV,
-       3.4129198 *eV, 3.47777982*eV, 3.54293879*eV, 3.60839878*eV, 3.67416188*eV,
-       3.74023021*eV, 3.80660588*eV, 3.87329106*eV, 3.9402879 *eV, 4.00759861*eV, 5*eV};
-
     G4double LYSO_fast[num]  =  {0.0005, 0.00547041 , 0.00742609 , 0.00928865 , 0.01118718,  0.01389001,  0.01719669,  0.0213541,   0.02886363,  0.04151549,  0.06495384,  0.10380228,  0.16436757,  0.24529401,  0.34573305,  0.45515023,  0.56162549,  0.66179016,  0.77098452,  0.88530138,  0.97313946,  0.99724079,  0.97220698,  0.85723693,  0.65925813,  0.41169552,  0.13144243,  0.02564552,  0.01029099,  0.0040628,  0.00198485 ,0.0002};
     
-    G4double LYSO_absv[num]   =  {3100*mm ,3043.12030366*mm, 2910.82651214*mm, 2784.92853358*mm, 2673.18826225*mm, 2558.74171563*mm, 2434.67018908*mm, 2309.29098197*mm, 2174.98328362*mm, 2040.58925841*mm, 1905.69079561*mm, 1770.63093617*mm, 1634.75136156*mm, 1500.22714282*mm, 1368.97382295*mm, 1237.431274*mm, 1105.49166167*mm,  974.3012427*mm,   843.12436693*mm,  707.75698288*mm , 574.16698216*mm,  445.00515572*mm,  317.14663428*mm,  158.48142788*mm,   49.44703917*mm, 13.05239972*mm,    5.72851208*mm,    3.75039458*mm,    3.30181138*mm,    3.13218799*mm,   3.04577151*mm, 3.*mm};
-    G4double LYSO_absvm[num]   =  {3100*m ,3043.12030366*m, 2910.82651214*m, 2784.92853358*m, 2673.18826225*m, 2558.74171563*m, 2434.67018908*m, 2309.29098197*m, 2174.98328362*m, 2040.58925841*m, 1905.69079561*m, 1770.63093617*m, 1634.75136156*m, 1500.22714282*m, 1368.97382295*m, 1237.431274*m, 1105.49166167*m,  974.3012427*m,   843.12436693*m,  707.75698288*m , 574.16698216*m,  445.00515572*m,  317.14663428*m,  158.48142788*m,   49.44703917*m, 13.05239972*m,    5.72851208*m,    3.75039458*m,    3.30181138*m,    3.13218799*m,   3.04577151*m, 3.*m};
-
     G4double LYSO_absv2[num]   =  {3100.12030366*mm,3043.12030366*mm, 2910.82651214*mm, 2784.92853358*mm, 2673.18826225*mm,
        2558.74171563*mm, 2434.67018908*mm, 2309.29098197*mm, 2174.98328362*mm,
        2040.58925841*mm, 1905.69079561*mm, 1770.63093617*mm, 1634.75136156*mm,
@@ -201,23 +189,6 @@ G4double energymirror0[34] ={1.387638658*eV,1.414514446*eV,1.442584622*eV,1.4756
 ,0.983870632,0.983629712,0.984087367,0.974020118,0.971960262,0.972658815,0.977535487,0.975813698,0.9472273,
 0.803353217, 0.630142605,0.488159981,0.333316034,0.174725627,0.127884496};
 
-
-    G4double energymirror[34] = {3.422984584*eV,3.303164908*eV,3.262160277*eV,3.235720977*eV,3.213681724*eV,3.198826301*eV,3.10551606*eV,2.962139009*eV,2.841937404*eV,2.726243339*eV,2.620592548*eV,2.522802173*eV,2.42373704*eV,2.344473291*eV,2.265172322*eV,2.191060487*eV,2.119145672*eV,2.056695744*eV,1.994518826*eV,1.952071279*eV,1.883017892*eV,1.831519006*eV,
-1.78129609*eV,1.736533665*eV,1.692642175*eV,1.650914734*eV,1.611195145*eV,1.57666106*eV,1.540077409*eV,1.511484607*eV,1.475671466*eV,1.442584622*eV,1.414514446*eV,1.387638658*eV};
-    G4double reflectivity[34] ={0.127884496,0.174725627,0.333316034,0.488159981,0.630142605,0.803353217, 0.9472273,0.975813698,0.977535487,0.972658815,0.971960262,0.974020118,0.984087367,0.983629712,0.983870632,0.981927024,0.987184464,0.986816093,0.984215926,0.982715392,0.98714133,0.986066277,
-0.978334456,0.973183199,0.981807802,0.992861287,0.98221903,0.959392257,0.795137568,0.580529881,0.409637463,0.291823064,0.238504637,0.240441406
-};
-
-    G4double energymirror3[8] = {1.39*eV,1.47*eV,1.57*eV,1.65*eV,2.4*eV,3.1*eV,3.26*eV,3.420*eV};   // 
-    G4double reflectivity3[8] ={0.24, 0.41,0.99, 0.99, 0.99, 0.96, 0.33, 0.13};  
-
-    G4double energymirror2[2] = {1.239841939*eV/0.9,1.239841939*eV/0.2};   // 
-    G4double pp[2] = {2.038*eV, 4.144*eV};
-    G4double reflectivity2[2] ={1., 1.};  
-    G4double specularlobe[2] = {0.3, 0.3};
-    G4double specularspike[2] = {0.2, 0.2};
-    G4double backscatter[2] = {0.1, 0.1};
-
     G4MaterialPropertiesTable *mptMirror = new G4MaterialPropertiesTable();
     mptMirror->AddProperty("REFLECTIVITY", energymirror0, reflectivity0,34); // fraction of the light reflected (all=1)
     //mptMirror->AddProperty("SPECULARLOBECONSTANT", pp, specularlobe,2); 
@@ -244,8 +215,8 @@ G4double energymirror0[34] ={1.387638658*eV,1.414514446*eV,1.442584622*eV,1.4756
     SurfFR4 -> SetModel(unified);
     SurfFR4 -> SetSigmaAlpha(sigma_alpha);
 
-    G4double energyFR4S[2] = {1.239841939*eV/0.9,1.239841939*eV/0.2};   // 
-    G4double reflFR4S[2] ={0.5, 0.5};  
+    //G4double energyFR4S[2] = {1.239841939*eV/0.9,1.239841939*eV/0.2};
+    //G4double reflFR4S[2] ={0.5, 0.5};  
     G4MaterialPropertiesTable *mptFR4S = new G4MaterialPropertiesTable();
     //mptFR4S->AddProperty("TRANSMITTANCE", energyFR4S, reflFR4S,2); // fraction of the light reflected (all=1)
     SurfFR4 -> SetMaterialPropertiesTable(mptFR4S);
@@ -262,8 +233,8 @@ G4double energymirror0[34] ={1.387638658*eV,1.414514446*eV,1.442584622*eV,1.4756
     groundSurface -> SetFinish(polished);
     groundSurface -> SetModel(unified);
     groundSurface -> SetSigmaAlpha(sigma_alpha2);
-    G4double energyground[2] = {1.239841939*eV/0.9,1.239841939*eV/0.2};   // 
-    G4double reflground[2] ={0.88, 0.88};  
+    //G4double energyground[2] = {1.239841939*eV/0.9,1.239841939*eV/0.2};
+    //G4double reflground[2] ={0.88, 0.88};  
     G4MaterialPropertiesTable *mptground = new G4MaterialPropertiesTable();
     //mptground->AddProperty("TRANSMITTANCE", energyground, reflground,2); // fraction of the light reflected (all=1)
     groundSurface -> SetMaterialPropertiesTable(mptground);
@@ -392,33 +363,35 @@ else if (GeomConfig == 2)
     physDetector = new G4PVPlacement(0,G4ThreeVector(XposTol*mm,YposTol*mm,+1*(+LYSO_L*mm+RESIN_L*mm*2+2*GLUE_L*mm+DET_L)),logicDetector,"physDetector",logicWorld,false,0,true); 
     physFR41 = new G4PVPlacement    (0,G4ThreeVector(XposTol*mm,YposTol*mm+(RESIN_W-0.5*mm-DET_T),+1*(+LYSO_L*mm+GLUE_L*mm*2+2*(RESIN_L*mm+DET_L)+FR4_L)),logicFR4,"physResin1",logicWorld,false,0,true); 
 }
-//////////////////////
-// BORDER SURFACE //
-//////////////////////
-if(GeomConfig == 1){
-    if(ESRtrue==1){
-    G4LogicalBorderSurface *LYSO_Air_Border = new G4LogicalBorderSurface("LYSO_Glue_Border",physLYSO,physWorld,mirrorSurface);   
-    }
-    G4LogicalBorderSurface *Glue_Air_Border1 = new G4LogicalBorderSurface("Glue_Air_Border1",physGlue1,physWorld,groundSurface);   
-    G4LogicalBorderSurface *Glue_Air_Border2 = new G4LogicalBorderSurface("Glue_Air_Border2",physGlue2,physWorld,groundSurface);  
-    G4LogicalBorderSurface *Resin_Air_Border1 = new G4LogicalBorderSurface("Glue_Air_Border1",physResin1,physWorld,groundSurface);   
-    G4LogicalBorderSurface *Resin_Air_Border2 = new G4LogicalBorderSurface("Glue_Air_Border1",physResin2,physWorld,groundSurface);   
-    G4LogicalBorderSurface *Glue_LYSO_Border1 = new G4LogicalBorderSurface("Glue_LYSO_Border1",physGlue1,physLYSO,groundSurface);   
-    G4LogicalBorderSurface *Glue_LYSO_Border2 = new G4LogicalBorderSurface("Glue_LYSO_Border2",physGlue2,physLYSO,groundSurface);   
-    G4LogicalBorderSurface *Glue_Resin_Border1 = new G4LogicalBorderSurface("Glue_LYSO_Border1",physGlue1,physResin1,groundSurface);   
-    G4LogicalBorderSurface *Glue_Resin_Border2 = new G4LogicalBorderSurface("Glue_LYSO_Border2",physGlue2,physResin2,groundSurface); 
-}
-else if (GeomConfig == 2)
-{
-    if(ESRtrue==1){
-    G4LogicalBorderSurface *LYSO_Air_Border = new G4LogicalBorderSurface("LYSO_Glue_Border",physLYSO,physWorld,mirrorSurface);   
-    }
-    G4LogicalBorderSurface *Glue_Air_Border1 = new G4LogicalBorderSurface("Glue_Air_Border1",physGlue1,physWorld,groundSurface);   
-    G4LogicalBorderSurface *Resin_Air_Border1 = new G4LogicalBorderSurface("Glue_Air_Border1",physResin1,physWorld,groundSurface);   
-    G4LogicalBorderSurface *Glue_LYSO_Border1 = new G4LogicalBorderSurface("Glue_LYSO_Border1",physGlue1,physLYSO,groundSurface);   
-    G4LogicalBorderSurface *Glue_Resin_Border1 = new G4LogicalBorderSurface("Glue_LYSO_Border1",physGlue1,physResin1,groundSurface);   
 
-}  
+    //////////////////////
+    // BORDER SURFACE //
+    //////////////////////
+    if (GeomConfig == 1) {
+        /* FIXME: potential memory leaks here since we create the
+         * G4LogicalBorderSurface with `new`, but don't delete the memory
+         * anywhere. Could potentially be a problem if the geometry is
+         * reinitialized many times?. */
+        if (ESRtrue==1) {
+            new G4LogicalBorderSurface("LYSO_Glue_Border",physLYSO,physWorld,mirrorSurface);
+        }
+        new G4LogicalBorderSurface("Glue_Air_Border1",physGlue1,physWorld,groundSurface);
+        new G4LogicalBorderSurface("Glue_Air_Border2",physGlue2,physWorld,groundSurface);
+        new G4LogicalBorderSurface("Resin_Air_Border1",physResin1,physWorld,groundSurface);
+        new G4LogicalBorderSurface("Resin_Air_Border1",physResin2,physWorld,groundSurface);
+        new G4LogicalBorderSurface("Glue_LYSO_Border1",physGlue1,physLYSO,groundSurface);
+        new G4LogicalBorderSurface("Glue_LYSO_Border2",physGlue2,physLYSO,groundSurface);
+        new G4LogicalBorderSurface("Glue_Resin_Border1",physGlue1,physResin1,groundSurface);
+        new G4LogicalBorderSurface("Glue_Resin_Border2",physGlue2,physResin2,groundSurface);
+    } else if (GeomConfig == 2) {
+        if (ESRtrue==1) {
+            new G4LogicalBorderSurface("LYSO_Glue_Border",physLYSO,physWorld,mirrorSurface);
+        }
+        new G4LogicalBorderSurface("Glue_Air_Border1",physGlue1,physWorld,groundSurface);
+        new G4LogicalBorderSurface("Resin_Air_Border1",physResin1,physWorld,groundSurface);
+        new G4LogicalBorderSurface("Glue_LYSO_Border1",physGlue1,physLYSO,groundSurface);
+        new G4LogicalBorderSurface("Glue_Resin_Border1",physGlue1,physResin1,groundSurface);
+    }
 
 //////////////////////
 //  //

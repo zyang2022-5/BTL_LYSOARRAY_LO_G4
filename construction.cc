@@ -368,6 +368,10 @@ else if (GeomConfig == 2)
     // BORDER SURFACE //
     //////////////////////
     if (GeomConfig == 1) {
+        /* FIXME: potential memory leaks here since we create the
+         * G4LogicalBorderSurface with `new`, but don't delete the memory
+         * anywhere.  Could potentially be a problem if the geometry is
+         * reinitialized many times?. */
         if (ESRtrue==1) {
             new G4LogicalBorderSurface("LYSO_Glue_Border",physLYSO,physWorld,mirrorSurface);
         }

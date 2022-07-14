@@ -2,9 +2,15 @@
 
 MyRunAction :: MyRunAction(G4String OutName)
 { // Constructor
-    
+
+ /*   file_name = "default";
+    fMessenger = new G4GenericMessenger(this, "/analysis/", "name stuff");
+    fMessenger->DeclareProperty("filename", file_name, "name of the output root file");
+
     // Saving output name from args
     OutputName=OutName;
+*/
+    file_name = OutName;	
 
     G4AnalysisManager *man = G4AnalysisManager::Instance();
 
@@ -85,6 +91,12 @@ void MyRunAction::BeginOfRunAction(const G4Run* run)
     G4int runID = run->GetRunID();
     std::stringstream strRunID;
     strRunID << runID;
+
+ //   file_name = "default";
+    fMessenger = new G4GenericMessenger(this, "/analysis/", "name stuff");
+    fMessenger->DeclareProperty("filename", file_name, "name of the output root file");
+
+    OutputName=file_name;
 
     // Creation of Output file
     man->OpenFile("./Results/"+OutputName+strRunID.str()+".root");

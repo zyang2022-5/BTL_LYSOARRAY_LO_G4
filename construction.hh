@@ -39,6 +39,8 @@ public:
     G4double GetXPOS() const {return XposTol;}
     G4double GetYPOS() const {return YposTol;}
     G4double GetGC() const {return GeomConfig;}
+    void Reset_LYSO();
+
 
     //static void RandGLUEL()  { GLUE_L=0.15*mm+0.1*mm*G4UniformRand();}
     /*G4AnyMethod RandGLUEL()  { GLUE_L=0.15*mm+0.1*mm*G4UniformRand();return GLUE_L}
@@ -51,9 +53,9 @@ private: // it is not accessed from outside
     G4LogicalVolume *logicDetector; // We need to refer to this volume. Needs to be outside of the construction.
 
     G4int nCols, nRows, GeomConfig, ESRtrue;
-    G4double LYSO_L, LYSO_YIELD, LYSO_SCALERESOLUTION, Vovcon, LYSO_thick, perincr;
+    G4double LYSO_L, LYSO_YIELD, LYSO_SCALERESOLUTION, Vovcon, LYSO_thick, perincr, decay_time;
     virtual void ConstructSDandField(); // SD==Sensitive Detector
-    G4GenericMessenger *fMessenger,*fMessenger_thick, *fMessenger_SR, *fMessenger_YIELD, *fMessenger_vov, *fMessenger_GlueL, *fMessenger_ResinL, *fMessenger_XPos, *fMessenger_YPos, *fMessenger_GC, *fMessenger_pi, *fMessenger_ESR;
+    G4GenericMessenger *fMessenger,*fMessenger_thick, *fMessenger_SR, *fMessenger_YIELD, *fMessenger_vov, *fMessenger_GlueL, *fMessenger_ResinL, *fMessenger_XPos, *fMessenger_YPos, *fMessenger_GC, *fMessenger_pi, *fMessenger_ESR, *fMessenger_reset_LYSO, *fMessenger_decay_time;
 
     G4Box *solidWorld, *solidDetector, *solidGlue, *solidResin, *solidFR4;
     G4UnionSolid *solidLYSO;
@@ -65,7 +67,7 @@ private: // it is not accessed from outside
     G4Material *worldMat, *SiO2, *H2O, *Aerogel, *prelude, *scintillator,*NaI, *EPOXY, *RTV3145;
     G4Element *C,*Na,*I,*H,*O,*Si,*N,*Al;
 
-    G4OpticalSurface *mirrorSurface, *groundSurface, *SurfFR4;
+    G4OpticalSurface *mirrorSurface, *groundSurface, *SurfFR4, *Tyvek_Surface;
     G4UserLimits* fStepLimit;  
     
     G4LogicalVolume *fScoringVolume , *fDetectorVolume;

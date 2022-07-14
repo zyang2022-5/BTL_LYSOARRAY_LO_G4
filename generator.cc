@@ -6,15 +6,15 @@ MyPrimaryGenerator :: MyPrimaryGenerator()
 
     // Add to constructor what we want to use in macro files or modify per event or it will be overwritten 
     G4ParticleTable *particleTable = G4ParticleTable::GetParticleTable();
-    G4String particleName ="gamma";
+    G4String particleName ="opticalphoton";
     G4ParticleDefinition *particle = particleTable->FindParticle(particleName);
     
 
-        G4ThreeVector pos(0.*m,0.1*m,0.*m);
-        G4ThreeVector mom(0.,-1.,0.);
+        G4ThreeVector pos(0.*mm,0.*mm,470*mm);
+        G4ThreeVector mom(0.,0.,1.);
         fParticleGun->SetParticlePosition (pos);
         fParticleGun->SetParticleMomentumDirection (mom);
-        fParticleGun->SetParticleMomentum (511. *keV);
+        fParticleGun->SetParticleMomentum (3.*eV);
         fParticleGun->SetParticleDefinition(particle);
 
 }

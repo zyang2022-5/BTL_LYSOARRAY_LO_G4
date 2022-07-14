@@ -35,7 +35,7 @@ int main(int argc, char** argv) /* argc, argv are the argument passed to the sim
                 }
         }
 
-    if (Oin == 0 ) {  OutName = "5000 entries";   }
+    if (Oin == 0 ) {  OutName = "WhateverTestname";   }
 
     runManager -> SetUserInitialization(new MyActionInitialization(OutName)); /*Define actions*/
 

@@ -64,7 +64,7 @@ void MyEventAction::BeginOfEventAction(const G4Event *anEvent)
 
     G4cout<< "Data from construction: "<< LYSO_L << " " << LYSO_T << " " << GeomConfig << G4endl;
     
-
+/*
     // Change of gun position between events depending on geometry (LYSO bar/tile)
     if (GeomConfig == 1){
         GenX=(-LYSO_T+LYSO_T*2*G4UniformRand())/1000.;
@@ -85,7 +85,7 @@ void MyEventAction::BeginOfEventAction(const G4Event *anEvent)
         G4cout<< command << G4endl;
         UImanager->ApplyCommand(command); 
     }
-
+*/
 
 // Write down data to screen if we are at a certain percentage of the total number of events
   if(fmod(eventID,double(nOfEvents*perCent*0.01))==0)
@@ -117,7 +117,7 @@ void MyEventAction::EndOfEventAction(const G4Event*)
     
     // Store and write (only is there was photon creation in the LYSO) data and estimated data for the event
     G4int evt = G4RunManager::GetRunManager()->GetCurrentEvent()->GetEventID();
-    if(fEdep>0){
+    if(fEdep>=0){
     G4cout<< "#####################" << G4endl;
     G4cout<< "#####################" << G4endl;
     G4cout<< "Event Nº: " << evt << G4endl;

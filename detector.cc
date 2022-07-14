@@ -69,7 +69,8 @@ G4bool MySensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *ROhis
     man->FillNtupleDColumn(0, 5,  Tlength/mm);
     man->AddNtupleRow(0);
 
-    G4double PDElim =PDE->Value(wlen);
+//    G4double PDElim =PDE->Value(wlen);
+    G4double PDElim = 100.;
     if (G4UniformRand() < PDElim){
         man->FillNtupleIColumn(1, 0,  evt);
         man->FillNtupleDColumn(1, 1,  posPhoton[0]/mm);// D==double

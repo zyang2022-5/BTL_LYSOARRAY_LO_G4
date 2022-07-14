@@ -1,1 +1,92 @@
-/run/beamOn 15
+/run/beamOn 50
+#
+###YIELD ## DECAY TIME
+## 1/2  ## 1
+#/detector/LYSO_YIELD 20000.0
+#/detector/decay_time 39.1
+#/detector/reset_LYSO
+#/run/reinitializeGeometry
+#/run/physicsModified
+#/analysis/filename _1_over_2yield_1decay
+#/run/beamOn 3000
+#
+## 2    ## 1
+#/detector/LYSO_YIELD 80000.0
+#/detector/decay_time 39.1
+#/detector/reset_LYSO
+#/run/reinitializeGeometry
+#/run/physicsModified
+#/analysis/filename _2yield_1decay
+#/run/beamOn 3000
+#
+## 1    ## 1/2
+#/detector/LYSO_YIELD 40000.0
+#/detector/decay_time 19.55
+#/detector/reset_LYSO
+#/run/reinitializeGeometry
+#/run/physicsModified
+#/analysis/filename _1_yield_1_over_2decay
+#/run/beamOn 3000
+#
+## 1    ## 2
+#/detector/LYSO_YIELD 40000.0
+#/detector/decay_time 78.2
+#/detector/reset_LYSO
+#/run/reinitializeGeometry
+#/run/physicsModified
+#/analysis/filename _1_yield_2decay
+#/run/beamOn 3000
+#
+## 1/4  ## 4
+#/detector/LYSO_YIELD 10000.0
+#/detector/decay_time 156.4
+#/detector/reset_LYSO
+#/run/reinitializeGeometry
+#/run/physicsModified
+#/analysis/filename _1_over_4yield_4decay
+#/run/beamOn 3000
+#
+## 3    ## 3
+#/detector/LYSO_YIELD 120000.0
+#/detector/decay_time 117.3
+#/detector/reset_LYSO
+#/run/reinitializeGeometry
+#/run/physicsModified
+#/analysis/filename _3yield_3decay
+#/run/beamOn 3000
+#
+## 2.5  ## 1/8
+#/detector/LYSO_YIELD 100000.0
+#/detector/decay_time 4.8875
+#/detector/reset_LYSO
+#/run/reinitializeGeometry
+#/run/physicsModified
+#/analysis/filename _2_dot_5yield_1_over_8decay
+#/run/beamOn 3000
+#
+## 1/6  ## 1/3
+#/detector/LYSO_YIELD 6666.7
+#/detector/decay_time 13.0333
+#/detector/reset_LYSO
+#/run/reinitializeGeometry
+#/run/physicsModified
+#/analysis/filename _1_over_6yield_1_over_3decay
+#/run/beamOn 3000
+#
+## 1/2  ## 6
+#/detector/LYSO_YIELD 20000.0
+#/detector/decay_time 234.6
+#/detector/reset_LYSO
+#/run/reinitializeGeometry
+#/run/physicsModified
+#/analysis/filename _1_over_2yield_6decay
+#/run/beamOn 3000
+#
+## 4    ## 1/7
+#/detector/LYSO_YIELD 160000.0
+#/detector/decay_time 5.5857
+#/detector/reset_LYSO
+#/run/reinitializeGeometry
+#/run/physicsModified
+#/analysis/filename _4yield_1_over_7decay
+#/run/beamOn 3000

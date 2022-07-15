@@ -1,6 +1,5 @@
 #include "tracking.hh"
 
-
 MyTrackingAction::MyTrackingAction(MyEventAction *eventAction,MyG4Args *MainArgs)
 {
     PassArgs=MainArgs;
@@ -30,7 +29,7 @@ void MyTrackingAction::PostUserTrackingAction(const G4Track*)
          size_t nmbSecTracks = (*secTracks).size();       
 
          for (size_t i = 0; i < nmbSecTracks; i++) { 
-            if ((*secTracks)[i]->GetDefinition() == G4Gamma::Definition()) {
+            if ((*secTracks)[i]->GetDefinition() == G4OpticalPhoton::Definition()) {
                 trPhCount++;
                 fEventAction->AddPh(1.);
             }

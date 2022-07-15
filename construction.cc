@@ -161,8 +161,8 @@ G4MaterialPropertiesTable *mptScint= new G4MaterialPropertiesTable();
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
  G4Material* FR4 = new G4Material("FR4" , 1.86*g/cm3, 2);
- FR4->AddMaterial(EPOXY, 0.472*perCent);
- FR4->AddMaterial(SiO2, 0.528*perCent);
+ FR4->AddMaterial(EPOXY, 47.2*perCent);
+ FR4->AddMaterial(SiO2, 52.8*perCent);
     //G4MaterialPropertiesTable *mptFR4 = new G4MaterialPropertiesTable();
     //mptFR4->AddProperty("RINDEX",    energySiO2,    rindexSiO2,     numEP); 
     FR4-> SetMaterialPropertiesTable(mptSiO2);

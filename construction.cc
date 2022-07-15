@@ -57,12 +57,12 @@ void MyDetectorConstruction::DefineMaterial() // function to define a single tim
 
     // LYSO definition:  https://github.com/jgpavez/lysoDetector/blob/master/src/lysoDetectorConstruction.cc
 
-    G4double prelude_density = 7.15*g/cm3;
+    G4double prelude_density = 7.125*g/cm3;
     prelude = new G4Material("prelude", prelude_density, 4);
-    prelude->AddElement(nist->FindOrBuildElement("Lu"),66.0891838*perCent);
-    prelude->AddElement(nist->FindOrBuildElement("Si"),6.6303495*perCent);
-    prelude->AddElement(nist->FindOrBuildElement("O"), 18.8850049*perCent);
-    prelude->AddElement(nist->FindOrBuildElement("Y"), 8.3954618*perCent);
+    prelude->AddElement(nist->FindOrBuildElement("Lu"),71.96*perCent);
+    prelude->AddElement(nist->FindOrBuildElement("Si"),6.35*perCent);
+    prelude->AddElement(nist->FindOrBuildElement("O"), 18.08*perCent);
+    prelude->AddElement(nist->FindOrBuildElement("Y"), 3.62*perCent);
     
     G4double Cecont =0.0019;
     scintillator = new G4Material("scintillator", prelude_density ,2);

@@ -64,7 +64,7 @@ int main(int argc, char** argv) /* argc, argv are the argument passed to the sim
 ///////* Vis -> Visualizer*//////
 
     G4UImanager *UImanager = G4UImanager::GetUIpointer();
-    if(argc == 1)
+    if(ArgInp->GetVis() ==1)
     {
         UImanager->ApplyCommand("/control/execute vis.mac");
         ui->SessionStart();     ///////* Vis -> Visualizer*//////

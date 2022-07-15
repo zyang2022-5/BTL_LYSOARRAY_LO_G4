@@ -18,6 +18,7 @@ G4cout<< " ### Processing Command line Arguments to the sim : " <<G4endl;
                 }
                 else if(strcmp(mainargv[j],"-mn")==0)
                 {   
+                    VisTrue=0;
                     MacName = mainargv[j+1];
                     nrep =  atoi(mainargv[j+2]);     
                     G4cout<< " ### Set Run Macro name to : " << MacName <<G4endl;         
@@ -25,6 +26,7 @@ G4cout<< " ### Processing Command line Arguments to the sim : " <<G4endl;
                 }
                 else if(strcmp(mainargv[j],"-m")==0)
                 {   
+                    VisTrue=0;
                     MacName = mainargv[j+1];
                     nrep =  1;      
                     G4cout<< " ### Set Run Macro name to : " << MacName <<G4endl;         

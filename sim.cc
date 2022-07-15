@@ -54,7 +54,7 @@ int main(int argc, char** argv) /* argc, argv are the argument passed to the sim
 ///////* Vis -> Visualizer*//////
     G4UIExecutive *ui = 0; // ui initialization
     // Show *user interface only if we do not use a macro, or it will be inefficient    
-    if (argc ==1) // argc only one option introduced
+    if (ArgInp->GetVis() ==1) // argc only one option introduced
     {
         ui = new G4UIExecutive(argc,argv); // ui definition-declaration
     }   

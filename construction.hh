@@ -49,8 +49,8 @@ private: // it is not accessed from outside
     // Default Values
     G4int nCols, nRows, GeomConfig, ESRtrue;
     G4double LYSO_L, LYSO_YIELD, LYSO_SCALERESOLUTION, Vovcon, LYSO_thick, perincr;
-   G4double GLUE_L, RESIN_L, XposTol, YposTol, LYSO_SC1, LYSO_RT1;
-
+   G4double GLUE_L, RESIN_L, XposTol, YposTol,XposTol2, YposTol2, XYTol, LYSO_SC1, LYSO_RT1, RESIN_W, RESIN_LNOM, RESIN_LTol;
+    
     // Messengers
     G4GenericMessenger *fMessenger,*fMessenger_thick, *fMessenger_SR, *fMessenger_YIELD, *fMessenger_vov, *fMessenger_GlueL, *fMessenger_ResinL, *fMessenger_XPos, *fMessenger_YPos, *fMessenger_GC, *fMessenger_pi, *fMessenger_ESR, *fMessenger_SR1, *fMessenger_RT1;
 
@@ -58,11 +58,15 @@ private: // it is not accessed from outside
     G4Box *solidWorld, *solidDetector, *solidGlue, *solidResin, *solidFR4;
     G4UnionSolid *solidLYSO;
 
+    G4SubtractionSolid *Resin_Sub, *LYSOCover_Sub;
+
+    G4UnionSolid *LYSOAll_Add;
+
     G4LogicalVolume *logicDetector; // We need to refer to this volume. Needs to be outside of the construction.
-    G4LogicalVolume *logicWorld, *logicLYSO, *logicGlue, *logicResin, *logicResin_Sub, *logicFR4;
+    G4LogicalVolume *logicWorld, *logicLYSO, *logicGlue, *logicResin, *logicResin_Sub, *logicFR4, *logicLYSOCover;
     G4LogicalVolume *fScoringVolume , *fDetectorVolume;
 
-    G4VPhysicalVolume *physWorld, *physLYSO, *physDetector, *physGlue1, *physGlue2, *physResin1, *physResin2, *physFR41, *physFR42;
+    G4VPhysicalVolume *physWorld, *physLYSO, *physDetector, *physGlue1, *physGlue2, *physResin1, *physResin2, *physFR41, *physFR42, *physLYSOCover;
 
     // Materials
     G4Material *worldMat, *SiO2, *H2O, *Aerogel, *prelude, *scintillator,*NaI, *EPOXY, *RTV3145;

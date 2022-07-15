@@ -250,13 +250,13 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct()
     G4double yWorld = 0.1*m;    yWorld=yWorld/2.;
     G4double zWorld = 0.1*m;    zWorld=zWorld/2.;
     G4double DET_L = 0.3*mm;    DET_L=DET_L/2.;    
-    G4double RESIN_W =6.5*mm;   RESIN_W=RESIN_W/2.;
-    G4double RESIN_T =3.1*mm;RESIN_T=RESIN_T/2.;
+    G4double RESIN_H =6.5*mm;   RESIN_H=RESIN_H/2.;
+    //G4double RESIN_W =3.1*mm;RESIN_W=RESIN_W/2.;
     G4double FR4_L =0.8/2.*mm;     //FR4_L=FR4_L/2.;
     G4double DET_T =3.;DET_T=DET_T/2.;
 
     solidWorld = new G4Box("solidWorld", xWorld, yWorld, zWorld);
-    if(GeomConfig==1){
+    if(GeomConfig==1 || GeomConfig==3){
         G4Trap* trapLYSO = new G4Trap("trapLYSO",       //G4String& pName,
                                 LYSO_L/2.*mm,0.,   //G4double pDz, G4double pTheta,
                                 0., LYSO_thick*mm,      //G4double pPhi, G4double pDy1,
@@ -269,7 +269,7 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct()
         rotTrap.rotateY(M_PI*rad);
         G4Transform3D transformTrap(rotTrap, positionTrap);
         solidLYSO = new G4UnionSolid("solidLYSO", trapLYSO, trapLYSO, transformTrap);
-    solidGlue = new G4Box("solidGlue", DET_T*mm, DET_T*mm+0.2*mm*G4UniformRand(), GLUE_L*mm);
+    solidGlue = new G4Box("solidGlue", RESIN_W*mm+0.2*mm*G4UniformRand(), LYSO_thick*mm+0.194*mm+0.2*mm*G4UniformRand(), GLUE_L*mm);
     }
     else if (GeomConfig==2)
     {
@@ -292,22 +292,52 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct()
         rotTrap.rotateY(M_PI*rad);
         G4Transform3D transformTrap(rotTrap, positionTrap);
         solidLYSO = new G4UnionSolid("solidLYSO", trapLYSO1, trapLYSO2, transformTrap); 
-    solidGlue = new G4Box("solidGlue", RESIN_T*mm, RESIN_W*mm+0.2*mm*G4UniformRand(), GLUE_L*mm);
+    solidGlue = new G4Box("solidGlue", RESIN_W*mm, RESIN_H*mm+0.2*mm*G4UniformRand(), GLUE_L*mm);
     }
 
 
-    solidResin = new G4Box("solidResin", RESIN_T*mm, RESIN_W*mm, RESIN_L*mm);
+    solidResin = new G4Box("solidResin", RESIN_W*mm, RESIN_H*mm, RESIN_L*mm);
 
     solidDetector = new G4Box("solidDetector", DET_T*mm, DET_T*mm, DET_L);
 
-    G4ThreeVector position1(0, +0.5*mm+DET_T-RESIN_W, RESIN_L*mm);
+    //G4ThreeVector position1(0, +0.5*mm+DET_T-RESIN_H, RESIN_L*mm);
     G4RotationMatrix rotm  = G4RotationMatrix();
-    G4Transform3D transform(rotm, position1);
+    //G4Transform3D transform(rotm, position1);
+    G4Transform3D tr = G4Translate3D(0, +0.5*mm+DET_T-RESIN_H, RESIN_L*mm) * G4Rotate3D(rotm) ;
     //G4Transform3D tr1 = G4Transform3D(rotm,position1);
-    G4Box* box = new G4Box("Box_1",RESIN_T*mm, RESIN_W*mm, RESIN_L*mm+DET_L);
-    G4SubtractionSolid* Resin_Sub =new G4SubtractionSolid("Resin_Sub", box, solidDetector, transform);
+    G4Box* box = new G4Box("Box_1",RESIN_W*mm, RESIN_H*mm, RESIN_L*mm+DET_L);
+G4int nSiPM=16;
+if(GeomConfig==1 || GeomConfig==2 ){
+    Resin_Sub =new G4SubtractionSolid("Resin_Sub", box, solidDetector, tr);
+} else if (GeomConfig==3){
+    tr = G4Translate3D(-RESIN_W+DET_T+0.194*mm, +0.5*mm+DET_T-RESIN_H, RESIN_L*mm) * G4Rotate3D(rotm) ;
+    Resin_Sub =new G4SubtractionSolid("Resin_Sub", box, solidDetector, tr);
 
-    solidFR4 = new G4Box("solidFR4", RESIN_T*mm, RESIN_W*mm, FR4_L);
+    for(int i = 0; i < nSiPM; i++){
+    tr = G4Translate3D(-RESIN_W+DET_T+0.194*(i+1)*mm+DET_T*2*i, +0.5*mm+DET_T-RESIN_H, RESIN_L*mm) * G4Rotate3D(rotm) ;
+    Resin_Sub =new G4SubtractionSolid("Resin_Sub", Resin_Sub, solidDetector, tr);
+    }
+int i =1;
+tr = G4Translate3D(-RESIN_W+DET_T+0.194*(i+1)*mm+DET_T*2*i,0.,0.) * G4Rotate3D(rotm) ;
+    //LYSOAll_Add=new G4UnionSolid("LYSOAll_Add", solidLYSO , solidLYSO, tr);
+    for(int i = 0; i < nSiPM-1; i++){
+    tr = G4Translate3D(LYSO_thick+DET_T+0.194*(i+1)*mm+DET_T*2*i,0.,0.) * G4Rotate3D(rotm) ;
+    if(i==0){        LYSOAll_Add =new G4UnionSolid("LYSOAll_Add", solidLYSO , solidLYSO, tr);
+            }else   {LYSOAll_Add =new G4UnionSolid("LYSOAll_Add", LYSOAll_Add, solidLYSO, tr);}
+    }
+
+}else if (GeomConfig==4){
+    G4Box* LYSOBox = new G4Box("LYSOBox",LYSO_thick*mm, LYSO_thick*mm, LYSO_L);
+    G4Box* BoxLYSOCover = new G4Box("Box_sideSurf",RESIN_W*mm, LYSO_thick*mm+0.194*mm, LYSO_L);
+
+    for(int i = 0; i < nSiPM; i++){
+    tr = G4Translate3D(-RESIN_W+DET_T+0.194*(i+1)*mm+DET_T*2*i,0.,0.) * G4Rotate3D(rotm) ;
+    if(i==0){        LYSOCover_Sub =new G4SubtractionSolid("LYSOCover_Sub", BoxLYSOCover , LYSOBox, tr);
+            }else   {LYSOCover_Sub =new G4SubtractionSolid("LYSOCover_Sub", LYSOCover_Sub, LYSOBox, tr);}
+    }
+
+}
+    solidFR4 = new G4Box("solidFR4", RESIN_W*mm, RESIN_H*mm, FR4_L);
 
 
 ////////////////////
@@ -315,7 +345,10 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct()
 ////////////////////
     logicDetector = new G4LogicalVolume(solidDetector, worldMat, "locigDetector"); // Defined outside in class
 
-    logicLYSO = new G4LogicalVolume(solidLYSO, scintillator, "logicLYSO");
+    if (GeomConfig==3){logicLYSO = new G4LogicalVolume(LYSOAll_Add, scintillator, "logicLYSO");}
+    else{logicLYSO = new G4LogicalVolume(solidLYSO, scintillator, "logicLYSO");}
+
+    if (GeomConfig==4){logicLYSOCover = new G4LogicalVolume(LYSOCover_Sub, scintillator, "logicLYSOCover");}
 
     logicWorld = new G4LogicalVolume(solidWorld, worldMat, "logicWorld");
 
@@ -341,57 +374,101 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct()
 
     physWorld = new G4PVPlacement(0,G4ThreeVector(0.,0.,0.),logicWorld,"physWorld",0,false,0,true);
 
+if(GeomConfig == 1 ){
     physLYSO = new G4PVPlacement(0,G4ThreeVector(0.,0.,-LYSO_L/2.*mm),logicLYSO,"physLYSO",logicWorld,false,0,true);       
 
-if(GeomConfig == 1){
     physGlue1 = new G4PVPlacement(0,G4ThreeVector(0.,0.,+1*(+LYSO_L*mm+GLUE_L*mm)),logicGlue,"physGlue1",logicWorld,false,0,true); 
     physGlue2 = new G4PVPlacement(0,G4ThreeVector(0.,0.,-1*(+LYSO_L*mm+GLUE_L*mm)),logicGlue,"physGlue2",logicWorld,false,0,true); 
 G4RotationMatrix* rM = new G4RotationMatrix();
   rM->rotateY(180.*deg);
-physResin1 = new G4PVPlacement(0     ,G4ThreeVector(XposTol*mm,YposTol*mm+(RESIN_W-0.5*mm-LYSO_thick),+1*(+LYSO_L*mm+GLUE_L*mm*2+RESIN_L*mm+DET_L)),logicResin_Sub,"physResin1",logicWorld,false,0,true); 
-physResin2 = new G4PVPlacement(rM,G4ThreeVector(XposTol*mm,YposTol*mm+(RESIN_W-0.5*mm-LYSO_thick),-1*(+LYSO_L*mm+GLUE_L*mm*2+RESIN_L*mm+DET_L)),logicResin_Sub,"physResin2",logicWorld,false,0,true); 
+physResin1 = new G4PVPlacement(0     ,G4ThreeVector(XposTol*mm,YposTol*mm+(RESIN_H-0.5*mm-LYSO_thick),+1*(+LYSO_L*mm+GLUE_L*mm*2+RESIN_L*mm+DET_L)),logicResin_Sub,"physResin1",logicWorld,false,0,true); 
+physResin2 = new G4PVPlacement(rM,G4ThreeVector(XposTol*mm,YposTol*mm+(RESIN_H-0.5*mm-LYSO_thick),-1*(+LYSO_L*mm+GLUE_L*mm*2+RESIN_L*mm+DET_L)),logicResin_Sub,"physResin2",logicWorld,false,0,true); 
     physDetector = new G4PVPlacement(0,G4ThreeVector(XposTol*mm,YposTol*mm,+1*(+LYSO_L*mm+RESIN_L*mm*2+2*GLUE_L*mm+DET_L)),logicDetector,"physDetector",logicWorld,false,0,true); 
     physDetector = new G4PVPlacement(0,G4ThreeVector(XposTol*mm,YposTol*mm,-1*(+LYSO_L*mm+RESIN_L*mm*2+2*GLUE_L*mm+DET_L)),logicDetector,"physDetector",logicWorld,false,1,true); 
 
-physFR41 = new G4PVPlacement(0     ,G4ThreeVector(XposTol*mm,YposTol*mm+(RESIN_W-0.5*mm-LYSO_thick),+1*(+LYSO_L*mm+GLUE_L*mm*2+2*(RESIN_L*mm+DET_L)+FR4_L)),logicFR4,"physResin1",logicWorld,false,0,true); 
-physFR42 = new G4PVPlacement(rM,G4ThreeVector(XposTol*mm,YposTol*mm+(RESIN_W-0.5*mm-LYSO_thick),-1*(+LYSO_L*mm+GLUE_L*mm*2+2*(RESIN_L*mm+DET_L)+FR4_L)),logicFR4,"physResin2",logicWorld,false,0,true);
+physFR41 = new G4PVPlacement(0     ,G4ThreeVector(XposTol*mm,YposTol*mm+(RESIN_H-0.5*mm-LYSO_thick),+1*(+LYSO_L*mm+GLUE_L*mm*2+2*(RESIN_L*mm+DET_L)+FR4_L)),logicFR4,"physResin1",logicWorld,false,0,true); 
+physFR42 = new G4PVPlacement(rM,G4ThreeVector(XposTol*mm,YposTol*mm+(RESIN_H-0.5*mm-LYSO_thick),-1*(+LYSO_L*mm+GLUE_L*mm*2+2*(RESIN_L*mm+DET_L)+FR4_L)),logicFR4,"physResin2",logicWorld,false,0,true);
+//////////////
+// GEOM TYPE 2
+}else if (GeomConfig == 2) // GEOM TYPE 2
+{
+
+    physLYSO = new G4PVPlacement(0,G4ThreeVector(0.,0.,-LYSO_L/2.*mm),logicLYSO,"physLYSO",logicWorld,false,0,true);       
+
+    physGlue1 = new G4PVPlacement   (0,G4ThreeVector(XposTol*mm,YposTol*mm+(RESIN_H-0.5*mm-DET_T),+1*(+LYSO_L*mm+GLUE_L*mm)),logicGlue,"physGlue1",logicWorld,false,0,true); 
+    physResin1 = new G4PVPlacement  (0,G4ThreeVector(XposTol*mm,YposTol*mm+(RESIN_H-0.5*mm-DET_T),+1*(+LYSO_L*mm+GLUE_L*mm*2+RESIN_L*mm+DET_L)),logicResin_Sub,"physResin1",logicWorld,false,0,true); 
+    physDetector = new G4PVPlacement(0,G4ThreeVector(XposTol*mm,YposTol*mm,+1*(+LYSO_L*mm+RESIN_L*mm*2+2*GLUE_L*mm+DET_L)),logicDetector,"physDetector",logicWorld,false,0,true); 
+    physFR41 = new G4PVPlacement    (0,G4ThreeVector(XposTol*mm,YposTol*mm+(RESIN_H-0.5*mm-DET_T),+1*(+LYSO_L*mm+GLUE_L*mm*2+2*(RESIN_L*mm+DET_L)+FR4_L)),logicFR4,"physResin1",logicWorld,false,0,true); 
+//////////////
+// GEOM TYPE 3
+} else if (GeomConfig == 3){// GEOM TYPE 3
+    physGlue1 = new G4PVPlacement(0,G4ThreeVector(0.,0.,+1*(+LYSO_L*mm+GLUE_L*mm)),logicGlue,"physGlue1",logicWorld,false,0,true); 
+    physGlue2 = new G4PVPlacement(0,G4ThreeVector(0.,0.,-1*(+LYSO_L*mm+GLUE_L*mm)),logicGlue,"physGlue2",logicWorld,false,0,true); 
+G4RotationMatrix* rM = new G4RotationMatrix();
+  rM->rotateY(180.*deg);
+physResin1 = new G4PVPlacement(0     ,G4ThreeVector(XposTol*mm,YposTol*mm+(RESIN_H-0.5*mm-LYSO_thick),+1*(+LYSO_L*mm+GLUE_L*mm*2+RESIN_L*mm+DET_L)),logicResin_Sub,"physResin1",logicWorld,false,0,true); 
+physResin2 = new G4PVPlacement(rM,G4ThreeVector(XposTol2*mm,YposTol2*mm+(RESIN_H-0.5*mm-LYSO_thick),-1*(+LYSO_L*mm+GLUE_L*mm*2+RESIN_L*mm+DET_L)),logicResin_Sub,"physResin2",logicWorld,false,0,true); 
+
+G4int nSiPM=16;
+for(int i = 0; i < nSiPM; i++){
+    physDetector = new G4PVPlacement(0,G4ThreeVector(XposTol*mm-RESIN_W+DET_T+0.194*(i+1)*mm+DET_T*2*i,YposTol*mm,+1*(+LYSO_L*mm+RESIN_L*mm*2+2*GLUE_L*mm+DET_L)),logicDetector,"physDetector",logicWorld,false,i-1,true); 
+}
+for(int i = 0; i < nSiPM; i++){    
+physDetector = new G4PVPlacement(0,G4ThreeVector(XposTol2*mm-RESIN_W+DET_T+0.194*(i+1)*mm+DET_T*2*i,YposTol2*mm,-1*(+LYSO_L*mm+RESIN_L*mm*2+2*GLUE_L*mm+DET_L)),logicDetector,"physDetector",logicWorld,false,i+nSiPM-1,true); 
+}
+
+physFR41 = new G4PVPlacement(0     ,G4ThreeVector(XposTol*mm,YposTol*mm+(RESIN_H-0.5*mm-LYSO_thick),+1*(+LYSO_L*mm+GLUE_L*mm*2+2*(RESIN_L*mm+DET_L)+FR4_L)),logicFR4,"physResin1",logicWorld,false,0,true); 
+physFR42 = new G4PVPlacement(rM,G4ThreeVector(XposTol2*mm,YposTol2*mm+(RESIN_H-0.5*mm-LYSO_thick),-1*(+LYSO_L*mm+GLUE_L*mm*2+2*(RESIN_L*mm+DET_L)+FR4_L)),logicFR4,"physResin2",logicWorld,false,0,true);
+
+
+    physLYSO = new G4PVPlacement(0,G4ThreeVector(-RESIN_W+LYSO_thick+0.194*mm,0.,-LYSO_L/2.*mm),logicLYSO,"physLYSO",logicWorld,false,0,true);   
+
+} else if (GeomConfig == 4){
+G4RotationMatrix* rM = new G4RotationMatrix();
+physLYSOCover = new G4PVPlacement(0,G4ThreeVector(0.,0.,0.),logicLYSOCover,"physLYSO",logicWorld,false,0,true);    
+  rM->rotateY(180.*deg);
+for(int i = 0; i < nSiPM; i++){    
+    physLYSO = new G4PVPlacement(0,G4ThreeVector(-RESIN_W+DET_T+0.194*(i+1)*mm+DET_T*2*i,0.,-LYSO_L/2.*mm),logicLYSO,"physLYSO",logicWorld,false,i-1,true);       
+}
+physFR41 = new G4PVPlacement(0     ,G4ThreeVector(XposTol*mm,YposTol*mm+(RESIN_H-0.5*mm-LYSO_thick),+1*(+LYSO_L*mm+GLUE_L*mm*2+2*(RESIN_L*mm+DET_L)+FR4_L)),logicFR4,"physResin1",logicWorld,false,0,true); 
+physFR42 = new G4PVPlacement(rM,G4ThreeVector(XposTol*mm,YposTol*mm+(RESIN_H-0.5*mm-LYSO_thick),-1*(+LYSO_L*mm+GLUE_L*mm*2+2*(RESIN_L*mm+DET_L)+FR4_L)),logicFR4,"physResin2",logicWorld,false,0,true);
+
+}
+//////////////////////
+// BORDER SURFACE //
+//////////////////////
+if( GeomConfig==3){
+    if(ESRtrue==1){
+    G4LogicalBorderSurface *LYSO_Air_Border = new G4LogicalBorderSurface("LYSO_Glue_Border",physLYSO,physWorld,mirrorSurface);   
+    }
+    G4LogicalBorderSurface *Glue_Air_Border1 = new G4LogicalBorderSurface("Glue_Air_Border1",physGlue1,physWorld,groundSurface);   
+    G4LogicalBorderSurface *Glue_Air_Border2 = new G4LogicalBorderSurface("Glue_Air_Border2",physGlue2,physWorld,groundSurface);  
+    G4LogicalBorderSurface *Resin_Air_Border1 = new G4LogicalBorderSurface("Glue_Air_Border1",physResin1,physWorld,groundSurface);   
+    G4LogicalBorderSurface *Resin_Air_Border2 = new G4LogicalBorderSurface("Glue_Air_Border1",physResin2,physWorld,groundSurface);   
+    G4LogicalBorderSurface *Glue_LYSO_Border1 = new G4LogicalBorderSurface("Glue_LYSO_Border1",physGlue1,physLYSO,groundSurface);   
+    G4LogicalBorderSurface *Glue_LYSO_Border2 = new G4LogicalBorderSurface("Glue_LYSO_Border2",physGlue2,physLYSO,groundSurface);   
+    G4LogicalBorderSurface *Glue_Resin_Border1 = new G4LogicalBorderSurface("Glue_LYSO_Border1",physGlue1,physResin1,groundSurface);   
+    G4LogicalBorderSurface *Glue_Resin_Border2 = new G4LogicalBorderSurface("Glue_LYSO_Border2",physGlue2,physResin2,groundSurface); 
 }
 else if (GeomConfig == 2)
 {
-    physGlue1 = new G4PVPlacement   (0,G4ThreeVector(XposTol*mm,YposTol*mm+(RESIN_W-0.5*mm-DET_T),+1*(+LYSO_L*mm+GLUE_L*mm)),logicGlue,"physGlue1",logicWorld,false,0,true); 
-    physResin1 = new G4PVPlacement  (0,G4ThreeVector(XposTol*mm,YposTol*mm+(RESIN_W-0.5*mm-DET_T),+1*(+LYSO_L*mm+GLUE_L*mm*2+RESIN_L*mm+DET_L)),logicResin_Sub,"physResin1",logicWorld,false,0,true); 
-    physDetector = new G4PVPlacement(0,G4ThreeVector(XposTol*mm,YposTol*mm,+1*(+LYSO_L*mm+RESIN_L*mm*2+2*GLUE_L*mm+DET_L)),logicDetector,"physDetector",logicWorld,false,0,true); 
-    physFR41 = new G4PVPlacement    (0,G4ThreeVector(XposTol*mm,YposTol*mm+(RESIN_W-0.5*mm-DET_T),+1*(+LYSO_L*mm+GLUE_L*mm*2+2*(RESIN_L*mm+DET_L)+FR4_L)),logicFR4,"physResin1",logicWorld,false,0,true); 
-}
-
-    //////////////////////
-    // BORDER SURFACE //
-    //////////////////////
-    if (GeomConfig == 1) {
-        /* FIXME: potential memory leaks here since we create the
-         * G4LogicalBorderSurface with `new`, but don't delete the memory
-         * anywhere. Could potentially be a problem if the geometry is
-         * reinitialized many times?. */
-        if (ESRtrue==1) {
-            new G4LogicalBorderSurface("LYSO_Glue_Border",physLYSO,physWorld,mirrorSurface);
-        }
-        new G4LogicalBorderSurface("Glue_Air_Border1",physGlue1,physWorld,groundSurface);
-        new G4LogicalBorderSurface("Glue_Air_Border2",physGlue2,physWorld,groundSurface);
-        new G4LogicalBorderSurface("Resin_Air_Border1",physResin1,physWorld,groundSurface);
-        new G4LogicalBorderSurface("Resin_Air_Border1",physResin2,physWorld,groundSurface);
-        new G4LogicalBorderSurface("Glue_LYSO_Border1",physGlue1,physLYSO,groundSurface);
-        new G4LogicalBorderSurface("Glue_LYSO_Border2",physGlue2,physLYSO,groundSurface);
-        new G4LogicalBorderSurface("Glue_Resin_Border1",physGlue1,physResin1,groundSurface);
-        new G4LogicalBorderSurface("Glue_Resin_Border2",physGlue2,physResin2,groundSurface);
-    } else if (GeomConfig == 2) {
-        if (ESRtrue==1) {
-            new G4LogicalBorderSurface("LYSO_Glue_Border",physLYSO,physWorld,mirrorSurface);
-        }
-        new G4LogicalBorderSurface("Glue_Air_Border1",physGlue1,physWorld,groundSurface);
-        new G4LogicalBorderSurface("Resin_Air_Border1",physResin1,physWorld,groundSurface);
-        new G4LogicalBorderSurface("Glue_LYSO_Border1",physGlue1,physLYSO,groundSurface);
-        new G4LogicalBorderSurface("Glue_Resin_Border1",physGlue1,physResin1,groundSurface);
+    if(ESRtrue==1){
+    G4LogicalBorderSurface *LYSO_Air_Border = new G4LogicalBorderSurface("LYSO_Glue_Border",physLYSO,physWorld,mirrorSurface);   
     }
+    G4LogicalBorderSurface *Glue_Air_Border1 = new G4LogicalBorderSurface("Glue_Air_Border1",physGlue1,physWorld,groundSurface);   
+    G4LogicalBorderSurface *Resin_Air_Border1 = new G4LogicalBorderSurface("Glue_Air_Border1",physResin1,physWorld,groundSurface);   
+    G4LogicalBorderSurface *Glue_LYSO_Border1 = new G4LogicalBorderSurface("Glue_LYSO_Border1",physGlue1,physLYSO,groundSurface);   
+    G4LogicalBorderSurface *Glue_Resin_Border1 = new G4LogicalBorderSurface("Glue_LYSO_Border1",physGlue1,physResin1,groundSurface);   
+
+}  else if( GeomConfig==3){
+    if(ESRtrue==1){G4LogicalBorderSurface("LYSO_Glue_Border",physLYSO,physWorld,mirrorSurface);}
+    G4LogicalBorderSurface *Glue_Air_Border1 = new G4LogicalBorderSurface("Glue_Air_Border1",physGlue1,physWorld,groundSurface);   
+    G4LogicalBorderSurface *Resin_Air_Border1 = new G4LogicalBorderSurface("Glue_Air_Border1",physResin1,physWorld,groundSurface);   
+    G4LogicalBorderSurface *Glue_LYSO_Border1 = new G4LogicalBorderSurface("Glue_LYSO_Border1",physGlue1,physLYSO,groundSurface);   
+    G4LogicalBorderSurface *Glue_Resin_Border1 = new G4LogicalBorderSurface("Glue_LYSO_Border1",physGlue1,physResin1,groundSurface);  
+}else if (GeomConfig == 4){
+
+}
 
 //////////////////////
 //  //
@@ -418,29 +495,34 @@ logicDetector->SetSensitiveDetector(sensDet);
 {
     LYSO_L = 57./2.;
     LYSO_thick=3./2.;
-
+    RESIN_W=51.5/2.;
     LYSO_YIELD=ArgsPass->GetLYSO_Yield();
     LYSO_SCALERESOLUTION=ArgsPass->GetLYSO_ScaleResolution();
+    XYTol=0.16;
+     RESIN_LNOM=0.5;RESIN_LTol=0.1;
     if(ArgsPass->GetRnd_Geom()==1)
         {
         GLUE_L = 0.15+0.1*G4UniformRand();   GLUE_L=GLUE_L/2.;
-        RESIN_L =0.3+0.4*G4UniformRand();   RESIN_L=RESIN_L/2.;
-        XposTol = -0.05+G4UniformRand()*0.1;
-        YposTol = -0.05+G4UniformRand()*0.1;
+        RESIN_L =(RESIN_LNOM-RESIN_LTol)+RESIN_LTol*2*G4UniformRand();   RESIN_L=RESIN_L/2.;
+        XposTol = -0.05+G4UniformRand()*XYTol;
+        YposTol = -0.05+G4UniformRand()*XYTol;
+        XposTol2 = -0.05+G4UniformRand()*XYTol;
+        YposTol2 = -0.05+G4UniformRand()*XYTol;
         }
     else{
         GLUE_L = 0.2;   GLUE_L=GLUE_L/2.;
         RESIN_L =0.5;   RESIN_L=RESIN_L/2.;
         XposTol = 0.;
         YposTol = 0.;
+        XposTol2 = 0.;
+        YposTol2 = 0.;
         }
-    GeomConfig=1;
+    GeomConfig=ArgsPass->GetGeomConfig();
     perincr=0.;
     ESRtrue=1;
     LYSO_SC1=ArgsPass->GetLYSO_DecayT();
     LYSO_RT1=ArgsPass->GetLYSO_RiseT();
 }
-
     void MyDetectorConstruction:: DefineMessengers()
 {
     fMessenger = new G4GenericMessenger(this, "/detector/","Detector Construction");

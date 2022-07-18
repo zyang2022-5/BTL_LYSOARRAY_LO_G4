@@ -469,10 +469,12 @@ else if (GeomConfig == 2)
 //////////////////////
     ConstructSDandField();
 
-  G4double maxStep = 0.1*LYSO_thick*mm;
+    if(ArgsPass->GetStepSize()>0){
+  G4double maxStep = ArgsPass->GetStepSize()*LYSO_thick*mm;
   fStepLimit = new G4UserLimits(maxStep);
   logicWorld->SetUserLimits(fStepLimit);
   logicLYSO->SetUserLimits(fStepLimit);
+    }
 
 //RETURN//
     return physWorld;

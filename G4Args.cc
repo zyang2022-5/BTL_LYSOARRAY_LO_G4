@@ -7,27 +7,27 @@ G4cout<< " ### Processing Command line Arguments to the sim : " <<G4endl;
     for (int j = 1; j < mainargc; j=j+1){
                 if(strcmp(mainargv[j],"-o")==0)
                 {   
-                    OutName = mainargv[j+1];      
+                    OutName = mainargv[j+1];      j=j+1;
                     G4cout<< " ### Changed Ouput name to : " << OutName<<G4endl;            
                     Oin=1;         
                 }
                 else if(strcmp(mainargv[j],"-Vov")==0)
                 {   
-                    Detection[0] = atof(mainargv[j+1]);      
+                    Detection[0] = atof(mainargv[j+1]);      j=j+1;
                     G4cout<< " ### Changed Overvoltage to : " << Detection[0] <<G4endl;              
                 }
                 else if(strcmp(mainargv[j],"-mn")==0)
                 {   
                     VisTrue=0;
                     MacName = mainargv[j+1];
-                    nrep =  atoi(mainargv[j+2]);     
+                    nrep =  atoi(mainargv[j+2]);j=j+2;
                     G4cout<< " ### Set Run Macro name to : " << MacName <<G4endl;         
                     G4cout<< " ### Number of runs : " << nrep <<G4endl;       
                 }
                 else if(strcmp(mainargv[j],"-m")==0)
                 {   
                     VisTrue=0;
-                    MacName = mainargv[j+1];
+                    MacName = mainargv[j+1];j=j+1;
                     nrep =  1;      
                     G4cout<< " ### Set Run Macro name to : " << MacName <<G4endl;         
                     G4cout<< " ### Number of runs : " << nrep <<G4endl;       
@@ -38,13 +38,13 @@ G4cout<< " ### Processing Command line Arguments to the sim : " <<G4endl;
                     if (RndGen[0]==0)
                     {
                         RndGen[1] = 0;
-                        RndGen[2] = 0;
+                        RndGen[2] = 0;j=j+1;
                         G4cout<< " ### Remove all random generators. " <<G4endl; 
                     }
                     else
                     {
                         RndGen[1] = atoi(mainargv[j+2]);
-                        RndGen[2] = atoi(mainargv[j+3]);
+                        RndGen[2] = atoi(mainargv[j+3]);j=j+3;
                     G4cout<< " ### Random Particle Position set to  : " << RndGen[1] <<G4endl;         
                     G4cout<< " ### Random Geometry Parameters set to  : " << RndGen[2] <<G4endl;                          
                     } 
@@ -74,24 +74,61 @@ G4cout<< " ### Processing Command line Arguments to the sim : " <<G4endl;
                     MainTrees[4] = 1;
                     G4cout<< " ### Storing Tree EndOfEvent" <<G4endl;         
                 }
+                else if(strcmp(mainargv[j],"-nArrivals")==0)
+                {   
+                    MainTrees[0] = 0;
+                    G4cout<< " ### Not! Storing Tree Detected" <<G4endl;         
+                }
+                else if(strcmp(mainargv[j],"-nDetected")==0)
+                {   
+                    MainTrees[1] = 0;
+                    G4cout<< " ### Not! Storing Tree Detected" <<G4endl;         
+                }
+                else if(strcmp(mainargv[j],"-nStepping")==0)
+                {   
+                    MainTrees[2] = 0;
+                    G4cout<< " ### Not! Storing Tree Tracking" <<G4endl;         
+                }
+                else if(strcmp(mainargv[j],"-nTracking")==0)
+                {   
+                    MainTrees[3] = 0;
+                    G4cout<< " ### Not! Storing Tree Tracking" <<G4endl;         
+                }
+                else if(strcmp(mainargv[j],"-nEndOfEvent")==0)
+                {   
+                    MainTrees[4] = 0;
+                    G4cout<< " ### Not! Storing Tree EndOfEvent" <<G4endl;         
+                }
+                else if(strcmp(mainargv[j],"-TreeAll")==0)
+                {   
+                    for (int Tree = 0; Tree < 5; Tree=Tree+1){
+                        MainTrees[Tree] = 1;
+                    }
+                    G4cout<< " ### Storing All Trees" <<G4endl;         
+                }
+                else if(strcmp(mainargv[j],"-TreeN")==0)
+                {   
+                    MainTrees[atoi(mainargv[j+1])] = 1;j=j+1;
+                    G4cout<< " ### Storing All Trees" <<G4endl;         
+                }
                 else if(strcmp(mainargv[j],"-LYSO_Yield")==0)
                 {   
-                    LYSOProps[0] = atof(mainargv[j+1]);
+                    LYSOProps[0] = atof(mainargv[j+1]);j=j+1;
                     G4cout<< " ### LYSO_Yield modified to :"<< LYSOProps[0] <<G4endl;         
                 }
                 else if(strcmp(mainargv[j],"-LYSO_RiseT")==0)
                 {   
-                    LYSOProps[2] = atof(mainargv[j+1]);
+                    LYSOProps[2] = atof(mainargv[j+1]);j=j+1;
                     G4cout<< " ### LYSO_RiseT modified to :"<< LYSOProps[2] <<G4endl;         
                 }
                 else if(strcmp(mainargv[j],"-LYSO_DecayT")==0)
                 {   
-                    LYSOProps[3] = atof(mainargv[j+1]);
+                    LYSOProps[3] = atof(mainargv[j+1]);j=j+1;
                     G4cout<< " ### LYSO_DecayT modified to :"<< LYSOProps[3] <<G4endl;         
                 }
                 else if(strcmp(mainargv[j],"-GeomConfig")==0)
                 {   
-                    GeomConfig = atoi(mainargv[j+1]); 
+                    GeomConfig = atoi(mainargv[j+1]); j=j+1;
                     G4cout<< " ### Geometry Configuration Changed to :"<< GeomConfig <<G4endl;         
                 }
         }

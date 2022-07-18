@@ -30,7 +30,7 @@ void MyPrimaryGenerator::GeneratePrimaries(G4Event *anEvent)
     G4ParticleDefinition *particle= fParticleGun->GetParticleDefinition();
 
     // Example for particle definition (not used in this executable)
-    if (particle == G4Geantino::Geantino())
+    /*if (particle == G4Geantino::Geantino())
     {
         // Cobalt particle
         G4int Z=27;
@@ -43,6 +43,6 @@ void MyPrimaryGenerator::GeneratePrimaries(G4Event *anEvent)
         fParticleGun->SetParticleDefinition(ion);
         fParticleGun->SetParticleCharge(charge);
 
-    }
+    }*/
     fParticleGun->GeneratePrimaryVertex(anEvent);
 }

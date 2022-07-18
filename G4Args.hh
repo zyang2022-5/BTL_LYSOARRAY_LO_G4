@@ -30,6 +30,7 @@ public:
     G4int GetTree_EndOfEvent() const {return MainTrees[4];}
     G4int GetGeomConfig() const {return GeomConfig;}
     G4int GetVis() const {return VisTrue;}
+    G4int GetStepSize() const {return StepSize;}
 
     void InitAllCount(){ArgLO = 0;ArgCrossTalk = 0;TotPh = 0;PhHit=0;Edep=0.;}
     void InitTotPh(){TotPh = 0;}
@@ -60,6 +61,7 @@ private:
     G4double Detection[2]={3.5,1};//Options to modify photon detection
     G4String DefOutName="DefaultOutputName_Run";
     G4int KillSim[4]={0,0,0,0}; // Options on how to kill the simulation {Method(0 = all tracks have been killed, 1= nphotons have been detected at each SiPM, 2= x time has passed, 3= kills all photons after x local time, 4= use all parameters to kill the simulation) ,nphotons, global time, local time...}
+    G4double StepSize=0.;    
     G4int GeomConfig=1;
     G4int VisTrue=1;
 
@@ -69,6 +71,7 @@ private:
     G4int TotPh=0;
     G4int PhHit=0;
     G4double Edep=0.;
+
 };    
 
 #endif

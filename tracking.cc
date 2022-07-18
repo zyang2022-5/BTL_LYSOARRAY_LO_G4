@@ -3,7 +3,7 @@
 MyTrackingAction::MyTrackingAction(MyEventAction *eventAction,MyG4Args *MainArgs)
 {
     PassArgs=MainArgs;
-    trPhCount=0.;
+
     fEventAction = eventAction;
 }
 
@@ -12,7 +12,7 @@ MyTrackingAction::~MyTrackingAction()
 
 void MyTrackingAction::PreUserTrackingAction(const G4Track*)
 {
-    trPhCount=0.;
+
 }
 
 void MyTrackingAction::PostUserTrackingAction(const G4Track*)
@@ -30,8 +30,7 @@ void MyTrackingAction::PostUserTrackingAction(const G4Track*)
 
          for (size_t i = 0; i < nmbSecTracks; i++) { 
             if ((*secTracks)[i]->GetDefinition() == G4OpticalPhoton::Definition()) {
-                trPhCount++;
-                fEventAction->AddPh(1.);
+                PassArgs->AddTP();
             }
         }
     }

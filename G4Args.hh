@@ -31,13 +31,17 @@ public:
     G4int GetGeomConfig() const {return GeomConfig;}
     G4int GetVis() const {return VisTrue;}
 
+    void InitAllCount(){ArgLO = 0;ArgCrossTalk = 0;TotPh = 0;}
+    void InitTotPh(){TotPh = 0;}
     void InitLO(){ArgLO = 0;}
     void InitCT(){ArgCrossTalk = 0;}
+
     void AddLO(){ArgLO += 1;}
     void AddCT(){ArgCrossTalk += 1;}
+    void AddTP(){TotPh += 1;}
     G4int GetLO() const {return ArgLO;}
     G4int GetCT() const {return ArgCrossTalk;}
-
+    G4int GetTP() const {return TotPh;}
 private:
 
     // Default values modifiable by arguments and able to be returned!!!
@@ -54,8 +58,11 @@ private:
     G4int KillSim[4]={0,0,0,0}; // Options on how to kill the simulation {Method(0 = all tracks have been killed, 1= nphotons have been detected at each SiPM, 2= x time has passed, 3= kills all photons after x local time, 4= use all parameters to kill the simulation) ,nphotons, global time, local time...}
     G4int GeomConfig=1;
     G4int VisTrue=1;
+
+// Counters!!!
     G4int ArgLO=0;
     G4int ArgCrossTalk=0;
+    G4int TotPh=0;
 
 };    
 

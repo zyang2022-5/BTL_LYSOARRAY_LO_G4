@@ -4,7 +4,7 @@ MyEventAction::MyEventAction(MyRunAction*,MyG4Args* MainArgs)
 {
     PassArgs=MainArgs;
     fEdep=0.;
-    fPhCount=0;
+
     fLO=0;
 
     PDE = new G4PhysicsOrderedFreeVector();
@@ -46,8 +46,7 @@ void MyEventAction::BeginOfEventAction(const G4Event *anEvent)
     UImanager->ApplyCommand(command);  G4cout<< command << G4endl;
     command="/vis/scene/add/trajectories smooth";
     UImanager->ApplyCommand(command);  G4cout<< command << G4endl;
-    PassArgs->InitLO();
-    PassArgs->InitCT();
+    PassArgs->InitAllCount();
 
  // Run status
   G4int eventID=anEvent->GetEventID();
@@ -114,7 +113,7 @@ if(PassArgs->GetRnd_Part()==1)
 
     // Initialization of properties counters per event
     fEdep=0.;   // Energy deposited in the LYSO
-    fPhCount=0; // Total photon count arriving to the photodetectors
+
     fLO=0;      // Light Output (Photons detected)
 
 
@@ -142,7 +141,7 @@ void MyEventAction::EndOfEventAction(const G4Event*)
     G4cout<< "Event Nº: " << evt << G4endl;
     G4cout<< "Primary position command: " << command << G4endl;
     G4cout<< "Energy deposition: " << fEdep/MeV << " [MeV] " << G4endl;
-    G4cout<< "Photons created end of event: " << fPhCount << G4endl;
+    G4cout<< "Photons created end of event: " << PassArgs->GetTP() << G4endl;
     G4cout<< "Photon Hits end of event: " << fLO << G4endl;
     G4cout<< "Estimated PDE (420nm, 3.5OV): " << PDE420 << G4endl;
     G4cout<< "Photon Detected (420nm PDE, 3.5OV) end of event: " << fLO*PDE420 << G4endl;
@@ -155,7 +154,7 @@ void MyEventAction::EndOfEventAction(const G4Event*)
     G4cout<< "Event Nº: " << evt << G4endl;
     G4cout<< "Primary position command: " << command << G4endl;
     G4cout<< "Energy deposition: " << fEdep/MeV << " [MeV] " << G4endl;
-    G4cout<< "Photons created end of event: " << fPhCount << G4endl;
+    G4cout<< "Photons created end of event: " << PassArgs->GetTP() << G4endl;
     G4cout<< "Photon Hits end of event: " << fLO << G4endl;
     G4cout<< "Estimated PDE (420nm, 3.5OV): " << PDE420 << G4endl;
     G4cout<< "Photon Detected (420nm PDE, 3.5OV) end of event: " << fLO*PDE420 << G4endl;
@@ -169,7 +168,7 @@ void MyEventAction::EndOfEventAction(const G4Event*)
     G4cout<< "Event Nº: " << evt << G4endl;
     G4cout<< "Primary position command: " << command << G4endl;
     G4cout<< "Energy deposition: " << fEdep/MeV << " [MeV] " << G4endl;
-    G4cout<< "Photons created end of event: " << fPhCount << G4endl;
+    G4cout<< "Photons created end of event: " << PassArgs->GetTP() << G4endl;
     G4cout<< "Photon Hits end of event: " << fLO << G4endl;
     G4cout<< "Estimated PDE (420nm, 3.5OV): " << PDE420 << G4endl;
     G4cout<< "Estimated Photon Detected (420nm PDE, 3.5OV) end of event: " << fLO*PDE420 << G4endl;
@@ -185,7 +184,7 @@ void MyEventAction::EndOfEventAction(const G4Event*)
 if(PassArgs->GetTree_EndOfEvent()==1){
     G4AnalysisManager *man = G4AnalysisManager::Instance();
     man->FillNtupleDColumn(4, 0, fEdep/MeV);
-    man->FillNtupleDColumn(4, 1, fPhCount);
+    man->FillNtupleDColumn(4, 1, PassArgs->GetTP());
     man->FillNtupleDColumn(4, 2, PC);
     man->FillNtupleDColumn(4, 3, PDE420);
     man->FillNtupleDColumn(4, 4, PC/(fEdep/MeV)/2.);

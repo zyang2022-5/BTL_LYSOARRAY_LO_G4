@@ -64,6 +64,7 @@ MyRunAction :: MyRunAction(G4String OutName,MyG4Args* MainArgs)
             man->CreateNtupleDColumn("fResinL");
             man->CreateNtupleDColumn("fDetXpos");
             man->CreateNtupleDColumn("fDetYpos");
+            man->CreateNtupleDColumn("fCrossTalkMev");
             man->CreateNtupleDColumn("fevt");
             man->FinishNtuple(4); // Finish our first tuple or Ntuple number 0
 

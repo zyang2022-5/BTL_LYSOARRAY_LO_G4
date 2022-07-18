@@ -86,6 +86,9 @@ if (PassArgs->GetTree_Detected() == 1){
         man->FillNtupleDColumn(1, 7,  Tlength/mm);
         man->AddNtupleRow(1);
         countdet=countdet+1;
+        if (PassArgs->GetGeomConfig()==3 && posPhoton[0]/mm>-3.1 && posPhoton[0]/mm<-0.01){
+            PassArgs->AddLO();
+        } else if (PassArgs->GetGeomConfig()==3){PassArgs->AddCT();}
     }
 }
 

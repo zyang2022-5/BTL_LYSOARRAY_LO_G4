@@ -65,6 +65,7 @@ G4bool MySensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *ROhis
     // Fill columns of output file
     G4AnalysisManager *man = G4AnalysisManager::Instance();
 
+if (PassArgs->GetTree_Hits() == 1){
     man->FillNtupleIColumn(0, 0,  evt);
     man->FillNtupleDColumn(0, 1,  posDetector[0]/mm);// D==double
     man->FillNtupleDColumn(0, 2,  posDetector[1]/mm);
@@ -72,6 +73,7 @@ G4bool MySensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *ROhis
     man->FillNtupleDColumn(0, 4,  wlen);
     man->FillNtupleDColumn(0, 5,  Tlength/mm);
     man->AddNtupleRow(0);
+}
 
     PassArgs->AddPhHit();
     G4double PDElim =PDE->Value(wlen);
@@ -89,8 +91,13 @@ if (PassArgs->GetTree_Detected() == 1){
         countdet=countdet+1;
         if (PassArgs->GetGeomConfig()==3 && posPhoton[0]/mm>-3.1 && posPhoton[0]/mm<-0.01){
             PassArgs->AddLO();
+            if(posPhoton[2]/mm>0){PassArgs->AddPhotR();
+            }else{PassArgs->AddPhotL();}
         } else if (PassArgs->GetGeomConfig()==3){PassArgs->AddCT();
-        } else if (PassArgs->GetGeomConfig()==1){PassArgs->AddLO();}
+        } else if (PassArgs->GetGeomConfig()==1){PassArgs->AddLO();
+            if(posPhoton[2]/mm>0){PassArgs->AddPhotR();
+            }else{PassArgs->AddPhotL();}
+        }
     }
 }
 

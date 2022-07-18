@@ -24,6 +24,7 @@ public:
     G4int GetRnd_true() const {return RndGen[0];}
     G4int GetRnd_Part() const {return RndGen[1];}
     G4int GetRnd_Geom() const {return RndGen[2];}
+    G4int GetTree_Hits() const {return MainTrees[0];}
     G4int GetTree_Detected() const {return MainTrees[1];}
     G4int GetTree_Stepping() const {return MainTrees[2];}
     G4int GetTree_Tracking() const {return MainTrees[3];}
@@ -32,7 +33,7 @@ public:
     G4int GetVis() const {return VisTrue;}
     G4int GetStepSize() const {return StepSize;}
 
-    void InitAllCount(){ArgLO = 0;ArgCrossTalk = 0;TotPh = 0;PhHit=0;Edep=0.;}
+    void InitAllCount(){ArgLO = 0;ArgCrossTalk = 0;TotPh = 0;PhHit=0;Edep=0.;nPhotL=0;nPhotR=0;}
     void InitTotPh(){TotPh = 0;}
     void InitLO(){ArgLO = 0;}
     void InitCT(){ArgCrossTalk = 0;}
@@ -42,9 +43,13 @@ public:
     void AddLO(){ArgLO += 1;}
     void AddCT(){ArgCrossTalk += 1;}
     void AddTP(){TotPh += 1;}
+    void AddPhotR(){nPhotR += 1;}
+    void AddPhotL(){nPhotL += 1;}    
     G4int GetLO() const {return ArgLO;}
     G4int GetCT() const {return ArgCrossTalk;}
     G4int GetTP() const {return TotPh;}
+    G4int GetNPhotL() const {return nPhotL;}
+    G4int GetNPhotR() const {return nPhotR;}
     G4int GetPhHits() const {return PhHit;}
     G4double GetEdep() const {return Edep;}
 private:
@@ -52,7 +57,7 @@ private:
     // Default values modifiable by arguments and able to be returned!!!
     G4int Oin=0; 
     G4int nrep=1; 
-    G4int MainTrees[5]={1, 1, 1, 1, 1};// Options to write(1)/orNot(0) the different output trees {Arrivals,Detected,Tracking,EndOfEvent}
+    G4int MainTrees[5]={0, 1, 0, 0, 1};// Options to write(1)/orNot(0) the different output trees {Arrivals,Detected,Stepping,Tracking,EndOfEvent}
     G4double LYSOProps[4]={40000.,0.,60.,39.1};//Options to modify default LYSO properties {Yield,ScaleResolution,RiseTime,DecayTime}
     G4int RndGen[3]={1,1,1};             // Options regarding the random generator {Init,Particle,Geometry}
     G4double Geom_LYSO[3]={3./2.,3./2.,57./2.};//Options to modify default Geom properties {...}
@@ -71,6 +76,8 @@ private:
     G4int TotPh=0;
     G4int PhHit=0;
     G4double Edep=0.;
+    G4int nPhotR=0;
+    G4int nPhotL=0;
 
 };    
 

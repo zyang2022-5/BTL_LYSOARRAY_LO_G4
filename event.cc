@@ -137,6 +137,8 @@ void MyEventAction::EndOfEventAction(const G4Event*)
     G4cout<< "Estimated PDE (420nm, 3.5OV): " << PDE420 << G4endl;
     G4cout<< "Estimated Photon Detected (420nm PDE, 3.5OV) end of event: " << PassArgs->GetPhHits()*PDE420 << G4endl;
     G4cout<< "Real Number of Photons Detected: " << PC << G4endl;
+    G4cout<< "Photons detected in the Right SiPM: " << PassArgs->GetNPhotR() << G4endl;
+    G4cout<< "Photons detected in the Left SiPM: " << PassArgs->GetNPhotL() << G4endl;
     G4cout<< "Light Output Average (LO/2.) end of event: " << PC/(PassArgs->GetEdep()/MeV)/2. << G4endl;
     G4cout<< "#####################" << G4endl;
     G4cout<< "#####################" << G4endl;
@@ -165,6 +167,8 @@ void MyEventAction::EndOfEventAction(const G4Event*)
     G4cout<< "Estimated PDE (420nm, 3.5OV): " << PDE420 << G4endl;
     G4cout<< "Estimated Photon Detected (420nm PDE, 3.5OV) end of event: " << PassArgs->GetPhHits()*PDE420 << G4endl;
     G4cout<< "Real Number of Photons Detected: " << PC << G4endl;
+    G4cout<< "Photons detected in the Right SiPM: " << PassArgs->GetNPhotR() << G4endl;
+    G4cout<< "Photons detected in the Left SiPM: " << PassArgs->GetNPhotL() << G4endl;
     G4cout<< "Light Output Average (LO/2.) end of event: " << PC/(PassArgs->GetEdep()/MeV)/2. << G4endl;
     G4cout<< "Real Number of Cross-Talk Photons Detected: " << CT << G4endl;
     G4cout<< "Cross-Talk/MeV (nxSiPM) end of event: " << CT/(PassArgs->GetEdep()/MeV) << G4endl;

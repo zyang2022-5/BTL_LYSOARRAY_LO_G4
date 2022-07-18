@@ -31,17 +31,21 @@ public:
     G4int GetGeomConfig() const {return GeomConfig;}
     G4int GetVis() const {return VisTrue;}
 
-    void InitAllCount(){ArgLO = 0;ArgCrossTalk = 0;TotPh = 0;}
+    void InitAllCount(){ArgLO = 0;ArgCrossTalk = 0;TotPh = 0;PhHit=0;Edep=0.;}
     void InitTotPh(){TotPh = 0;}
     void InitLO(){ArgLO = 0;}
     void InitCT(){ArgCrossTalk = 0;}
 
+    void AddEdep(G4double Edepadd){Edep += Edepadd;}
+    void AddPhHit(){PhHit += 1;}
     void AddLO(){ArgLO += 1;}
     void AddCT(){ArgCrossTalk += 1;}
     void AddTP(){TotPh += 1;}
     G4int GetLO() const {return ArgLO;}
     G4int GetCT() const {return ArgCrossTalk;}
     G4int GetTP() const {return TotPh;}
+    G4int GetPhHits() const {return PhHit;}
+    G4double GetEdep() const {return Edep;}
 private:
 
     // Default values modifiable by arguments and able to be returned!!!
@@ -63,7 +67,8 @@ private:
     G4int ArgLO=0;
     G4int ArgCrossTalk=0;
     G4int TotPh=0;
-
+    G4int PhHit=0;
+    G4double Edep=0.;
 };    
 
 #endif

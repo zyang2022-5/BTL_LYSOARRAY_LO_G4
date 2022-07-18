@@ -73,6 +73,7 @@ G4bool MySensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *ROhis
     man->FillNtupleDColumn(0, 5,  Tlength/mm);
     man->AddNtupleRow(0);
 
+    PassArgs->AddPhHit();
     G4double PDElim =PDE->Value(wlen);
 if (PassArgs->GetTree_Detected() == 1){
     if (G4UniformRand() < PDElim){
@@ -88,7 +89,8 @@ if (PassArgs->GetTree_Detected() == 1){
         countdet=countdet+1;
         if (PassArgs->GetGeomConfig()==3 && posPhoton[0]/mm>-3.1 && posPhoton[0]/mm<-0.01){
             PassArgs->AddLO();
-        } else if (PassArgs->GetGeomConfig()==3){PassArgs->AddCT();}
+        } else if (PassArgs->GetGeomConfig()==3){PassArgs->AddCT();
+        } else if (PassArgs->GetGeomConfig()==1){PassArgs->AddLO();}
     }
 }
 

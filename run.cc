@@ -64,6 +64,8 @@ MyRunAction :: MyRunAction(G4String OutName,MyG4Args* MainArgs)
             man->CreateNtupleDColumn("fResinL");
             man->CreateNtupleDColumn("fDetXpos");
             man->CreateNtupleDColumn("fDetYpos");
+            man->CreateNtupleDColumn("fDetXpos2");
+            man->CreateNtupleDColumn("fDetYpos2");
             man->CreateNtupleDColumn("fCrossTalkCount");
             man->CreateNtupleDColumn("fCrossTalkMev");
             man->CreateNtupleDColumn("fTiming");

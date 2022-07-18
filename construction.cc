@@ -476,6 +476,24 @@ else if (GeomConfig == 2)
   logicLYSO->SetUserLimits(fStepLimit);
     }
 
+    G4cout<< "#####################" << G4endl;
+    G4cout<< "#####################" << G4endl;
+    G4cout<< "--Geometry Initialization-- " << G4endl;
+    G4cout<< "-- Random values -- " << G4endl;
+    G4cout<< "XPOS: " << XposTol << G4endl;
+    G4cout<< "XPOS2: " << XposTol2 << G4endl;
+    G4cout<< "YPOS: " << YposTol << G4endl;
+    G4cout<< "YPOS2: " << YposTol2 << G4endl;
+    G4cout<< "GLUE_L: " << GLUE_L*2 << G4endl;
+    G4cout<< "RESIN_L: " << RESIN_L*2 << G4endl;
+    G4cout<< "-- LYSO -- " << G4endl;
+    G4cout<< "LYSO_L: " << LYSO_L*2 << G4endl;
+    G4cout<< "RESIN_LTol: " << RESIN_LTol*2 << G4endl;
+    G4cout<< "LYSO_thick: " << LYSO_thick*2 << G4endl;
+    G4cout<< "LYSO_YIELD: " << LYSO_YIELD << G4endl;
+    G4cout<< "#####################" << G4endl;
+    G4cout<< "#####################" << G4endl;
+
 //RETURN//
     return physWorld;
 }
@@ -513,6 +531,8 @@ logicDetector->SetSensitiveDetector(sensDet);
         XposTol2 = 0.;
         YposTol2 = 0.;
         }
+
+
     GeomConfig=ArgsPass->GetGeomConfig();
     perincr=0.;
     ESRtrue=1;

@@ -117,6 +117,8 @@ void MyEventAction::EndOfEventAction(const G4Event*)
     G4double RESINL  = detectorConstruction->GetRESINL();
     G4double XPOS  = detectorConstruction->GetXPOS();
     G4double YPOS  = detectorConstruction->GetYPOS();
+    G4double XPOS2  = detectorConstruction->GetXPOS2();
+    G4double YPOS2  = detectorConstruction->GetYPOS2();
     G4int GeomConfig  = detectorConstruction->GetGC();
     G4int PC = PassArgs->GetLO();
     G4int CT = PassArgs->GetCT();
@@ -190,12 +192,14 @@ if(PassArgs->GetTree_EndOfEvent()==1){
     man->FillNtupleDColumn(4, 8, RESINL/mm);
     man->FillNtupleDColumn(4, 9, XPOS/mm);
     man->FillNtupleDColumn(4, 10, YPOS/mm);
+    man->FillNtupleDColumn(4, 10, XPOS2/mm);
+    man->FillNtupleDColumn(4, 11, YPOS2/mm);
     if (GeomConfig == 3){
-    man->FillNtupleDColumn(4, 11, CT);
-    man->FillNtupleDColumn(4, 12, CT/(PassArgs->GetEdep()/MeV));}
+    man->FillNtupleDColumn(4, 12, CT);
+    man->FillNtupleDColumn(4, 13, CT/(PassArgs->GetEdep()/MeV));}
     //else {man->FillNtupleDColumn(4, 11, 0.);}
-    man->FillNtupleDColumn(4, 13, PassArgs->GetPhotTiming());
-    man->FillNtupleDColumn(4, 14, evt);
+    man->FillNtupleDColumn(4, 14, PassArgs->GetPhotTiming());
+    man->FillNtupleDColumn(4, 15, evt);
     /*get ev number from detector!!!*/
     /*Write down particle gun position and angle (x,z,alpha_yz)*/
     man->AddNtupleRow(4);

@@ -40,6 +40,8 @@ public:
     G4double GetRESINL() const {return RESIN_L;}
     G4double GetXPOS() const {return XposTol;}
     G4double GetYPOS() const {return YposTol;}
+    G4double GetXPOS2() const {return XposTol2;}
+    G4double GetYPOS2() const {return YposTol2;}
     G4double GetGC() const {return GeomConfig;}
 
 

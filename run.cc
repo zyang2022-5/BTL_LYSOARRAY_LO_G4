@@ -76,6 +76,13 @@ MyRunAction :: ~MyRunAction()
 void MyRunAction::BeginOfRunAction(const G4Run* run)
 {
     G4UImanager *UImanager = G4UImanager::GetUIpointer();
+    command="/vis/initialize ";
+    UImanager->ApplyCommand(command);  G4cout<< command << G4endl;
+    command="/vis/drawVolume";
+    UImanager->ApplyCommand(command);  G4cout<< command << G4endl;
+    command="/vis/scene/add/trajectories smooth";
+    UImanager->ApplyCommand(command);  G4cout<< command << G4endl;
+
 
     // Initialization of G4 random generator through computer time
     G4int timeseed1=time(NULL);

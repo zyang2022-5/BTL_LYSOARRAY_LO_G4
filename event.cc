@@ -40,12 +40,6 @@ MyEventAction::~MyEventAction()
 void MyEventAction::BeginOfEventAction(const G4Event *anEvent)
 {
     G4UImanager *UImanager = G4UImanager::GetUIpointer();
-    command="/vis/initialize ";
-    UImanager->ApplyCommand(command);  G4cout<< command << G4endl;
-    command="/vis/drawVolume";
-    UImanager->ApplyCommand(command);  G4cout<< command << G4endl;
-    command="/vis/scene/add/trajectories smooth";
-    UImanager->ApplyCommand(command);  G4cout<< command << G4endl;
     PassArgs->InitAllCount();
 
  // Run status

@@ -1,6 +1,5 @@
 #include "tracking.hh"
 
-
 MyTrackingAction::MyTrackingAction(MyEventAction *eventAction,MyG4Args *MainArgs)
 {
     PassArgs=MainArgs;

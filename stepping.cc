@@ -21,8 +21,8 @@ void MySteppingAction::UserSteppingAction(const G4Step *step)
 //////////////////////////////////////////////////////////////////////////////
     G4LogicalVolume *fScoringVolume  = detectorConstruction->GetScoringVolume();
     //G4LogicalVolume *fDetectorVolume  = detectorConstruction->GetDetectorVolume();
-    //if(step -> GetTrack() -> GetTrackID() != 1) {
-    if(step -> GetTrack() -> GetDefinition() == G4Electron::Definition()) {
+
+    if(step -> GetTrack() -> GetDefinition() != G4OpticalPhoton::Definition()) {
         if(volume != fScoringVolume)
             return;
         G4double edep = step->GetTotalEnergyDeposit();  

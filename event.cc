@@ -5,8 +5,6 @@ MyEventAction::MyEventAction(MyRunAction*,MyG4Args* MainArgs)
     PassArgs=MainArgs;
 
 
-
-
     PDE = new G4PhysicsOrderedFreeVector();
     G4double Vov=PassArgs->GetVov();
     std::ifstream datafile;
@@ -131,7 +129,7 @@ void MyEventAction::EndOfEventAction(const G4Event*)
     G4cout<< "#####################" << G4endl;
     G4cout<< "Event Nº: " << evt << G4endl;
     G4cout<< "Primary position command: " << command << G4endl;
-    G4cout<< "Energy deposition: " << PassArgs->GetEdep()/MeV << " [MeV] " << G4endl;
+    G4cout<< "Energy deposition: " << PassArgs->GetEdep()/MeV << " [MeV] Performed :" << PassArgs->GetNEdep() << " times"<< G4endl;
     G4cout<< "Photons created end of event: " << PassArgs->GetTP() << G4endl;
     G4cout<< "Photon Hits end of event: " << PassArgs->GetPhHits() << G4endl;
     G4cout<< "Estimated PDE (420nm, 3.5OV): " << PDE420 << G4endl;
@@ -162,7 +160,7 @@ void MyEventAction::EndOfEventAction(const G4Event*)
     //G4cout<< "Event Nº: " << evt << G4endl; Print Run number!!
     G4cout<< "Event Nº: " << evt << G4endl;
     G4cout<< "Primary position command: " << command << G4endl;
-    G4cout<< "Energy deposition: " << PassArgs->GetEdep()/MeV << " [MeV] " << G4endl;
+    G4cout<< "Energy deposition: " << PassArgs->GetEdep()/MeV << " [MeV] Performed :" << PassArgs->GetNEdep() << " times"<< G4endl;
     G4cout<< "Photons created end of event: " << PassArgs->GetTP() << G4endl;
     G4cout<< "Photon Hits end of event: " << PassArgs->GetPhHits() << G4endl;
     G4cout<< "Estimated PDE (420nm, 3.5OV): " << PDE420 << G4endl;

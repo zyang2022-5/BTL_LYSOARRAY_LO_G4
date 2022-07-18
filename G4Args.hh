@@ -44,6 +44,7 @@ public:
     void InitLO(){ArgLO = 0;}
     void InitCT(){ArgCrossTalk = 0;}
 
+    void AddNEdep(){NEdep += 1;}
     void AddEdep(G4double Edepadd){Edep += Edepadd;}
     void AddPhHit(){PhHit += 1;}
     void AddLO(){ArgLO += 1;}
@@ -59,6 +60,7 @@ public:
     G4int GetNPhotR() const {return nPhotR;}
     G4int GetPhHits() const {return PhHit;}
     G4double GetEdep() const {return Edep;}
+    G4int GetNEdep() const {return NEdep;}
 private:
 
     // Default values modifiable by arguments and able to be returned!!!
@@ -91,6 +93,7 @@ private:
     G4double Edep=0.;
     G4int nPhotR=0;
     G4int nPhotL=0;
+    G4int NEdep=0;
 
 
 };    

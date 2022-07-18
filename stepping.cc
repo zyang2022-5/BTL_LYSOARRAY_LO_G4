@@ -27,6 +27,7 @@ void MySteppingAction::UserSteppingAction(const G4Step *step)
             return;
         G4double edep = step->GetTotalEnergyDeposit();  
         PassArgs->AddEdep(edep);
+        PassArgs->AddNEdep();
     }
 //////////////////////////////////////////////////////////////////////////////
 // Gamma Information

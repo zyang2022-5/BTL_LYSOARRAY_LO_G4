@@ -89,14 +89,24 @@ if (PassArgs->GetTree_Detected() == 1){
         man->FillNtupleDColumn(1, 7,  Tlength/mm);
         man->AddNtupleRow(1);
         countdet=countdet+1;
+        //G4cout<< "Photon "<< PassArgs->GetLO() <<" GTiming : " << timeG/ps << G4endl;
         if (PassArgs->GetGeomConfig()==3 && posPhoton[0]/mm>-3.1 && posPhoton[0]/mm<-0.01){
             PassArgs->AddLO();
-            if(posPhoton[2]/mm>0){PassArgs->AddPhotR();
-            }else{PassArgs->AddPhotL();}
+            if(posPhoton[2]/mm>0){
+                PassArgs->AddPhotR();
+            }else{
+                PassArgs->AddPhotL();
+            }
+            if(PassArgs->GetTimeTrue()==1){PassArgs->AddPhotTiming(posPhoton[2]/mm , timeG/ps);}
         } else if (PassArgs->GetGeomConfig()==3){PassArgs->AddCT();
-        } else if (PassArgs->GetGeomConfig()==1){PassArgs->AddLO();
-            if(posPhoton[2]/mm>0){PassArgs->AddPhotR();
-            }else{PassArgs->AddPhotL();}
+        } else if (PassArgs->GetGeomConfig()==1){
+            PassArgs->AddLO();
+            if(posPhoton[2]/mm>0){
+                PassArgs->AddPhotR();
+            }else{
+                PassArgs->AddPhotL();
+            }
+            if(PassArgs->GetTimeTrue()==1){PassArgs->AddPhotTiming(posPhoton[2]/mm , timeG/ps);}
         }
     }
 }

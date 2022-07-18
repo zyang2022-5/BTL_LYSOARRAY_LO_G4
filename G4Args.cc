@@ -1,9 +1,10 @@
 #include "G4Args.hh"
 
+
 MyG4Args :: MyG4Args(int mainargc,char** mainargv)
 { 
 
-G4cout<< " ### Processing Command line Arguments to the sim : " <<G4endl;          
+G4cout<< " ### Processing Command lisne Arguments to the sim : " <<G4endl;          
     for (int j = 1; j < mainargc; j=j+1){
                 if(strcmp(mainargv[j],"-o")==0)
                 {   
@@ -131,6 +132,15 @@ G4cout<< " ### Processing Command line Arguments to the sim : " <<G4endl;
                     GeomConfig = atoi(mainargv[j+1]); j=j+1;
                     G4cout<< " ### Geometry Configuration Changed to :"<< GeomConfig <<G4endl;         
                 }
+                else if(strcmp(mainargv[j],"-NPhotTiming")==0)
+                {   
+                    NPhotTiming = atoi(mainargv[j+1]); j=j+1;
+                    G4cout<< " ### Number of photons used for the timing Changed to :"<< NPhotTiming <<G4endl;         
+                }else if(strcmp(mainargv[j],"-noTiming")==0)
+                {   
+                    TimeTrue = 0;
+                    G4cout<< " ### No timing calculation performed" <<G4endl;         
+                }
         }
 
     if (Oin == 0 ) {  OutName = DefOutName;   }
@@ -138,4 +148,57 @@ G4cout<< " ### Processing Command line Arguments to the sim : " <<G4endl;
 }
 MyG4Args :: ~MyG4Args()
 {}
+
+void MyG4Args :: AddPhotTiming(G4double Hitpos, G4double MeasTime ){
+
+
+    //int i;
+    if(Hitpos>0) {
+        if(nPhotR<=NPhotTiming){
+            TListR[nPhotR-1]=MeasTime;
+        } else if (nPhotR==NPhotTiming+1){
+           quickSort(TListR, 0, NPhotTiming - 1);
+            if(TListR[NPhotTiming-1]>MeasTime){
+                TListR[NPhotTiming-1]=MeasTime;
+                quickSort(TListR, 0, NPhotTiming - 1);
+            }
+        } else {
+            if(TListR[NPhotTiming-1]>MeasTime){
+                TListR[NPhotTiming-1]=MeasTime;
+                quickSort(TListR, 0, NPhotTiming - 1);
+            }
+        }
+
+    }else{
+        if(nPhotL<=NPhotTiming){
+            TListL[nPhotL-1]=MeasTime;  
+        } else if (nPhotL==NPhotTiming+1){
+           quickSort(TListL, 0, NPhotTiming - 1);
+            if(TListR[NPhotTiming-1]>MeasTime){
+                TListR[NPhotTiming-1]=MeasTime;
+                quickSort(TListR, 0, NPhotTiming - 1);
+            }
+        } else {
+            if(TListR[NPhotTiming-1]>MeasTime){
+                TListR[NPhotTiming-1]=MeasTime;
+                quickSort(TListR, 0, NPhotTiming - 1);
+            }
+        }
+    }
+}    
+
+
+G4double MyG4Args :: GetPhotTiming(){
+int j;
+    for (j = 0; j < NPhotTiming; j+=1){
+    //G4cout<< "Photon Gtimes : " << TListL[j] << " "<< TListR[j] << G4endl;
+        AvgTiming+=(TListL[j]+TListR[j]);
+    }
+    AvgTiming=AvgTiming/NPhotTiming/2.;
+    return AvgTiming;
+}
+
+
+
+
 

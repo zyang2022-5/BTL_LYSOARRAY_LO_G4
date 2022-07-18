@@ -140,6 +140,7 @@ void MyEventAction::EndOfEventAction(const G4Event*)
     G4cout<< "Photons detected in the Right SiPM: " << PassArgs->GetNPhotR() << G4endl;
     G4cout<< "Photons detected in the Left SiPM: " << PassArgs->GetNPhotL() << G4endl;
     G4cout<< "Light Output Average (LO/2.) end of event: " << PC/(PassArgs->GetEdep()/MeV)/2. << G4endl;
+    if(PassArgs->GetTimeTrue()==1){G4cout<< "Global Timing: " << PassArgs->GetPhotTiming() << G4endl;}
     G4cout<< "#####################" << G4endl;
     G4cout<< "#####################" << G4endl;
         }else if (GeomConfig == 2){
@@ -172,6 +173,7 @@ void MyEventAction::EndOfEventAction(const G4Event*)
     G4cout<< "Light Output Average (LO/2.) end of event: " << PC/(PassArgs->GetEdep()/MeV)/2. << G4endl;
     G4cout<< "Real Number of Cross-Talk Photons Detected: " << CT << G4endl;
     G4cout<< "Cross-Talk/MeV (nxSiPM) end of event: " << CT/(PassArgs->GetEdep()/MeV) << G4endl;
+    if(PassArgs->GetTimeTrue()==1){G4cout<< "Global Timing: " << PassArgs->GetPhotTiming() << G4endl;}
     G4cout<< "#####################" << G4endl;
     G4cout<< "#####################" << G4endl;
         }
@@ -194,7 +196,8 @@ if(PassArgs->GetTree_EndOfEvent()==1){
     man->FillNtupleDColumn(4, 11, CT);
     man->FillNtupleDColumn(4, 12, CT/(PassArgs->GetEdep()/MeV));}
     //else {man->FillNtupleDColumn(4, 11, 0.);}
-    man->FillNtupleDColumn(4, 13, evt);
+    man->FillNtupleDColumn(4, 13, PassArgs->GetPhotTiming());
+    man->FillNtupleDColumn(4, 14, evt);
     /*get ev number from detector!!!*/
     /*Write down particle gun position and angle (x,z,alpha_yz)*/
     man->AddNtupleRow(4);

@@ -3,6 +3,9 @@
 #include "G4RunManager.hh" /* Run */
 #include <cstdlib>
 #include <iostream>
+#include <algorithm>    // std::sort
+#include <vector>       // std::vector
+#include "util.hh"
 
 class MyG4Args 
 {
@@ -32,8 +35,11 @@ public:
     G4int GetGeomConfig() const {return GeomConfig;}
     G4int GetVis() const {return VisTrue;}
     G4int GetStepSize() const {return StepSize;}
+    G4double GetNPhotTiming() const {return NPhotTiming;}
+    G4double GetPhotTiming();
+    G4int GetTimeTrue() const {return TimeTrue;}
 
-    void InitAllCount(){ArgLO = 0;ArgCrossTalk = 0;TotPh = 0;PhHit=0;Edep=0.;nPhotL=0;nPhotR=0;}
+    void InitAllCount(){ArgLO = 0;ArgCrossTalk = 0;TotPh = 0;PhHit=0;Edep=0.;nPhotL=0;nPhotR=0;PhotTiming[1]=0.;}
     void InitTotPh(){TotPh = 0;}
     void InitLO(){ArgLO = 0;}
     void InitCT(){ArgCrossTalk = 0;}
@@ -45,6 +51,7 @@ public:
     void AddTP(){TotPh += 1;}
     void AddPhotR(){nPhotR += 1;}
     void AddPhotL(){nPhotL += 1;}    
+    void AddPhotTiming(G4double , G4double);
     G4int GetLO() const {return ArgLO;}
     G4int GetCT() const {return ArgCrossTalk;}
     G4int GetTP() const {return TotPh;}
@@ -69,6 +76,12 @@ private:
     G4double StepSize=0.;    
     G4int GeomConfig=1;
     G4int VisTrue=1;
+    G4int TimeTrue=1;
+    G4int NPhotTiming=10;
+    G4double AvgTiming;
+    G4double PhotTiming[2]={10.,0.};
+    G4double TListR[10],TListL[10];
+ 
 
 // Counters!!!
     G4int ArgLO=0;
@@ -78,6 +91,7 @@ private:
     G4double Edep=0.;
     G4int nPhotR=0;
     G4int nPhotL=0;
+
 
 };    
 

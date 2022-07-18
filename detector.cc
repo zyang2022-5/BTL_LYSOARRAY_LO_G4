@@ -59,7 +59,7 @@ G4bool MySensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *ROhis
 
     G4double timeG=preStepPoint->GetGlobalTime();// time restarted every time an event starts
     G4double timeL=preStepPoint->GetLocalTime(); // starts counting when the particle is created. Differece in case of decay.
-    UNUSED(timeL);
+    //UNUSED(timeL);
     G4int evt = G4RunManager::GetRunManager()->GetCurrentEvent()->GetEventID();
 
     // Fill columns of output file
@@ -84,9 +84,10 @@ if (PassArgs->GetTree_Detected() == 1){
         man->FillNtupleDColumn(1, 2,  posPhoton[1]/mm);
         man->FillNtupleDColumn(1, 3,  posPhoton[2]/mm);
         man->FillNtupleDColumn(1, 4,  timeG/ps);
-        man->FillNtupleDColumn(1, 5,  PDElim);
-        man->FillNtupleDColumn(1, 6,  wlen);
-        man->FillNtupleDColumn(1, 7,  Tlength/mm);
+        man->FillNtupleDColumn(1, 5,  timeL/ps);
+        man->FillNtupleDColumn(1, 6,  PDElim);
+        man->FillNtupleDColumn(1, 7,  wlen);
+        man->FillNtupleDColumn(1, 8,  Tlength/mm);
         man->AddNtupleRow(1);
         countdet=countdet+1;
         //G4cout<< "Photon "<< PassArgs->GetLO() <<" GTiming : " << timeG/ps << G4endl;

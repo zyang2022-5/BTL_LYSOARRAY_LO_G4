@@ -38,6 +38,8 @@ public:
     G4double GetNPhotTiming() const {return NPhotTiming;}
     G4double GetPhotTiming();
     G4int GetTimeTrue() const {return TimeTrue;}
+    G4double GetKillTL() const {return KillLTime;}
+    G4int GetKillTLTrue() const {return KillLTTrue;}
 
     void InitAllCount(){ArgLO = 0;ArgCrossTalk = 0;TotPh = 0;PhHit=0;Edep=0.;nPhotL=0;nPhotR=0;PhotTiming[1]=0.;}
     void InitTotPh(){TotPh = 0;}
@@ -74,7 +76,7 @@ private:
     G4String OutName, MacName;
     G4double Detection[2]={3.5,1};//Options to modify photon detection
     G4String DefOutName="DefaultOutputName_Run";
-    G4int KillSim[4]={0,0,0,0}; // Options on how to kill the simulation {Method(0 = all tracks have been killed, 1= nphotons have been detected at each SiPM, 2= x time has passed, 3= kills all photons after x local time, 4= use all parameters to kill the simulation) ,nphotons, global time, local time...}
+    G4double KillSim[4]={0.,0.,0.,0.}; // Options on how to kill the simulation {Method(0 = all tracks have been killed, 1= nphotons have been detected at each SiPM, 2= x time has passed, 3= kills all photons after x local time, 4= use all parameters to kill the simulation) ,nphotons, global time, local time...}
     G4double StepSize=0.;    
     G4int GeomConfig=1;
     G4int VisTrue=1;
@@ -83,6 +85,8 @@ private:
     G4double AvgTiming;
     G4double PhotTiming[2]={10.,0.};
     G4double TListR[10],TListL[10];
+    G4double KillLTime=200;
+    G4int KillLTTrue=0;
  
 
 // Counters!!!

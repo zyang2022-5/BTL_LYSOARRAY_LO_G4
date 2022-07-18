@@ -31,7 +31,8 @@ MyRunAction :: MyRunAction(G4String OutName,MyG4Args* MainArgs)
             man->CreateNtupleDColumn("fX");
             man->CreateNtupleDColumn("fY");
             man->CreateNtupleDColumn("fZ");
-            man->CreateNtupleDColumn("ftime");
+            man->CreateNtupleDColumn("ftimeG");
+            man->CreateNtupleDColumn("ftimeL");
             man->CreateNtupleDColumn("fPDE");
             man->CreateNtupleDColumn("fwlen");
             man->CreateNtupleDColumn("fMeanPath");

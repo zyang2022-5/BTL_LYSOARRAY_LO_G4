@@ -140,6 +140,10 @@ G4cout<< " ### Processing Command lisne Arguments to the sim : " <<G4endl;
                 {   
                     TimeTrue = 0;
                     G4cout<< " ### No timing calculation performed" <<G4endl;         
+                }else if(strcmp(mainargv[j],"-KillLT")==0)
+                {   
+                    KillLTTrue = 1;KillLTime = atof(mainargv[j+1]);j=j+1;
+                    G4cout<< " ### Killing photons after "<< KillLTime <<" ps" <<G4endl;         
                 }
         }
 

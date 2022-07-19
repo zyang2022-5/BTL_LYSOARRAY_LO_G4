@@ -13,7 +13,7 @@ Makefile.dep:
 
 -include Makefile.dep
 
-sim: action.o construction.o detector.o event.o generator.o physics.o run.o sim.o stepping.o tracking.o G4Args.o
+sim: action.o construction.o detector.o event.o generator.o physics.o run.o sim.o stepping.o tracking.o G4Args.o util.o
 
 geant4:
 	test ! -f geant4-v11.0.2.tar.gz && \

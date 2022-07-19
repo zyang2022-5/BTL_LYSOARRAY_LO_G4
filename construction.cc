@@ -559,6 +559,12 @@ logicDetector->SetSensitiveDetector(sensDet);
     fMessenger_YPos = new G4GenericMessenger(this, "/detector/","Detector Construction");
     fMessenger_YPos->DeclareProperty("YposTol", YposTol, "Glue average thickness");
 
+    fMessenger_XPos2 = new G4GenericMessenger(this, "/detector/","Detector Construction");
+    fMessenger_XPos2->DeclareProperty("XposTol2", XposTol2, "Glue average thickness");
+
+    fMessenger_YPos2 = new G4GenericMessenger(this, "/detector/","Detector Construction");
+    fMessenger_YPos2->DeclareProperty("YposTol2", YposTol2, "Glue average thickness");
+
     fMessenger_GC = new G4GenericMessenger(this, "/detector/","Detector Construction");
     fMessenger_GC->DeclareProperty("GeomConfig", GeomConfig, "1 == Bar ; 2 == Tile");
     

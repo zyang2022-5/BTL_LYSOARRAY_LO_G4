@@ -203,6 +203,16 @@ int j;
 }
 
 
+void MyG4Args :: GeomReinit( ){
+G4UImanager *UImanager = G4UImanager::GetUIpointer();
+G4String command="/run/reinitializeGeometry";
+UImanager->ApplyCommand(command);  
+G4cout<< command << G4endl;
+}
+
+
+
+
 
 
 

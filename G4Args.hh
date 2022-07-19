@@ -6,6 +6,7 @@
 #include <algorithm>    // std::sort
 #include <vector>       // std::vector
 #include "util.hh"
+#include "G4UImanager.hh"
 
 class MyG4Args 
 {
@@ -41,6 +42,8 @@ public:
     G4int GetTimeTrue() const {return TimeTrue;}
     G4double GetKillTL() const {return KillLTime;}
     G4int GetKillTLTrue() const {return KillLTTrue;}
+
+    void GeomReinit();
 
     void InitAllCount(){ArgLO = 0;ArgCrossTalk = 0;TotPh = 0;PhHit=0;Edep=0.;nPhotL=0;nPhotR=0;PhotTiming[1]=0.;}
     void InitTotPh(){TotPh = 0;}

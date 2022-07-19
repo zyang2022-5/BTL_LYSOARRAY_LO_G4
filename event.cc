@@ -26,8 +26,6 @@ MyEventAction::MyEventAction(MyRunAction*,MyG4Args* MainArgs)
 
     datafile.close();
     PDE420 = PDE->Value(420.);
-    G4UImanager *UImanager = G4UImanager::GetUIpointer();
-    UImanager->ApplyCommand("/run/reinitializeGeometry");
 }
 
 MyEventAction::~MyEventAction()

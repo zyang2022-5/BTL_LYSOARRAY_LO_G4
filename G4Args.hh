@@ -91,7 +91,7 @@ private:
 
     // Default values modifiable by arguments and able to be returned!!!
     G4int Oin=0; 
-    G4int nrep=1; 
+    G4int nrep=0; 
     G4int MainTrees[6]={0, 1, 0, 0, 1, 0};// Options to write(1)/orNot(0) the different output trees {Arrivals,Detected,Stepping,Tracking,EndOfEvent}
     G4double LYSOProps[4]={40000.,0.,60.,39.1};//Options to modify default LYSO properties {Yield,ScaleResolution,RiseTime,DecayTime}
     G4int RndGen[3]={1,1,1};             // Options regarding the random generator {Init,Particle,Geometry}

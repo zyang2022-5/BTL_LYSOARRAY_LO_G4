@@ -133,7 +133,7 @@ void MyRunAction::EndOfRunAction(const G4Run* run)
     G4int runid=run-> GetRunID();
     G4cout<<"#################### " <<G4endl;
     G4cout<<"### END OF RUN: " << run-> GetRunID() << " ### " <<G4endl;
-    if(PassArgs->Getnrep()>1){
+    if(PassArgs->Getnrep()>0){
         for (G4int i = 0; i < PassArgs->GetnEvents(); i=i+1){
                 PassArgs-> FillAvgTim(runid);
                 PassArgs-> FillAvgLO(runid); 

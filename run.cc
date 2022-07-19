@@ -73,6 +73,11 @@ MyRunAction :: MyRunAction(G4String OutName,MyG4Args* MainArgs)
             man->CreateNtupleDColumn("fevt");
             man->FinishNtuple(4); // Finish our first tuple or Ntuple number 0
 
+         // Tuple containing all data fregarding the estimations written to screen at the end of each event
+            man->CreateNtuple("EndOfRun","EndOfRun");   // Scoring
+            man->CreateNtupleDColumn("frun");
+            man->FinishNtuple(5); // Finish our first tuple or Ntuple number 0
+
 }
 MyRunAction :: ~MyRunAction()
 {}
@@ -117,9 +122,20 @@ void MyRunAction::BeginOfRunAction(const G4Run* run)
     man->OpenFile("./Results/"+OutputName+strRunID.str()+".root");
 
 }
-void MyRunAction::EndOfRunAction(const G4Run*)
+void MyRunAction::EndOfRunAction(const G4Run* run)
 {
     G4UImanager *UImanager = G4UImanager::GetUIpointer();
+    
+    // Storage single values per run
+    if(PassArgs->GetTree_EndOfRun()==1){
+        G4AnalysisManager *man = G4AnalysisManager::Instance();
+        // LYSO average
+        // LYSO standard deviation
+        // Timing standard deviation
+        // geometry values
+        man->FillNtupleDColumn(5, 0, run-> GetRunID());
+        man->AddNtupleRow(5);
+    }
 
     // Modify random parameter in the geometry 
     //  #### This does nothing unless we do another run, the geometry can only be changed in between runs not events !!!

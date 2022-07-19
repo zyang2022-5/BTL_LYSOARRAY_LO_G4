@@ -23,7 +23,9 @@ G4cout<< " ### Processing Command lisne Arguments to the sim : " <<G4endl;
                     MacName = mainargv[j+1];
                     nrep =  atoi(mainargv[j+2]);j=j+2;
                     G4cout<< " ### Set Run Macro name to : " << MacName <<G4endl;         
-                    G4cout<< " ### Number of runs : " << nrep <<G4endl;       
+                    G4cout<< " ### Number of runs : " << nrep <<G4endl;     
+                    nEvents=FindEvents(MacName);
+                    G4cout<< " ### Number of events : " << nEvents <<G4endl;  
                 }
                 else if(strcmp(mainargv[j],"-m")==0)
                 {   
@@ -31,7 +33,9 @@ G4cout<< " ### Processing Command lisne Arguments to the sim : " <<G4endl;
                     MacName = mainargv[j+1];j=j+1;
                     nrep =  1;      
                     G4cout<< " ### Set Run Macro name to : " << MacName <<G4endl;         
-                    G4cout<< " ### Number of runs : " << nrep <<G4endl;       
+                    G4cout<< " ### Number of runs : " << nrep <<G4endl;  
+                    nEvents=FindEvents(MacName);
+                    G4cout<< " ### Number of events : " << nEvents <<G4endl;  
                 }
                 else if(strcmp(mainargv[j],"-rnd")==0)
                 {   
@@ -208,6 +212,41 @@ G4UImanager *UImanager = G4UImanager::GetUIpointer();
 G4String command="/run/reinitializeGeometry";
 UImanager->ApplyCommand(command);  
 G4cout<< command << G4endl;
+}
+
+G4int MyG4Args :: FindEvents(G4String macname ){
+
+    //std::ifstream macfile(macname);
+    std::ifstream macfile;
+    macfile.open(macname);
+    std::string line;
+    G4int cont, nEvent;
+    if (macfile)
+    {
+
+        while(!macfile.eof())
+        {
+            cont=cont+1;
+         
+            macfile >> line;
+            G4cout << line  << G4endl;
+            if (line.compare("/run/beamOn") == 0){
+            //G4cout << "Found line: " << line  << G4endl;            
+            macfile >> line;
+            nEvent=atoi(line.c_str());
+            //G4cout << "nEvents found: " << nEvent  << G4endl;
+            }
+
+
+        }
+        //std::string line = getLastLine(file);
+        //std::cout << line << '\n';
+        
+    }
+    else{std::cout << "Unable to open file.\n";}
+
+
+    return nEvent;
 }
 
 

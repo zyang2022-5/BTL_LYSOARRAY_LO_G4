@@ -7,6 +7,9 @@
 #include <vector>       // std::vector
 #include "util.hh"
 #include "G4UImanager.hh"
+#include <fstream>
+#include <cstring>
+
 
 class MyG4Args 
 {
@@ -44,11 +47,13 @@ public:
     G4int GetKillTLTrue() const {return KillLTTrue;}
 
     void GeomReinit();
+    G4int FindEvents(G4String);
 
     void InitAllCount(){ArgLO = 0;ArgCrossTalk = 0;TotPh = 0;PhHit=0;Edep=0.;nPhotL=0;nPhotR=0;PhotTiming[1]=0.;}
     void InitTotPh(){TotPh = 0;}
     void InitLO(){ArgLO = 0;}
     void InitCT(){ArgCrossTalk = 0;}
+
 
     void AddNEdep(){NEdep += 1;}
     void AddEdep(G4double Edepadd){Edep += Edepadd;}
@@ -91,6 +96,7 @@ private:
     G4double TListR[10],TListL[10];
     G4double KillLTime=200;
     G4int KillLTTrue=0;
+    G4int nEvents=0;
  
 
 // Counters!!!

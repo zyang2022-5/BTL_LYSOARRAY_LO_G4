@@ -15,12 +15,12 @@ MySensitiveDetector::MySensitiveDetector(G4String name, MyG4Args* MainArgs) : G4
     G4double Eff420=(0.393 * 1.0228) * ( 1 - exp(-0.583*Vov) );
     while(!datafile.eof())
     {
-        G4cout << cont << std::endl;
+        //G4cout << cont << std::endl;
         cont=cont+1;
      
         datafile >> wlendat;
         datafile >> queffdat;
-        G4cout << wlendat << " " << queffdat << std::endl;
+        //G4cout << wlendat << " " << queffdat << std::endl;
 
         PDE->InsertValues(wlendat, queffdat*Eff420/1.);
     }

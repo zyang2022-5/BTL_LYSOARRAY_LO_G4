@@ -141,6 +141,13 @@ void MyEventAction::EndOfEventAction(const G4Event*)
     if(PassArgs->GetTimeTrue()==1){G4cout<< "Global Timing: " << PassArgs->GetPhotTiming() << G4endl;}
     G4cout<< "#####################" << G4endl;
     G4cout<< "#####################" << G4endl;
+
+    // Fill evt values
+    if(PassArgs->Getnrep()>0){
+    PassArgs->FillEvtLO(evt, PC/(PassArgs->GetEdep()/MeV)/2.);
+    if(PassArgs->GetTimeTrue()==1){PassArgs->FillEvtTim(evt,  PassArgs->GetPhotTiming());}
+    }   
+
         }else if (GeomConfig == 2){
     G4cout<< "#####################" << G4endl;
     G4cout<< "#####################" << G4endl;
@@ -174,6 +181,12 @@ void MyEventAction::EndOfEventAction(const G4Event*)
     if(PassArgs->GetTimeTrue()==1){G4cout<< "Global Timing: " << PassArgs->GetPhotTiming() << G4endl;}
     G4cout<< "#####################" << G4endl;
     G4cout<< "#####################" << G4endl;
+
+    // Fill evt values
+    if(PassArgs->Getnrep()>0){
+    PassArgs->FillEvtLO(evt, PC/(PassArgs->GetEdep()/MeV)/2.);
+    if(PassArgs->GetTimeTrue()==1){PassArgs->FillEvtTim(evt,  PassArgs->GetPhotTiming());}
+    } 
         }
     }
 

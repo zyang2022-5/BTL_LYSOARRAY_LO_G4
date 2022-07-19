@@ -75,6 +75,10 @@ MyRunAction :: MyRunAction(G4String OutName,MyG4Args* MainArgs)
 
          // Tuple containing all data fregarding the estimations written to screen at the end of each event
             man->CreateNtuple("EndOfRun","EndOfRun");   // Scoring
+            man->CreateNtupleDColumn("fLOAvg"); 
+            man->CreateNtupleDColumn("fLOStd"); 
+            man->CreateNtupleDColumn("fTimAvg"); 
+            man->CreateNtupleDColumn("fTimStd");
             man->CreateNtupleDColumn("frun");
             man->FinishNtuple(5); // Finish our first tuple or Ntuple number 0
 
@@ -125,17 +129,39 @@ void MyRunAction::BeginOfRunAction(const G4Run* run)
 void MyRunAction::EndOfRunAction(const G4Run* run)
 {
     G4UImanager *UImanager = G4UImanager::GetUIpointer();
-    
-    // Storage single values per run
-    if(PassArgs->GetTree_EndOfRun()==1){
-        G4AnalysisManager *man = G4AnalysisManager::Instance();
-        // LYSO average
-        // LYSO standard deviation
-        // Timing standard deviation
-        // geometry values
-        man->FillNtupleDColumn(5, 0, run-> GetRunID());
-        man->AddNtupleRow(5);
+    // Fill G4Args Run values
+    G4int runid=run-> GetRunID();
+    if(PassArgs->Getnrep()>0){
+        for (G4int i = 0; i < PassArgs->GetnEvents(); i=i+1){
+                PassArgs-> FillAvgTim(runid);
+                PassArgs-> FillAvgLO(runid); 
+                PassArgs-> FillStdTim(runid);
+                PassArgs-> FillStdLO(runid);
+        }
+        if(PassArgs->GetTree_EndOfRun()==1){
+        // Storage single values per run
+            for (G4int j = 0; j < runid; j=j+1){
+                G4AnalysisManager *man = G4AnalysisManager::Instance();
+                man->FillNtupleDColumn(5, 0, PassArgs->GetLOAvg(runid));
+                man->FillNtupleDColumn(5, 1, PassArgs->GetLOStd(runid));
+                man->FillNtupleDColumn(5, 2, PassArgs->GetTimAvg(runid));
+                man->FillNtupleDColumn(5, 3, PassArgs->GetTimStd(runid));
+                man->FillNtupleDColumn(5, 4, PassArgs->GetnEvtEdep(runid));
+                // geometry values
+                man->FillNtupleDColumn(5, 5, j);
+                man->AddNtupleRow(5);
+            }
+        }
     }
+    G4cout<<"#################### " <<G4endl;
+    G4cout<<"### END OF RUN: " << run-> GetRunID() << " ### " <<G4endl;
+    G4cout<<"* Average LO: " << PassArgs->GetLOAvg(runid) <<G4endl;
+    G4cout<<"* Std LO: " << PassArgs->GetLOStd(runid) <<G4endl;
+    G4cout<<"* Average Timing: " << PassArgs->GetTimAvg(runid) <<G4endl;
+    G4cout<<"* Std Timing: " << PassArgs->GetTimStd(runid) <<G4endl;
+    G4cout<<"* Number of events with energy deposition: " << PassArgs->GetnEvtEdep(runid) <<G4endl;
+    G4cout<<"### END OF RUN: " << run-> GetRunID() << " ### " <<G4endl;
+    G4cout<<"#################### " <<G4endl;
 
     // Modify random parameter in the geometry 
     //  #### This does nothing unless we do another run, the geometry can only be changed in between runs not events !!!

@@ -26,6 +26,16 @@ G4cout<< " ### Processing Command lisne Arguments to the sim : " <<G4endl;
                     G4cout<< " ### Number of runs : " << nrep <<G4endl;     
                     nEvents=FindEvents(MacName);
                     G4cout<< " ### Number of events : " << nEvents <<G4endl;  
+                    nEventTiming = new G4double[nEvents];
+                    nEventLO = new G4double[nEvents];
+
+                    nRunTimingAvg = new G4double[nrep];
+                    nRuntLOAvg = new G4double[nrep];
+                    nRunTimingStd = new G4double[nrep];
+                    nRuntLOStd = new G4double[nrep];
+                    nEdepEvts = new G4int[nrep];
+                    MainTrees[5]=1;
+
                 }
                 else if(strcmp(mainargv[j],"-m")==0)
                 {   
@@ -36,6 +46,15 @@ G4cout<< " ### Processing Command lisne Arguments to the sim : " <<G4endl;
                     G4cout<< " ### Number of runs : " << nrep <<G4endl;  
                     nEvents=FindEvents(MacName);
                     G4cout<< " ### Number of events : " << nEvents <<G4endl;  
+                    nEventTiming = new G4double[nEvents];
+                    nEventLO = new G4double[nEvents];
+
+                    nRunTimingAvg = new G4double[nrep];
+                    nRuntLOAvg = new G4double[nrep];
+                    nRunTimingStd = new G4double[nrep];
+                    nRuntLOStd = new G4double[nrep];
+                    nEdepEvts = new G4int[nrep];
+                    MainTrees[5]=1;
                 }
                 else if(strcmp(mainargv[j],"-rnd")==0)
                 {   
@@ -249,7 +268,56 @@ G4int MyG4Args :: FindEvents(G4String macname ){
     return nEvent;
 }
 
+void MyG4Args :: FillAvgTim(G4int runid){
+    nRunTimingAvg[runid]=0;
+    G4int cnt=0;
+    for (int j = 1; j < nEvents; j=j+1){
+        if(nEventTiming[j]>0){
+            cnt+=1;
+            nRunTimingAvg[runid]+=nEventTiming[j];      
+        }
+    }
+    nRunTimingAvg[runid]=nRunTimingAvg[runid]/cnt;
+    nEdepEvts[runid]=cnt;
+}
 
+void MyG4Args :: FillAvgLO(G4int runid) {
+
+    nRuntLOAvg[runid]=0;
+    G4int cnt=0;
+    for (int j = 1; j < nEvents; j=j+1){
+        if(nEventLO[j]>0){
+            cnt+=1;
+            nRuntLOAvg[runid]+=nEventLO[j];      
+        }
+    }
+    nRuntLOAvg[runid]=nRuntLOAvg[runid]/cnt;
+    nEdepEvts[runid]=cnt;
+}
+
+void MyG4Args :: FillStdTim(G4int runid){
+
+    G4int cnt=0;
+    for (int j = 1; j < nEvents; j=j+1){
+        if(nEventTiming[j]>0){
+            cnt+=1;
+            nRunTimingStd[runid]+=pow(nEventTiming[j]-nRunTimingAvg[runid],2);      
+        }
+    }
+    nRunTimingStd[runid]=pow(nRunTimingStd[runid]/cnt,0.5);
+    nEdepEvts[runid]=cnt;
+}
+    void MyG4Args :: FillStdLO(G4int runid){
+    G4int cnt=0;
+    for (int j = 1; j < nEvents; j=j+1){
+        if(nEventLO[j]>0){
+            cnt+=1;
+            nRuntLOStd[runid]+=pow(nEventLO[j]-nRuntLOAvg[runid],2);      
+        }
+    }
+    nRuntLOStd[runid]=pow(nRuntLOStd[runid]/cnt,0.5);
+    nEdepEvts[runid]=cnt;
+}
 
 
 

@@ -198,14 +198,14 @@ if(PassArgs->GetTree_EndOfEvent()==1){
     man->FillNtupleDColumn(4, 8, RESINL/mm);
     man->FillNtupleDColumn(4, 9, XPOS/mm);
     man->FillNtupleDColumn(4, 10, YPOS/mm);
-    man->FillNtupleDColumn(4, 10, XPOS2/mm);
-    man->FillNtupleDColumn(4, 11, YPOS2/mm);
+    man->FillNtupleDColumn(4, 11, XPOS2/mm);
+    man->FillNtupleDColumn(4, 12, YPOS2/mm);
     if (GeomConfig == 3){
-    man->FillNtupleDColumn(4, 12, CT);
-    man->FillNtupleDColumn(4, 13, CT/(PassArgs->GetEdep()/MeV));}
+    man->FillNtupleDColumn(4, 13, CT);
+    man->FillNtupleDColumn(4, 14, CT/(PassArgs->GetEdep()/MeV));}
     //else {man->FillNtupleDColumn(4, 11, 0.);}
-    man->FillNtupleDColumn(4, 14, PassArgs->GetPhotTiming());
-    man->FillNtupleDColumn(4, 15, evt);
+    man->FillNtupleDColumn(4, 15, PassArgs->GetPhotTiming());
+    man->FillNtupleDColumn(4, 16, evt);
     /*get ev number from detector!!!*/
     /*Write down particle gun position and angle (x,z,alpha_yz)*/
     man->AddNtupleRow(4);

@@ -144,11 +144,11 @@ void MyRunAction::EndOfRunAction(const G4Run* run)
         // Storage single values per run
             for (G4int j = 0; j < runid; j=j+1){
                 G4AnalysisManager *man = G4AnalysisManager::Instance();
-                man->FillNtupleDColumn(5, 0, PassArgs->GetLOAvg(runid));
-                man->FillNtupleDColumn(5, 1, PassArgs->GetLOStd(runid));
-                man->FillNtupleDColumn(5, 2, PassArgs->GetTimAvg(runid));
-                man->FillNtupleDColumn(5, 3, PassArgs->GetTimStd(runid));
-                man->FillNtupleDColumn(5, 4, PassArgs->GetnEvtEdep(runid));
+                man->FillNtupleDColumn(5, 0, PassArgs->GetLOAvg(j));
+                man->FillNtupleDColumn(5, 1, PassArgs->GetLOStd(j));
+                man->FillNtupleDColumn(5, 2, PassArgs->GetTimAvg(j));
+                man->FillNtupleDColumn(5, 3, PassArgs->GetTimStd(j));
+                man->FillNtupleDColumn(5, 4, PassArgs->GetnEvtEdep(j));
                 // geometry values
                 man->FillNtupleDColumn(5, 5, j);
                 man->AddNtupleRow(5);

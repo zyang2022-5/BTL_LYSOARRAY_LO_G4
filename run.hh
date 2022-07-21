@@ -7,7 +7,7 @@
 //#include "construction.hh"
 #include "Randomize.hh"
 //#include "sim.cc"
-
+#include "G4GenericMessenger.hh"
 
 #include <string.h>
 #include "G4AnalysisManager.hh"
@@ -21,8 +21,11 @@ public:
 
     virtual void BeginOfRunAction(const G4Run*);
     virtual void EndOfRunAction(const G4Run*);
+
+    G4String OutputName, file_name;
 private :
-    G4String command, OutputName;
+    G4String command;
+    G4GenericMessenger *fMessenger;
 };
 
 #endif

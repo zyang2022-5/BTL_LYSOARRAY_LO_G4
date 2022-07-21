@@ -11,6 +11,8 @@
 #include "detector.hh"
 #include "G4Gamma.hh"
 #include "G4Electron.hh"
+#include "G4MuonPlus.hh"
+#include "G4MuonMinus.hh"
 //#include "G4Photon.hh"
 
 class MySteppingAction : public G4UserSteppingAction

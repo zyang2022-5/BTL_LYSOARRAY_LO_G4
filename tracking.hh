@@ -6,6 +6,7 @@
 #include "G4AnalysisManager.hh"
 #include "G4Electron.hh"
 #include "G4Gamma.hh"
+#include "G4OpticalPhoton.hh"
 #include "G4UserTrackingAction.hh"
 #include "G4TrackingManager.hh"
 #include "event.hh"

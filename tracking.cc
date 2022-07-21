@@ -32,35 +32,15 @@ void MyTrackingAction::PostUserTrackingAction(const G4Track*)
     G4int StEnd;
     G4StepPoint *preSP;
     G4AnalysisManager *man = G4AnalysisManager::Instance();
-  // You can use the secTracks vector to retrieve the number of secondary 
-  // electrons
       if(secTracks) { 
          size_t nmbSecTracks = (*secTracks).size();       
 
-         for(size_t i = 0; i < nmbSecTracks; i++) { 
-            if((*secTracks)[i] -> GetDefinition() == G4Gamma::Definition()) 
-                    trPhCount++;
-                    fEventAction->AddPh(1.);/*
-                    track = (*secTracks)[i];
-                    //if(*secTracks)[i] -> GetTrackStatus() == iskilled) { // How to define if it is killed/alive??? Not needed, the PostUser... provides info when the track is about to end
-                        const G4Step* aStep  = track->GetStep();                        
-                        TlengthK =  track->GetTrackLength();
-                        TimeK    =  track->GetGlobalTime();
-                        VolK = track->GetVolume();
-                        StEnd=track-> GetCurrentStepNumber();
-                        preSP = aStep->GetPreStepPoint();
-                        //TranslVol     =  preSP->GetPosition();
-                        TranslVol = VolK ->GetTranslation();
-                        man->FillNtupleDColumn(3, 0,  TlengthK);
-                        man->FillNtupleDColumn(3, 1,  TimeK);// D==double
-                        man->FillNtupleDColumn(3, 2,  TranslVol[0]);
-                        man->FillNtupleDColumn(3, 3,  TranslVol[1]);
-                        man->FillNtupleDColumn(3, 4,  TranslVol[2]);
-                        man->AddNtupleRow(3);
-                    //}*/
-            }
+         for (size_t i = 0; i < nmbSecTracks; i++) { 
+            if ((*secTracks)[i] -> GetDefinition() == G4OpticalPhoton::Definition()) {
+                trPhCount++;
+                fEventAction->AddPh(1.);
+	    }
+        }
 
-          }
-
- 
+    }
 }

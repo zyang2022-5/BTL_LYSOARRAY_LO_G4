@@ -65,7 +65,7 @@ void MyEventAction::BeginOfEventAction(const G4Event *anEvent)
     G4cout<< "Data from construction: "<< LYSO_L << " " << LYSO_T << " " << GeomConfig << G4endl;
     
 
-    // Change of gun position between events depending on geometry (LYSO bar/tile)
+   // Change of gun position between events depending on geometry (LYSO bar/tile)
     if (GeomConfig == 1){
         GenX=(-LYSO_T+LYSO_T*2*G4UniformRand())/1000.;
         GenZ=(-LYSO_L+LYSO_L*2*G4UniformRand())/1000.;

@@ -27,6 +27,14 @@ void MySteppingAction::UserSteppingAction(const G4Step *step)
         G4double edep = step->GetTotalEnergyDeposit();  
         fEventAction->AddEdep(edep);
     }
+    if((step -> GetTrack() -> GetDefinition() == G4MuonMinus::Definition()) ||
+       (step -> GetTrack() -> GetDefinition() == G4MuonPlus::Definition())) {
+        if(volume != fScoringVolume)
+            return;
+
+        G4double edep = step->GetTotalEnergyDeposit();  
+        fEventAction->AddEdep(edep);
+    }
 //////////////////////////////////////////////////////////////////////////////
 // Gamma Information
 //////////////////////////////////////////////////////////////////////////////

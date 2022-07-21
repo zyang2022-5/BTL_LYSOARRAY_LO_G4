@@ -46,7 +46,7 @@ public:
     G4double GetKillTL() const {return KillLTime;}
     G4int GetKillTLTrue() const {return KillLTTrue;}
     G4int GetnEvents() const {return nEvents;}
-
+    G4double GetIncr() const {return incr;}
     void GeomReinit();
     G4int FindEvents(G4String);
 
@@ -114,6 +114,7 @@ private:
     G4int nEvents=0;
     G4double *nEventTiming, *nEventLO, *nRunTimingAvg, *nRuntLOAvg, *nRunTimingStd, *nRuntLOStd;        
     G4int *nEdepEvts;
+    G4double incr=0;
 
 // Counters!!!
     G4int ArgLO=0;

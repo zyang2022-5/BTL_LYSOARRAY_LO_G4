@@ -135,6 +135,11 @@ G4cout<< " ### Processing Command lisne Arguments to the sim : " <<G4endl;
                     MainTrees[atoi(mainargv[j+1])] = 1;j=j+1;
                     G4cout<< " ### Storing All Trees" <<G4endl;         
                 }
+                else if(strcmp(mainargv[j],"-LYSO_L")==0)
+                {   
+                    Geom_LYSO[2] = atof(mainargv[j+1]);j=j+1;
+                    G4cout<< " ### LYSO_L modified to :"<< Geom_LYSO[2]*2 <<G4endl;         
+                }
                 else if(strcmp(mainargv[j],"-LYSO_Yield")==0)
                 {   
                     LYSOProps[0] = atof(mainargv[j+1]);j=j+1;
@@ -167,6 +172,11 @@ G4cout<< " ### Processing Command lisne Arguments to the sim : " <<G4endl;
                 {   
                     KillLTTrue = 1;KillLTime = atof(mainargv[j+1]);j=j+1;
                     G4cout<< " ### Killing photons after "<< KillLTime <<" ps" <<G4endl;         
+                }
+                else if(strcmp(mainargv[j],"-incr")==0)
+                {   
+                    incr = atof(mainargv[j+1]);j=j+1;
+                    G4cout<< " ### The thickness of the crystal in the middle is changed to "<< incr <<G4endl;         
                 }
         }
 

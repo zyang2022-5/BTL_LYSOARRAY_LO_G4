@@ -507,7 +507,7 @@ logicDetector->SetSensitiveDetector(sensDet);
 
     void MyDetectorConstruction:: DefaultValues()
 {
-    LYSO_L = 57./2.;
+    LYSO_L = ArgsPass->GetGeom_LYSO_L();
     LYSO_thick=3./2.;
     RESIN_W=51.5/2.;
     LYSO_YIELD=ArgsPass->GetLYSO_Yield();
@@ -534,7 +534,7 @@ logicDetector->SetSensitiveDetector(sensDet);
 
 
     GeomConfig=ArgsPass->GetGeomConfig();
-    perincr=0.;
+    perincr=ArgsPass->GetIncr();
     ESRtrue=1;
     LYSO_SC1=ArgsPass->GetLYSO_DecayT();
     LYSO_RT1=ArgsPass->GetLYSO_RiseT();

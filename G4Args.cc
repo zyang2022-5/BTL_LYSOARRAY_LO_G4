@@ -2,9 +2,9 @@
 
 
 MyG4Args :: MyG4Args(int mainargc,char** mainargv)
-{ 
+{
+    G4cout << " ### Processing Command line Arguments to the sim : " << G4endl;
 
-G4cout<< " ### Processing Command lisne Arguments to the sim : " <<G4endl;          
     for (int j = 1; j < mainargc; j=j+1){
                 if(strcmp(mainargv[j],"-o")==0)
                 {   

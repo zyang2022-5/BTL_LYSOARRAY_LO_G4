@@ -9,7 +9,53 @@
 #include <vector>       // std::vector
 #include <fstream>
 #include <limits>
+#include <unistd.h> /* for access() */
+#include <stdlib.h> /* for getenv() */
+#include <stdio.h> /* for sprintf(), fopen() */
 
+/* Equivalent to fopen() but uses find_file() to find the path to the filename. */
+FILE *open_file(const char *filename, const char *mode)
+{
+    char *path;
+
+    path = find_file(filename);
+
+    if (!path) return NULL;
+
+    return fopen(path,mode);
+}
+
+/* Returns the full path to `filename` by searching the current working
+ * directory and the path specified by the environment variable
+ * BTL_LYSOARRAY_LO_G4_DATA.
+ *
+ * Returns a pointer to the full path on success or NULL if the file isn't
+ * found. */
+char *find_file(const char *filename)
+{
+    static char path[256];
+    char *dir;
+
+    /* First check in the current working directory. */
+    sprintf(path, "%s", filename);
+    if (access(path, F_OK) == 0) return path;
+
+    /* Now check in the directory specified by the environment variable
+     * BTL_LYSOARRAY_LO_G4_DATA. */
+    dir = getenv("BTL_LYSOARRAY_LO_G4_DATA");
+    if (dir) {
+        sprintf(path, "%s/%s", dir,filename);
+        if (access(path, F_OK) == 0) return path;
+    }
+
+    dir = "data";
+    if (dir) {
+        sprintf(path, "%s/%s", dir,filename);
+        if (access(path, F_OK) == 0) return path;
+    }
+
+    return NULL;
+}
 /* Read in data from a tab or space separated file with two columns. `filename`
  * should be the tsv file. `energy` and `values` should be double arrays big
  * enough to hold all the values. The values in the first column are multiplied
@@ -39,10 +85,10 @@ int read_tsv_file(const char *filename, double *energy, double *values, double x
     double value;
     int n;
 
-    FILE *f = fopen(filename, "r");
+    FILE *f = open_file(filename, "r");
 
     if (!f) {
-        fprintf(stderr, "failed to '%s': %s\n", filename, strerror(errno));
+        fprintf(stderr, "failed to open '%s': %s\n", filename, strerror(errno));
         return -1;
     }
 
@@ -60,7 +106,7 @@ int read_tsv_file(const char *filename, double *energy, double *values, double x
         if (!len) continue;
         else if (line[0] == '#') continue;
 
-        str = strtok(line," \n");
+        str = strtok(line," \t\n");
 
         j = 0;
         while (str) {
@@ -74,7 +120,7 @@ int read_tsv_file(const char *filename, double *energy, double *values, double x
                 break;
             }
             j += 1;
-            str = strtok(NULL," \n");
+            str = strtok(NULL," \t\n");
         }
 
         if (j > 1)

@@ -1,4 +1,4 @@
-CXXFLAGS=-fdiagnostics-color -O2 -g $(shell geant4-config --cflags)
+CXXFLAGS=-fdiagnostics-color -O2 -g $(shell geant4-config --cflags) -O2
 LDLIBS=-Wl,--copy-dt-needed-entries -fdiagnostics-color -lm $(shell geant4-config --libs)
 PWD=$(shell pwd)
 

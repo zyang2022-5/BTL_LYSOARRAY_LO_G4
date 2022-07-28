@@ -43,7 +43,7 @@ G4Material *get_lyso(double light_yield, double rise_time, double scale_resoluti
 
     G4double lyso_rindex_ene[1000], lyso_rindex_values[1000];
 
-    n = read_tsv_file("data/lyso_rindex.dat", lyso_rindex_ene, lyso_rindex_values, eV, 1);
+    n = read_tsv_file("lyso_rindex.dat", lyso_rindex_ene, lyso_rindex_values, eV, 1);
 
     if (n == -1) {
         fprintf(stderr, "error reading lyso_rindex.dat!\n");
@@ -54,7 +54,7 @@ G4Material *get_lyso(double light_yield, double rise_time, double scale_resoluti
 
     G4double lyso_spectrum_ene[1000], lyso_spectrum_values[1000];
 
-    n = read_tsv_file("data/lyso_scintillation_spectrum.dat", lyso_spectrum_ene, lyso_spectrum_values, eV, 1);
+    n = read_tsv_file("lyso_scintillation_spectrum.dat", lyso_spectrum_ene, lyso_spectrum_values, eV, 1);
 
     if (n == -1) {
         fprintf(stderr, "error reading lyso_scintillation_spectrum.dat!\n");
@@ -65,7 +65,7 @@ G4Material *get_lyso(double light_yield, double rise_time, double scale_resoluti
 
     G4double lyso_absorption_length_ene[1000], lyso_absorption_length_values[1000];
 
-    n = read_tsv_file("data/lyso_absorption_length.dat", lyso_absorption_length_ene, lyso_absorption_length_values, eV, mm);
+    n = read_tsv_file("lyso_absorption_length.dat", lyso_absorption_length_ene, lyso_absorption_length_values, eV, mm);
 
     if (n == -1) {
         fprintf(stderr, "error reading lyso_absorption_length.dat!\n");
@@ -77,7 +77,7 @@ G4Material *get_lyso(double light_yield, double rise_time, double scale_resoluti
 
     G4double lyso_scattering_length_ene[1000], lyso_scattering_length_values[1000];
 
-    n = read_tsv_file("data/lyso_scattering_length.dat", lyso_scattering_length_ene, lyso_scattering_length_values, eV, mm);
+    n = read_tsv_file("lyso_scattering_length.dat", lyso_scattering_length_ene, lyso_scattering_length_values, eV, mm);
 
     if (n == -1) {
         fprintf(stderr, "error reading lyso_scattering_length.dat!\n");
@@ -119,7 +119,7 @@ G4Material *get_rtv(void)
 
     G4double rtv_rindex_ene[1000], rtv_rindex_values[1000];
 
-    int n = read_tsv_file("data/rtv_rindex.dat", rtv_rindex_ene, rtv_rindex_values, eV, 1);
+    int n = read_tsv_file("rtv_rindex.dat", rtv_rindex_ene, rtv_rindex_values, eV, 1);
 
     if (n == -1) {
         fprintf(stderr, "error reading rtv_rindex.dat!\n");
@@ -130,7 +130,7 @@ G4Material *get_rtv(void)
 
     G4double rtv_absorption_length_ene[1000], rtv_absorption_length_values[1000];
 
-    n = read_tsv_file("data/rtv_absorption_length.dat", rtv_absorption_length_ene, rtv_absorption_length_values, eV, cm);
+    n = read_tsv_file("rtv_absorption_length.dat", rtv_absorption_length_ene, rtv_absorption_length_values, eV, cm);
 
     if (n == -1) {
         fprintf(stderr, "error reading rtv_absorption_length.dat!\n");

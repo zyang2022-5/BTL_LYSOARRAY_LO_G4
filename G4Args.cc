@@ -1,10 +1,11 @@
 #include "G4Args.hh"
+#include <unistd.h> /* for exit() */
 
 
 MyG4Args :: MyG4Args(int mainargc,char** mainargv)
-{ 
+{
+    G4cout << " ### Processing Command line Arguments to the sim : " << G4endl;
 
-G4cout<< " ### Processing Command lisne Arguments to the sim : " <<G4endl;          
     for (int j = 1; j < mainargc; j=j+1){
                 if(strcmp(mainargv[j],"-o")==0)
                 {   
@@ -271,9 +272,10 @@ G4int MyG4Args :: FindEvents(G4String macname ){
         //std::string line = getLastLine(file);
         //std::cout << line << '\n';
         
+    } else {
+        fprintf(stderr, "Unable to open '%s'.\n", macname.data());
+        exit(1);
     }
-    else{std::cout << "Unable to open file.\n";}
-
 
     return nEvent;
 }

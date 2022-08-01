@@ -4,29 +4,25 @@
 
 MySensitiveDetector::MySensitiveDetector(G4String name, MyG4Args* MainArgs) : G4VSensitiveDetector(name)
 {
-    PassArgs=MainArgs;
-    PDE = new G4PhysicsOrderedFreeVector();
-    Vov=MainArgs->GetVov();
-    // Importing data regarding the Photo Detection Efficiency depending on the Overvoltage Vov
-    std::ifstream datafile;
-    datafile.open("eff.dat");
-    G4double wlendat, queffdat;
-    G4int cont=0;
-    G4double Eff420=(0.393 * 1.0228) * ( 1 - exp(-0.583*Vov) );
-    while(!datafile.eof())
-    {
-        //G4cout << cont << std::endl;
-        cont=cont+1;
-     
-        datafile >> wlendat;
-        datafile >> queffdat;
-        //G4cout << wlendat << " " << queffdat << std::endl;
+    double wavelength[1000], qe[1000];
 
-        PDE->InsertValues(wlendat, queffdat*Eff420/1.);
+    PassArgs = MainArgs;
+
+    PDE = new G4PhysicsOrderedFreeVector();
+    G4double Vov = PassArgs->GetVov();
+    G4double Eff420 = (0.393 * 1.0228) * (1 - exp(-0.583*Vov));
+
+    int n = read_tsv_file("eff.dat", wavelength, qe, 1, Eff420);
+
+    if (n == -1) {
+        fprintf(stderr, "error reading eff.dat! Did you remember to source the env.sh file?\n");
+        exit(1);
     }
 
-    datafile.close();
-    countdet=0;
+    for (int i = 0; i < n; i++)
+        PDE->InsertValues(wavelength[i], qe[i]);
+
+    countdet = 0;
 }
 
 MySensitiveDetector::~MySensitiveDetector()

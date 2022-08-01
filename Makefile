@@ -1,4 +1,4 @@
-CXXFLAGS=-fdiagnostics-color -O2 -g $(shell geant4-config --cflags)
+CXXFLAGS=-fdiagnostics-color -O2 -g $(shell geant4-config --cflags) -O2
 LDLIBS=-Wl,--copy-dt-needed-entries -fdiagnostics-color -lm $(shell geant4-config --libs)
 PWD=$(shell pwd)
 
@@ -13,7 +13,7 @@ Makefile.dep:
 
 -include Makefile.dep
 
-sim: action.o construction.o detector.o event.o generator.o physics.o run.o sim.o stepping.o tracking.o G4Args.o util.o
+sim: action.o construction.o detector.o event.o generator.o physics.o run.o sim.o stepping.o tracking.o G4Args.o util.o materials.o
 
 geant4:
 	test ! -f geant4-v11.0.2.tar.gz && \

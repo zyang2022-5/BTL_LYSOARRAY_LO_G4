@@ -1,30 +1,26 @@
 #include "event.hh"
+#include "util.hh"
 
-MyEventAction::MyEventAction(MyRunAction*,MyG4Args* MainArgs)
+MyEventAction::MyEventAction(MyRunAction*, MyG4Args* MainArgs)
 {
-    PassArgs=MainArgs;
+    double wavelength[1000], qe[1000];
 
+    PassArgs = MainArgs;
 
     PDE = new G4PhysicsOrderedFreeVector();
-    G4double Vov=PassArgs->GetVov();
-    std::ifstream datafile;
-    datafile.open("eff.dat");
-    G4double wlendat, queffdat;
-    G4int cont=0;
-    G4double Eff420=(0.393 * 1.0228) * ( 1 - exp(-0.583*Vov) );
-    while(!datafile.eof())
-    {
-        G4cout << cont << std::endl;
-        cont=cont+1;
-     
-        datafile >> wlendat;
-        datafile >> queffdat;
-        G4cout << wlendat << " " << queffdat << std::endl;
+    G4double Vov = PassArgs->GetVov();
+    G4double Eff420 = (0.393 * 1.0228) * (1 - exp(-0.583*Vov));
 
-        PDE->InsertValues(wlendat, queffdat*Eff420/1.);
+    int n = read_tsv_file("eff.dat", wavelength, qe, 1, Eff420);
+
+    if (n == -1) {
+        fprintf(stderr, "error reading eff.dat! Did you remember to source the env.sh file?\n");
+        exit(1);
     }
 
-    datafile.close();
+    for (int i = 0; i < n; i++)
+        PDE->InsertValues(wavelength[i], qe[i]);
+
     PDE420 = PDE->Value(420.);
 }
 

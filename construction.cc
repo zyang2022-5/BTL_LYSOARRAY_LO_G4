@@ -465,7 +465,8 @@ logicDetector->SetSensitiveDetector(sensDet);
 {
     LYSO_L = ArgsPass->GetGeom_LYSO_L();
     LYSO_thick=3./2.;
-    RESIN_W=51.5/2.;
+    //RESIN_W=51.5/2.;
+    RESIN_W=ArgsPass->GetGeom_Resin_width();
     LYSO_YIELD=ArgsPass->GetLYSO_Yield();
     LYSO_SCALERESOLUTION=ArgsPass->GetLYSO_ScaleResolution();
     XYTol=0.16;
@@ -505,6 +506,9 @@ logicDetector->SetSensitiveDetector(sensDet);
 
     fMessenger_ResinL = new G4GenericMessenger(this, "/detector/","Detector Construction");
     fMessenger_ResinL->DeclareProperty("GLUE_L", GLUE_L, "Glue thickness");
+
+    fMessenger_ResinW = new G4GenericMessenger(this, "/detector/","Detector Construction");
+    fMessenger_ResinW->DeclareProperty("RESIN_W", RESIN_W, "Resin width");
 
     fMessenger_GlueL = new G4GenericMessenger(this, "/detector/","Detector Construction");
     fMessenger_GlueL->DeclareProperty("RESIN_L", RESIN_L, "Resin thickness");

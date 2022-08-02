@@ -88,7 +88,7 @@ if (PassArgs->GetTree_Detected() == 1){
         man->AddNtupleRow(1);
         countdet=countdet+1;
         //G4cout<< "Photon "<< PassArgs->GetLO() <<" GTiming : " << timeG/ps << G4endl;
-        if (PassArgs->GetGeomConfig()==3 && posPhoton[0]/mm>-3.2 && posPhoton[0]/mm<-0.01){
+        if (PassArgs->GetGeomConfig()==3 && posPhoton[0]/mm>-3.1 && posPhoton[0]/mm<-0.01){
             PassArgs->AddLO();
             if(posPhoton[2]/mm>0){
                 PassArgs->AddPhotR();

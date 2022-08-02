@@ -28,7 +28,7 @@ MyRunAction :: MyRunAction(G4String OutName,MyG4Args* MainArgs)
         // Tuple containing all data from the Photons being detected
             man->CreateNtuple("Detected","Detected");   // Hits
             man->CreateNtupleIColumn("fEvent"); // columns ,I == Integer
-            man->CreateNtupleIColumn("ftrackIJ"); // columns ,I == Integer
+            man->CreateNtupleIColumn("ftrackID"); // columns ,I == Integer
             man->CreateNtupleDColumn("fX");
             man->CreateNtupleDColumn("fY");
             man->CreateNtupleDColumn("fZ");

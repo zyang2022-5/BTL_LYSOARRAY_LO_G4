@@ -28,6 +28,7 @@ public:
     G4double GetLYSO_DecayT() const {return LYSOProps[3];}
     G4double GetGeom_LYSO_L() const {return Geom_LYSO[2];}
     G4double GetGeom_LYSO_thick() const {return Geom_LYSO[0];}
+    G4double GetGeom_Resin_width() const {return Geom_Resin[1];}
     G4int GetRnd_true() const {return RndGen[0];}
     G4int GetRnd_Part() const {return RndGen[1];}
     G4int GetRnd_Geom() const {return RndGen[2];}

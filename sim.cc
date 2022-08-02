@@ -25,9 +25,9 @@ VISUALIZATION: Everythin in between * Vis -> Visualizer* lines of with it at the
 #include "G4UImanager.hh"
 
 ///////* Vis -> Visualizer*//////
-#include "G4VisManager.hh"      /* Vis -> Visualizer*/
-#include "G4VisExecutive.hh"    /* Vis -> Visualizer*/
-#include "G4UIExecutive.hh"     /* Vis -> Visualizer*/
+//#include "G4VisManager.hh"      /* Vis -> Visualizer*/
+//#include "G4VisExecutive.hh"    /* Vis -> Visualizer*/
+//#include "G4UIExecutive.hh"     /* Vis -> Visualizer*/
 ///////* Vis -> Visualizer*//////
 
 /*Simulation created files*/
@@ -52,22 +52,22 @@ int main(int argc, char** argv) /* argc, argv are the argument passed to the sim
     runManager -> Initialize();
 
 ///////* Vis -> Visualizer*//////
-    G4UIExecutive *ui = 0; // ui initialization
+//    G4UIExecutive *ui = 0; // ui initialization
     // Show *user interface only if we do not use a macro, or it will be inefficient    
-    if (ArgInp->GetVis() ==1) // argc only one option introduced
-    {
-        ui = new G4UIExecutive(argc,argv); // ui definition-declaration
-    }   
+//    if (ArgInp->GetVis() ==1) // argc only one option introduced
+//    {
+//        ui = new G4UIExecutive(argc,argv); // ui definition-declaration
+//    }   
     /* Vis -> Visualizer*/  // Initialization
-    G4VisManager *visManager = new G4VisExecutive();
-    visManager->Initialize();
+//    G4VisManager *visManager = new G4VisExecutive();
+//    visManager->Initialize();
 ///////* Vis -> Visualizer*//////
 
     G4UImanager *UImanager = G4UImanager::GetUIpointer();
     if(ArgInp->GetVis() ==1)
     {
         UImanager->ApplyCommand("/control/execute vis.mac");
-        ui->SessionStart();     ///////* Vis -> Visualizer*//////
+//        ui->SessionStart();     ///////* Vis -> Visualizer*//////
     }
     else
     {

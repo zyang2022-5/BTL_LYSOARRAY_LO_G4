@@ -24,6 +24,9 @@
 
 #include "detector.hh"
 
+class MySensitiveDetector;
+extern MySensitiveDetector *global_sensitive_detector;
+
 class MyDetectorConstruction : public G4VUserDetectorConstruction
 {
 public:
@@ -67,7 +70,7 @@ private: // it is not accessed from outside
     G4Material *worldMat, *SiO2, *H2O, *Aerogel, *prelude, *scintillator,*NaI, *EPOXY, *RTV3145;
     G4Element *C,*Na,*I,*H,*O,*Si,*N,*Al;
 
-    G4OpticalSurface *mirrorSurface, *groundSurface, *SurfFR4, *Tyvek_Surface;
+    G4OpticalSurface *mirrorSurface, *groundSurface, *SurfFR4, *Tyvek_Surface, *lamb_air_surface;
     G4UserLimits* fStepLimit;  
     
     G4LogicalVolume *fScoringVolume , *fDetectorVolume;

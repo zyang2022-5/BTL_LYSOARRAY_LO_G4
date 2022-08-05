@@ -51,7 +51,7 @@ MyDetectorConstruction::MyDetectorConstruction()
     fMessenger_pi = new G4GenericMessenger(this, "/detector/","Detector Construction");
     fMessenger_pi->DeclareProperty("PerIncr", perincr, "LYSO section geometry parameter");
 
-    ESRtrue=2;
+    ESRtrue=3;
     fMessenger_ESR = new G4GenericMessenger(this, "/detector/","Detector Construction");
     fMessenger_ESR->DeclareProperty("ESR", ESRtrue, "LYSO covered by ESR or Tyvek; 1==ESR 2==Tyvek");
 
@@ -311,9 +311,15 @@ G4double energymirror0[34] ={1.387638658*eV,1.414514446*eV,1.442584622*eV,1.4756
     G4double specularlobe[2] = {0.3, 0.3};
     G4double specularspike[2] = {0.2, 0.2};
     G4double backscatter[2] = {0.1, 0.1};
+    
+    G4double ESR_energy[2] = {1.2*eV,4*eV};
+    G4double ESR_reflectivity[2] = {0.999, 0.999};
+
+
 
     G4MaterialPropertiesTable *mptMirror = new G4MaterialPropertiesTable();
-    mptMirror->AddProperty("REFLECTIVITY", energymirror0, reflectivity0,34); // fraction of the light reflected (all=1)
+    mptMirror->AddProperty("REFLECTIVITY", ESR_energy, ESR_reflectivity,2); // fraction of the light reflected (all=1)
+//    mptMirror->AddProperty("REFLECTIVITY", energymirror0, reflectivity0,34); // fraction of the light reflected (all=1)
     //mptMirror->AddProperty("SPECULARLOBECONSTANT", pp, specularlobe,2); 
     //mptMirror->AddProperty("SPECULARSPIKECONSTANT", pp, specularspike,2); 
     //mptMirror->AddProperty("BACKSCATTERCONSTANT", pp, backscatter,2); 
@@ -339,7 +345,7 @@ G4double diffuse_reflectivity[29]={0.9541,0.954583,0.955882,0.957179,0.959794,0.
 
 
     G4MaterialPropertiesTable *mptTyvek = new G4MaterialPropertiesTable();
-    mptTyvek->AddProperty("REFLECTIVITY", energydiffuse_reflector, diffuse_reflectivity,29); // fraction of the light reflected (all=1)
+//    mptTyvek->AddProperty("REFLECTIVITY", energydiffuse_reflector, diffuse_reflectivity,29); // fraction of the light reflected (all=1)
 //    mptTyvek->AddProperty("RINDEX", RTV_ene, RTV_RINDEX, numRTV); // fraction of the light reflected (all=1)
 
     // Surface
@@ -349,6 +355,23 @@ G4double diffuse_reflectivity[29]={0.9541,0.954583,0.955882,0.957179,0.959794,0.
     Tyvek_Surface -> SetFinish(groundfrontpainted);//-backpainted
     Tyvek_Surface -> SetModel(unified);
 
+// Diffuse Reflector with Air Gap ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    G4double energy_lambertian_airgap[2]={1.0*eV, 5.0*eV};
+    G4double rindex_lambertian_airgap[2]={1.0003, 1.000275};
+    G4double rindex_lambertian_othergap[2]={1.6, 1.600001};
+    G4double spec_spike[2] = {1.0, 1.0};
+    G4MaterialPropertiesTable *mpt_lambertian_airgap = new G4MaterialPropertiesTable();
+//    mpt_lambertian_airgap->AddProperty("REFLECTIVITY", energydiffuse_reflector, diffuse_reflectivity,29); // fraction of the light reflected (all=1)
+    mpt_lambertian_airgap->AddProperty("RINDEX", energy_lambertian_airgap, rindex_lambertian_othergap, 2); // fraction of the light reflected (all=1)
+    mpt_lambertian_airgap->AddProperty("SPECULARLOBECONSTANT", energy_lambertian_airgap, spec_spike, 2);
+
+    // Surface
+    lamb_air_surface = new G4OpticalSurface("lamb_air_surface");
+    lamb_air_surface -> SetMaterialPropertiesTable(mpt_lambertian_airgap);
+    lamb_air_surface -> SetType(dielectric_dielectric);
+    lamb_air_surface -> SetFinish(groundbackpainted);//-backpainted
+    lamb_air_surface -> SetModel(unified);
+    lamb_air_surface -> SetSigmaAlpha(0.0);
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // FR4 Interface  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -519,6 +542,10 @@ if(GeomConfig == 1){
     else if (ESRtrue==2){
     G4LogicalBorderSurface *LYSO_Air_Border = new G4LogicalBorderSurface("LYSO_Glue_Border",physLYSO,physWorld,Tyvek_Surface);   
     }
+    else if (ESRtrue==3){
+    G4LogicalBorderSurface *LYSO_Air_Border = new G4LogicalBorderSurface("LYSO_Glue_Border",physLYSO,physWorld,lamb_air_surface);
+    }
+
     G4LogicalBorderSurface *Glue_Air_Border1 = new G4LogicalBorderSurface("Glue_Air_Border1",physGlue1,physWorld,groundSurface);   
     G4LogicalBorderSurface *Glue_Air_Border2 = new G4LogicalBorderSurface("Glue_Air_Border2",physGlue2,physWorld,groundSurface);  
     G4LogicalBorderSurface *Resin_Air_Border1 = new G4LogicalBorderSurface("Glue_Air_Border1",physResin1,physWorld,groundSurface);   
@@ -553,10 +580,13 @@ else if (GeomConfig == 2)
 //RETURN//
     return physWorld;
 }
+MySensitiveDetector *global_sensitive_detector;
+
 void MyDetectorConstruction::ConstructSDandField()
 {
-MySensitiveDetector *sensDet = new MySensitiveDetector("SensitiveDetector", Vovcon);
 
+MySensitiveDetector *sensDet = new MySensitiveDetector("SensitiveDetector", Vovcon);
+global_sensitive_detector = sensDet;
 logicDetector->SetSensitiveDetector(sensDet);
 
 }

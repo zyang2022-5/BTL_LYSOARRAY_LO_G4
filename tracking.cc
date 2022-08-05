@@ -10,9 +10,13 @@ MyTrackingAction::MyTrackingAction(MyEventAction *eventAction)
 MyTrackingAction::~MyTrackingAction()
 {}
 
-void MyTrackingAction::PreUserTrackingAction(const G4Track*)
+void MyTrackingAction::PreUserTrackingAction(const G4Track* track)
 {
-    trPhCount=0.;
+//    if (track->GetTrackLength() < 90.)
+//    {fpTrackingManager->SetStoreTrajectory(1);}
+//    else
+//    {fpTrackingManager->SetStoreTrajectory(0);}
+	trPhCount=0.;
 }
 
 void MyTrackingAction::PostUserTrackingAction(const G4Track*)

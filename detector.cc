@@ -1,5 +1,5 @@
 #include "detector.hh"
-
+#include <cstdio>
 
 MySensitiveDetector::MySensitiveDetector(G4String name, G4double Vov) : G4VSensitiveDetector(name)
 {
@@ -25,6 +25,9 @@ MySensitiveDetector::MySensitiveDetector(G4String name, G4double Vov) : G4VSensi
 
     datafile.close();
     countdet=0;
+    shortest_timeG = 3000*ns;
+    shortest_track_id = 0;
+    id_vec = {};
 }
 
 MySensitiveDetector::~MySensitiveDetector()
@@ -58,6 +61,23 @@ G4bool MySensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *ROhis
     G4double timeL=preStepPoint->GetLocalTime(); // starts counting when the particle is created. Differece in case of decay.
     G4int evt = G4RunManager::GetRunManager()->GetCurrentEvent()->GetEventID();
 
+/*
+//	printf("shortest track id = %d \n", shortest_track_id);
+//	printf("%f time \n", shortest_timeG);
+//	printf("%f length \n", 
+    if (shortest_timeG > timeG) {
+	shortest_timeG = timeG;	
+    	shortest_track_id = track->GetTrackID();
+//	printf("%d \n", shortest_track_id);
+	printf("%f length \n", Tlength);
+//	printf("%d time \n", shortest_timeG);
+    }
+
+    if (G4UniformRand()>0.995) {
+	    id_vec.push_back(track->GetTrackID());
+	    printf("%d track id \n", track->GetTrackID());
+    }
+*/
     // Fill columns of output file
     G4AnalysisManager *man = G4AnalysisManager::Instance();
 

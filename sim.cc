@@ -1,6 +1,10 @@
 
 /* Outer Shell for geant4 Simulation */
 #include <iostream>
+#include <stdio.h>
+#include <fstream>
+#include <vector>
+#include <cmath> 
 
 /*All packages used must be included*/
 #include "G4RunManager.hh" /* Run */
@@ -13,7 +17,7 @@
 #include "construction.hh"
 #include "physics.hh"
 #include "action.hh"
-#include <cstdlib>
+#include <cstdio>
 
 
 int main(int argc, char** argv) /* argc, argv are the argument passed to the sim*/
@@ -53,9 +57,32 @@ int main(int argc, char** argv) /* argc, argv are the argument passed to the sim
     visManager->Initialize();
     G4UImanager *UImanager = G4UImanager::GetUIpointer();
     if(ui)
-    {
-        UImanager->ApplyCommand("/control/execute vis.mac");
+    {	
+//	const MySensitiveDetector* temp_detector = static_cast<const MySensitiveDetector*> (MyDetectorConstruction::logicDetector()->GetSensitiveDetector());
+/*	std::ofstream MyFile("vis1.mac");
+	MyFile << "/run/initialize\n";
+	MyFile << "/vis/open OGL\n";
+	MyFile << "/vis/viewer/set/viewpointVector 0 0 1\n";
+	MyFile << "/vis/drawVolume\n";
+	MyFile << "/vis/viewer/set/autoRefresh true\n";
+	MyFile << "/run/beamOn 1\n";
+	MyFile << "/vis/filtering/trajectories/create/attributeFilter first\n";
+	MyFile << "/vis/filtering/trajectories/first/setAttribute ID\n";
+*/
+	    
+	UImanager->ApplyCommand("/control/execute vis.mac");
+//	G4int track_id = global_sensitive_detector->Get_shortest_track();
+        char buffer[150];
+//	sprintf(buffer, "/vis/filtering/trajectories/first/addValue %d", track_id);
+	std::vector<G4int> id_vector = global_sensitive_detector->Get_id_vec();
+	G4int temp_int = round(id_vector.size() * G4UniformRand());
+	printf("chosen int %d, vector size %d , vector id %d \n", temp_int, id_vector.size(), id_vector[temp_int]);
+
+	sprintf(buffer, "/vis/filtering/trajectories/first/addValue %d", id_vector[temp_int]);
+
+	UImanager->ApplyCommand(buffer);
         ui->SessionStart();
+
     }
     //else
     //{

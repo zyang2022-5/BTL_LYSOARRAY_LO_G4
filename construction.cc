@@ -51,7 +51,7 @@ MyDetectorConstruction::MyDetectorConstruction()
     fMessenger_pi = new G4GenericMessenger(this, "/detector/","Detector Construction");
     fMessenger_pi->DeclareProperty("PerIncr", perincr, "LYSO section geometry parameter");
 
-    ESRtrue=3;
+    ESRtrue=1;
     fMessenger_ESR = new G4GenericMessenger(this, "/detector/","Detector Construction");
     fMessenger_ESR->DeclareProperty("ESR", ESRtrue, "LYSO covered by ESR or Tyvek; 1==ESR 2==Tyvek");
 

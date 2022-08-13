@@ -1,9 +1,10 @@
 #include "action.hh"
 
-MyActionInitialization:: MyActionInitialization(G4String OutName)
+MyActionInitialization:: MyActionInitialization(MyG4Args *MainArgs)
 {
 // Saving output name
-OutputName=OutName;
+PassArgs=MainArgs;
+OutputName=MainArgs->GetOutName();
 }
 
 
@@ -17,18 +18,18 @@ void MyActionInitialization::Build() const
     SetUserAction(generator);
 
     // Actions performed at begining and end of a run
-    MyRunAction *runAction = new MyRunAction(OutputName);
+    MyRunAction *runAction = new MyRunAction(OutputName,PassArgs);
     SetUserAction(runAction);
 
-    // Actions at the begining and end of each event in a run
-    MyEventAction *eventAction = new MyEventAction(runAction);
+    // Actions at the begining and end of each event in a runs
+    MyEventAction *eventAction = new MyEventAction(runAction,PassArgs);
     SetUserAction(eventAction);
 
     // Actions performed at each step for each particle track
-    MySteppingAction *steppingAction = new MySteppingAction(eventAction);
+    MySteppingAction *steppingAction = new MySteppingAction(eventAction,PassArgs);
     SetUserAction(steppingAction);
 
     // Actions performed at each track begining and end
-    MyTrackingAction *trackingAction = new MyTrackingAction(eventAction);
+    MyTrackingAction *trackingAction = new MyTrackingAction(eventAction,PassArgs);
     SetUserAction(trackingAction);
 }

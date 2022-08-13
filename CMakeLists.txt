@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
 
-project(LYSObar_v0)
+project(sim)
 
 find_package(Geant4 REQUIRED ui_all vis_all)
 
@@ -16,7 +16,7 @@ file(GLOB MACRO_FILES
 file(COPY ${MACRO_FILES} DESTINATION ${PROJECT_BINARY_DIR})
 
 file(GLOB DATA_FILES
-    "*.dat"
+    "data/*.dat"
 )
 
 file(COPY ${DATA_FILES} DESTINATION ${PROJECT_BINARY_DIR})

@@ -21,7 +21,9 @@
 #include "G4Trap.hh"
 #include "G4UnionSolid.hh"
 #include "G4Args.hh"
-
+#include "G4TriangularFacet.hh"
+#include "G4TessellatedSolid.hh"
+#include "G4QuadrangularFacet.hh"
 #include "detector.hh"
 
 class MyDetectorConstruction : public G4VUserDetectorConstruction
@@ -69,6 +71,9 @@ private: // it is not accessed from outside
     G4LogicalVolume *fScoringVolume , *fDetectorVolume;
 
     G4VPhysicalVolume *physWorld, *physLYSO, *physDetector, *physGlue1, *physGlue2, *physResin1, *physResin2, *physFR41, *physFR42, *physLYSOCover;
+
+    G4TriangularFacet *facet;
+    G4TessellatedSolid *TessLYSO;
 
     // Materials
     G4Material *worldMat, *SiO2, *H2O, *Aerogel, *prelude, *scintillator,*NaI, *EPOXY, *RTV3145;

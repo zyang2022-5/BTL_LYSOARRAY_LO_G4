@@ -217,8 +217,8 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct()
         TessLYSO = new G4TessellatedSolid("solidLYSO");
         // parameter initialization
         G4int Onode=5;
-        G4int Znode=1; 
-        G4double xv0[10];   
+        G4int Znode=2; 
+        G4double xv0[Onode*(Znode+1)];   
         G4double Pi=atan(1)*4;
         G4double DTheta=Pi/(Onode-1);
         // radius vector initialization

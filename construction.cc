@@ -256,7 +256,7 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct()
         TessLYSO->AddFacet((G4VFacet*) facetq);
 */
             //bottom
-        facetq = new G4QuadrangularFacet (   G4ThreeVector(+0,-LYSO_thick,-LYSOalt),
+        /*facetq = new G4QuadrangularFacet (   G4ThreeVector(+0,-LYSO_thick,-LYSOalt),
                                             G4ThreeVector(+LYSO_thick,-LYSO_thick, -LYSOalt),
                                             G4ThreeVector(+LYSO_thick,-LYSO_thick, 0),
                                             G4ThreeVector(+0,-LYSO_thick, 0),
@@ -275,7 +275,7 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct()
                                             G4ThreeVector(+LYSO_thick,+LYSO_thick, 0),
                                             G4ThreeVector(+LYSO_thick,+LYSO_thick, -LYSOalt),
                                             ABSOLUTE);
-        TessLYSO->AddFacet((G4VFacet*) facetq);
+        TessLYSO->AddFacet((G4VFacet*) facetq);*/
 
         // end face loop +Z
             theta = -Pi/2;G4double tolxy=1e-10;
@@ -337,6 +337,16 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct()
                 G4cout <<x3<< " " <<y3<< " " <<z0 << G4endl;
                 G4cout <<x1<< " " <<y1<< " " <<z1 << G4endl;
                 G4cout <<x0<< " " <<y0<< " " <<z0 << G4endl;
+                    facet = new G4TriangularFacet ( G4ThreeVector(x0,y0, -z0),
+                                                    G4ThreeVector(x1,y1, -z0),
+                                                    G4ThreeVector(x2,y2,-z1),
+                                                    ABSOLUTE);
+                    TessLYSO->AddFacet((G4VFacet*) facet);
+                    facet = new G4TriangularFacet ( G4ThreeVector(x3,y3, -z1),
+                                                    G4ThreeVector(x2,y2, -z1),
+                                                    G4ThreeVector(x1,y1,-z0),
+                                                    ABSOLUTE);
+                    TessLYSO->AddFacet((G4VFacet*) facet);
                 }
             }
 

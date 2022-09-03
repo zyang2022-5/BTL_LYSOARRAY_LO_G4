@@ -232,50 +232,42 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct()
             }
         // initialization of symmetry faces for testing
             G4double LYSOalt=LYSO_L*0.8;
+        //lid Z+
+        facetq = new G4QuadrangularFacet (   G4ThreeVector(0,+LYSO_thick, LYSOalt),
+                                            G4ThreeVector(-LYSO_thick,+LYSO_thick, LYSOalt),
+                                            G4ThreeVector(-LYSO_thick,-LYSO_thick, LYSOalt),
+                                            G4ThreeVector(0,-LYSO_thick, LYSOalt),
+                                            ABSOLUTE);
+        TessLYSO->AddFacet((G4VFacet*) facetq);
+        //lid Z-
         facetq = new G4QuadrangularFacet (   G4ThreeVector(0,+LYSO_thick, -LYSOalt),
                                             G4ThreeVector(0,-LYSO_thick, -LYSOalt),
-                                            G4ThreeVector(0,-LYSO_thick, +LYSOalt),
-                                            G4ThreeVector(0,+LYSO_thick, +LYSOalt),
+                                            G4ThreeVector(-LYSO_thick,-LYSO_thick, -LYSOalt),
+                                            G4ThreeVector(-LYSO_thick,+LYSO_thick, -LYSOalt),
                                             ABSOLUTE);
         TessLYSO->AddFacet((G4VFacet*) facetq);
-        /*facetq = new G4QuadrangularFacet (   G4ThreeVector(0,+LYSO_thick, -LYSOalt),
-                                            G4ThreeVector(+LYSO_thick,+LYSO_thick, -LYSOalt),
-                                            G4ThreeVector(+LYSO_thick,-LYSO_thick, -LYSOalt),
-                                            G4ThreeVector(0,-LYSO_thick, -LYSOalt),
+
+        //bottom
+        facetq = new G4QuadrangularFacet (   G4ThreeVector(+0,-LYSO_thick,-LYSOalt),
+                                            G4ThreeVector(+0,-LYSO_thick, +LYSOalt),
+                                            G4ThreeVector(-LYSO_thick,-LYSO_thick, +LYSOalt),
+                                            G4ThreeVector(-LYSO_thick,-LYSO_thick, -LYSOalt),
                                             ABSOLUTE);
         TessLYSO->AddFacet((G4VFacet*) facetq);
-*/
-/*
-        // quad faces that should be triangular
-            //lid Z+
-        facetq = new G4QuadrangularFacet (   G4ThreeVector(0,+LYSO_thick,LYSOalt),
-                                            G4ThreeVector(0,-LYSO_thick, LYSOalt),
-                                            G4ThreeVector(+LYSO_thick,-LYSO_thick, LYSOalt),
-                                            G4ThreeVector(+LYSO_thick,+LYSO_thick, LYSOalt),
+        //side
+        facetq = new G4QuadrangularFacet (   G4ThreeVector(-LYSO_thick,+LYSO_thick, -LYSOalt),
+                                            G4ThreeVector(-LYSO_thick,-LYSO_thick, -LYSOalt),
+                                            G4ThreeVector(-LYSO_thick,-LYSO_thick, +LYSOalt),
+                                            G4ThreeVector(-LYSO_thick,+LYSO_thick, +LYSOalt),
                                             ABSOLUTE);
         TessLYSO->AddFacet((G4VFacet*) facetq);
-*/
-            //bottom
-        /*facetq = new G4QuadrangularFacet (   G4ThreeVector(+0,-LYSO_thick,-LYSOalt),
-                                            G4ThreeVector(+LYSO_thick,-LYSO_thick, -LYSOalt),
-                                            G4ThreeVector(+LYSO_thick,-LYSO_thick, 0),
-                                            G4ThreeVector(+0,-LYSO_thick, 0),
+        //top
+        facetq = new G4QuadrangularFacet (   G4ThreeVector(+0,LYSO_thick,-LYSOalt),
+                                            G4ThreeVector(-LYSO_thick,LYSO_thick, -LYSOalt),
+                                            G4ThreeVector(-LYSO_thick,LYSO_thick, +LYSOalt),
+                                            G4ThreeVector(+0,LYSO_thick, +LYSOalt),
                                             ABSOLUTE);
         TessLYSO->AddFacet((G4VFacet*) facetq);
-            //side
-        facetq = new G4QuadrangularFacet (   G4ThreeVector(+LYSO_thick,+LYSO_thick,-LYSOalt),
-                                            G4ThreeVector(+LYSO_thick,+LYSO_thick, 0),
-                                            G4ThreeVector(+LYSO_thick,-LYSO_thick, 0),
-                                            G4ThreeVector(+LYSO_thick,-LYSO_thick, -LYSOalt),
-                                            ABSOLUTE);
-        TessLYSO->AddFacet((G4VFacet*) facetq);
-            //top
-        facetq = new G4QuadrangularFacet (   G4ThreeVector(+0,+LYSO_thick,-LYSOalt),
-                                            G4ThreeVector(+0,+LYSO_thick, 0),
-                                            G4ThreeVector(+LYSO_thick,+LYSO_thick, 0),
-                                            G4ThreeVector(+LYSO_thick,+LYSO_thick, -LYSOalt),
-                                            ABSOLUTE);
-        TessLYSO->AddFacet((G4VFacet*) facetq);*/
 
         // end face loop +Z
             theta = -Pi/2;G4double tolxy=1e-10;

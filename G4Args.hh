@@ -66,6 +66,7 @@ public:
     void AddPhotR(){nPhotR += 1;}
     void AddPhotL(){nPhotL += 1;}    
     void AddPhotTiming(G4double , G4double);
+
     G4int GetLO() const {return ArgLO;}
     G4int GetCT() const {return ArgCrossTalk;}
     G4int GetTP() const {return TotPh;}
@@ -88,6 +89,8 @@ public:
     G4double GetTimAvg(G4int runid) const {return nRunTimingAvg[runid];}  
     G4double GetTimStd(G4int runid) const {return nRunTimingStd[runid];}  
     G4double GetnEvtEdep(G4int runid) const {return nEdepEvts[runid];}  
+    G4int GetZnode() const {return Znode;}
+    G4double* GetNodeRadValues() const {return xv0;}
 private:
 
     // Default values modifiable by arguments and able to be returned!!!
@@ -116,6 +119,9 @@ private:
     G4double *nEventTiming, *nEventLO, *nRunTimingAvg, *nRuntLOAvg, *nRunTimingStd, *nRuntLOStd;        
     G4int *nEdepEvts;
     G4double incr=0;
+    G4int Znode=1;
+    G4int Onode=5;
+    G4double* xv0 = NULL;
 
 // Counters!!!
     G4int ArgLO=0;

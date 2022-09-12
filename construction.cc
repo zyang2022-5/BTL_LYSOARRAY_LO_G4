@@ -217,19 +217,13 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct()
         TessLYSO = new G4TessellatedSolid("solidLYSO");
         // parameter initialization
         G4int Onode=5;
-        G4int Znode=2; 
-        G4double xv0[Onode*(Znode+1)];   
+        G4int Znode=ArgsPass->GetZnode();
+        G4double* xv0;   
         G4double Pi=atan(1)*4;
         G4double DTheta=Pi/(Onode-1);
         // radius vector initialization
-            for(int i = 0; i < Znode+1; i++){
-                for (int j = 1; j < Onode+1; j++){
-                    if(j==1 || j==3 || j==5){xv0[i*Onode-1+j]=LYSO_thick;}
-                    else{xv0[i*Onode-1+j]=pow(2*pow(LYSO_thick,2),0.5);}
-                G4cout <<i*Onode-1+j<< " " <<xv0[i*Onode-1+j] << G4endl;
+        xv0 = ArgsPass->GetNodeRadValues();
 
-                }
-            }
         // initialization of symmetry faces for testing
             G4double LYSOalt=LYSO_L*1.;
             theta = -Pi/2;G4double tolxy=1e-10;

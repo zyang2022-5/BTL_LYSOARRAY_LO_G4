@@ -21,7 +21,9 @@
 #include "G4Trap.hh"
 #include "G4UnionSolid.hh"
 #include "G4Args.hh"
-
+#include "G4TriangularFacet.hh"
+#include "G4TessellatedSolid.hh"
+#include "G4QuadrangularFacet.hh"
 #include "detector.hh"
 
 class MyDetectorConstruction : public G4VUserDetectorConstruction
@@ -51,7 +53,8 @@ private: // it is not accessed from outside
     // Default Values
     G4int nCols, nRows, GeomConfig, ESRtrue;
     G4double LYSO_L, LYSO_YIELD, LYSO_SCALERESOLUTION, Vovcon, LYSO_thick, perincr;
-   G4double GLUE_L, RESIN_L, XposTol, YposTol,XposTol2, YposTol2, XYTol, LYSO_SC1, LYSO_RT1, RESIN_W, RESIN_LNOM, RESIN_LTol;
+    G4double GLUE_L, RESIN_L, XposTol, YposTol,XposTol2, YposTol2, XYTol, LYSO_SC1, LYSO_RT1, RESIN_W, RESIN_LNOM, RESIN_LTol;
+    G4double x0,y0,z0,x1,y1,z1,x2,y2,z2,x3,y3,z3,theta;
     
     // Messengers
     G4GenericMessenger *fMessenger,*fMessenger_thick, *fMessenger_SR, *fMessenger_YIELD, *fMessenger_vov, *fMessenger_GlueL, *fMessenger_ResinL, *fMessenger_ResinW, *fMessenger_XPos, *fMessenger_YPos, *fMessenger_GC, *fMessenger_pi, *fMessenger_ESR, *fMessenger_SR1, *fMessenger_RT1, *fMessenger_XPos2, *fMessenger_YPos2;
@@ -69,6 +72,10 @@ private: // it is not accessed from outside
     G4LogicalVolume *fScoringVolume , *fDetectorVolume;
 
     G4VPhysicalVolume *physWorld, *physLYSO, *physDetector, *physGlue1, *physGlue2, *physResin1, *physResin2, *physFR41, *physFR42, *physLYSOCover;
+
+    G4TriangularFacet *facet;
+    G4QuadrangularFacet *facetq;
+    G4TessellatedSolid *TessLYSO;
 
     // Materials
     G4Material *worldMat, *SiO2, *H2O, *Aerogel, *prelude, *scintillator,*NaI, *EPOXY, *RTV3145;

@@ -213,18 +213,134 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct()
 
     solidWorld = new G4Box("solidWorld", xWorld, yWorld, zWorld);
     if(GeomConfig==1 || GeomConfig==3){
-        G4Trap* trapLYSO = new G4Trap("trapLYSO",       //G4String& pName,
-                                LYSO_L/2.*mm,0.,   //G4double pDz, G4double pTheta,
-                                0., LYSO_thick*mm,      //G4double pPhi, G4double pDy1,
-                            LYSO_thick*mm, LYSO_thick*mm,   //G4double pDx1, G4double pDx2,
-                            0.,LYSO_thick*mm*(1+perincr),               //G4double pAlp1, G4double pDy2,
-                            LYSO_thick*mm,LYSO_thick*mm,    //G4double pDx3, G4double pDx4,
-                            0.);            //G4double pAlp2)
-        G4ThreeVector positionTrap(0., 0., LYSO_L*mm);// translate 1/4L in -Z, already set in Z trap
-        G4RotationMatrix rotTrap  = G4RotationMatrix();// rotar 180 en Y
-        rotTrap.rotateY(M_PI*rad);
-        G4Transform3D transformTrap(rotTrap, positionTrap);
-        solidLYSO = new G4UnionSolid("solidLYSO", trapLYSO, trapLYSO, transformTrap);
+
+        TessLYSO = new G4TessellatedSolid("solidLYSO");
+        // parameter initialization
+        G4int Onode=5;
+        G4int Znode=ArgsPass->GetZnode();
+        G4double* xv0;   
+        G4double Pi=atan(1)*4;
+        G4double DTheta=Pi/(Onode-1);
+        // radius vector initialization
+        xv0 = ArgsPass->GetNodeRadValues();
+
+        // initialization of symmetry faces for testing
+            G4double LYSOalt=LYSO_L*1.;
+            theta = -Pi/2;G4double tolxy=1e-10;
+            for(int i = 0; i < Onode-1; i++){ // 1 less triangle than nodes
+                x0 = xv0[i]*cos(theta);if (abs(x0)<tolxy){x0=0;}
+                y0 = xv0[i]*sin(theta);if (abs(y0)<tolxy){y0=0;}
+                theta = theta + DTheta;
+                x1 = xv0[i+1]*cos(theta);if (abs(x1)<tolxy){x1=0;}
+                y1 = xv0[i+1]*sin(theta);if (abs(y1)<tolxy){y1=0;}
+                // +Z
+                facet = new G4TriangularFacet ( G4ThreeVector(0.,0., +LYSOalt),
+                                                G4ThreeVector(x0,y0, +LYSOalt),
+                                                G4ThreeVector(x1,y1,+LYSOalt),
+                                                ABSOLUTE);
+                G4cout <<0<< " " <<0<< " " <<LYSOalt << G4endl;
+                G4cout <<x1<< " " <<x1<< " " <<LYSOalt << G4endl;
+                G4cout <<x0<< " " <<y0<< " " <<LYSOalt << G4endl;
+                TessLYSO->AddFacet((G4VFacet*) facet);
+                // Symm +Z -X
+                facet = new G4TriangularFacet ( G4ThreeVector(0.,0., +LYSOalt),
+                                                G4ThreeVector(-x1,y1, +LYSOalt),
+                                                G4ThreeVector(-x0,y0,+LYSOalt),
+                                                ABSOLUTE);
+                G4cout <<0<< " " <<0<< " " <<LYSOalt << G4endl;
+                G4cout <<x1<< " " <<x1<< " " <<LYSOalt << G4endl;
+                G4cout <<x0<< " " <<y0<< " " <<LYSOalt << G4endl;
+                TessLYSO->AddFacet((G4VFacet*) facet);
+                // Symm -Z +X
+                facet = new G4TriangularFacet ( G4ThreeVector(0.,0., -LYSOalt),
+                                                G4ThreeVector(x1,y1,-LYSOalt),
+                                                G4ThreeVector(x0,y0, -LYSOalt),
+                                                ABSOLUTE);
+                G4cout <<0<< " " <<0<< " " <<LYSOalt << G4endl;
+                G4cout <<x1<< " " <<x1<< " " <<LYSOalt << G4endl;
+                G4cout <<x0<< " " <<y0<< " " <<LYSOalt << G4endl;
+                TessLYSO->AddFacet((G4VFacet*) facet);
+                // Symm -Z -X
+                facet = new G4TriangularFacet ( G4ThreeVector(0.,0., -LYSOalt),
+                                                G4ThreeVector(-x0,y0,-LYSOalt),
+                                                G4ThreeVector(-x1,y1, -LYSOalt),
+                                                ABSOLUTE);
+                G4cout <<0<< " " <<0<< " " <<LYSOalt << G4endl;
+                G4cout <<x1<< " " <<x1<< " " <<LYSOalt << G4endl;
+                G4cout <<x0<< " " <<y0<< " " <<LYSOalt << G4endl;
+                TessLYSO->AddFacet((G4VFacet*) facet);
+            }
+
+            for (int j = 0; j < Znode; j++){
+                theta = -Pi/2;
+               for(int i = 1; i < Onode; i++){ // 1 less triangle than nodes
+                    z0=+LYSOalt-LYSOalt/Znode*j;z1=+LYSOalt-LYSOalt/Znode*(j+1);
+
+                    x0 = xv0[j*Onode-1+i]*cos(theta); if (abs(x0)<tolxy){x0=0;}
+                    x2 = xv0[(j+1)*Onode-1+i]*cos(theta);if (abs(x2)<tolxy){x2=0;}
+                    y0 = xv0[j*Onode-1+i]*sin(theta);if (abs(y0)<tolxy){y0=0;}
+                    y2 = xv0[(j+1)*Onode-1+i]*sin(theta);if (abs(y2)<tolxy){y2=0;}
+                    theta = theta + DTheta;
+                    x1 = xv0[j*Onode-1+i+1]*cos(theta);if (abs(x1)<tolxy){x1=0;}
+                    x3 = xv0[(j+1)*Onode-1+i+1]*cos(theta);if (abs(x3)<tolxy){x3=0;}
+                    y1 = xv0[j*Onode-1+i+1]*sin(theta);if (abs(y1)<tolxy){y1=0;}
+                    y3 = xv0[(j+1)*Onode-1+i+1]*sin(theta);if (abs(y3)<tolxy){y3=0;}
+                    // +Z
+                    facet = new G4TriangularFacet ( G4ThreeVector(x2,y2, +z1),
+                                                    G4ThreeVector(x3,y3, +z1),
+                                                    G4ThreeVector(x0,y0,+z0),
+                                                    ABSOLUTE);
+                    TessLYSO->AddFacet((G4VFacet*) facet);
+                G4cout <<x2<< " " <<y2<< " " <<z1 << G4endl;
+                G4cout <<x3<< " " <<y3<< " " <<z1 << G4endl;
+                G4cout <<x0<< " " <<y0<< " " <<z0 << G4endl;
+                    facet = new G4TriangularFacet ( G4ThreeVector(x3,y3, +z1),
+                                                    G4ThreeVector(x1,y1, +z0),
+                                                    G4ThreeVector(x0,y0,+z0),
+                                                    ABSOLUTE);
+                    TessLYSO->AddFacet((G4VFacet*) facet);
+                G4cout <<x3<< " " <<y3<< " " <<z0 << G4endl;
+                G4cout <<x1<< " " <<y1<< " " <<z1 << G4endl;
+                G4cout <<x0<< " " <<y0<< " " <<z0 << G4endl;
+                    // Symm +Z -X
+                    facet = new G4TriangularFacet ( G4ThreeVector(-x2,y2, +z1),
+                                                    G4ThreeVector(-x1,y1, +z0),
+                                                    G4ThreeVector(-x3,y3,+z1),
+                                                    ABSOLUTE);
+                    TessLYSO->AddFacet((G4VFacet*) facet);
+                    facet = new G4TriangularFacet ( G4ThreeVector(-x2,y2, +z1),
+                                                    G4ThreeVector(-x0,y0, +z0),
+                                                    G4ThreeVector(-x1,y1,+z0),
+                                                    ABSOLUTE);
+                    TessLYSO->AddFacet((G4VFacet*) facet);
+
+                    //Symm -Z +X
+                    facet = new G4TriangularFacet ( G4ThreeVector(x0,y0, -z0),
+                                                    G4ThreeVector(x1,y1, -z0),
+                                                    G4ThreeVector(x2,y2,-z1),
+                                                    ABSOLUTE);
+                    TessLYSO->AddFacet((G4VFacet*) facet);
+                    facet = new G4TriangularFacet ( G4ThreeVector(x3,y3, -z1),
+                                                    G4ThreeVector(x2,y2, -z1),
+                                                    G4ThreeVector(x1,y1,-z0),
+                                                    ABSOLUTE);
+                    TessLYSO->AddFacet((G4VFacet*) facet);
+                    //Symm -Z -X
+                    facet = new G4TriangularFacet ( G4ThreeVector(-x0,y0, -z0),
+                                                    G4ThreeVector(-x3,y3, -z1),
+                                                    G4ThreeVector(-x1,y1,-z0),
+                                                    ABSOLUTE);
+                    TessLYSO->AddFacet((G4VFacet*) facet);
+                    facet = new G4TriangularFacet ( G4ThreeVector(-x0,y0, -z0),
+                                                    G4ThreeVector(-x2,y2, -z1),
+                                                    G4ThreeVector(-x3,y3,-z1),
+                                                    ABSOLUTE);
+                    TessLYSO->AddFacet((G4VFacet*) facet);
+                }
+            }
+
+        TessLYSO->SetSolidClosed(true);
+ 
     solidGlue = new G4Box("solidGlue", RESIN_W*mm+0.2*mm*G4UniformRand(), LYSO_thick*mm+0.194*mm+0.2*mm*G4UniformRand(), GLUE_L*mm);
     }
     else if (GeomConfig==2)
@@ -278,8 +394,8 @@ tr = G4Translate3D(-RESIN_W+DET_T+0.194*(i+1)*mm+DET_T*2*i,0.,0.) * G4Rotate3D(r
     //LYSOAll_Add=new G4UnionSolid("LYSOAll_Add", solidLYSO , solidLYSO, tr);
     for(i = 0; i < nSiPM-1; i++){
     tr = G4Translate3D(LYSO_thick+DET_T+0.194*(i+1)*mm+DET_T*2*i,0.,0.) * G4Rotate3D(rotm) ;
-    if(i==0){        LYSOAll_Add =new G4UnionSolid("LYSOAll_Add", solidLYSO , solidLYSO, tr);
-            }else   {LYSOAll_Add =new G4UnionSolid("LYSOAll_Add", LYSOAll_Add, solidLYSO, tr);}
+    if(i==0){        LYSOAll_Add =new G4UnionSolid("LYSOAll_Add", TessLYSO , TessLYSO, tr);
+            }else   {LYSOAll_Add =new G4UnionSolid("LYSOAll_Add", LYSOAll_Add, TessLYSO, tr);}
     }
 
 }else if (GeomConfig==4){
@@ -293,6 +409,7 @@ tr = G4Translate3D(-RESIN_W+DET_T+0.194*(i+1)*mm+DET_T*2*i,0.,0.) * G4Rotate3D(r
     }
 
 }
+
     solidFR4 = new G4Box("solidFR4", RESIN_W*mm, RESIN_H*mm, FR4_L);
 
 
@@ -302,6 +419,7 @@ tr = G4Translate3D(-RESIN_W+DET_T+0.194*(i+1)*mm+DET_T*2*i,0.,0.) * G4Rotate3D(r
     logicDetector = new G4LogicalVolume(solidDetector, worldMat, "locigDetector"); // Defined outside in class
 
     if (GeomConfig==3){logicLYSO = new G4LogicalVolume(LYSOAll_Add, scintillator, "logicLYSO");}
+    else if (GeomConfig==1){logicLYSO = new G4LogicalVolume(TessLYSO, scintillator, "logicLYSO");}
     else{logicLYSO = new G4LogicalVolume(solidLYSO, scintillator, "logicLYSO");}
 
     if (GeomConfig==4){logicLYSOCover = new G4LogicalVolume(LYSOCover_Sub, scintillator, "logicLYSOCover");}
@@ -331,7 +449,7 @@ tr = G4Translate3D(-RESIN_W+DET_T+0.194*(i+1)*mm+DET_T*2*i,0.,0.) * G4Rotate3D(r
     physWorld = new G4PVPlacement(0,G4ThreeVector(0.,0.,0.),logicWorld,"physWorld",0,false,0,true);
 
 if(GeomConfig == 1 ){
-    physLYSO = new G4PVPlacement(0,G4ThreeVector(0.,0.,-LYSO_L/2.*mm),logicLYSO,"physLYSO",logicWorld,false,0,true);       
+    physLYSO = new G4PVPlacement(0,G4ThreeVector(0.,0.,0.),logicLYSO,"physLYSO",logicWorld,false,0,true);       
 
     physGlue1 = new G4PVPlacement(0,G4ThreeVector(0.,0.,+1*(+LYSO_L*mm+GLUE_L*mm)),logicGlue,"physGlue1",logicWorld,false,0,true); 
     physGlue2 = new G4PVPlacement(0,G4ThreeVector(0.,0.,-1*(+LYSO_L*mm+GLUE_L*mm)),logicGlue,"physGlue2",logicWorld,false,0,true); 
@@ -377,7 +495,7 @@ physFR41 = new G4PVPlacement(0     ,G4ThreeVector(XposTol*mm,YposTol*mm+(RESIN_H
 physFR42 = new G4PVPlacement(rM,G4ThreeVector(XposTol2*mm,YposTol2*mm+(RESIN_H-0.5*mm-LYSO_thick),-1*(+LYSO_L*mm+GLUE_L*mm*2+2*(RESIN_L*mm+DET_L)+FR4_L)),logicFR4,"physResin2",logicWorld,false,0,true);
 
 
-    physLYSO = new G4PVPlacement(0,G4ThreeVector(-RESIN_W+LYSO_thick+0.194*mm,0.,-LYSO_L/2.*mm),logicLYSO,"physLYSO",logicWorld,false,0,true);   
+    physLYSO = new G4PVPlacement(0,G4ThreeVector(-RESIN_W+LYSO_thick+0.194*mm,0.,0.),logicLYSO,"physLYSO",logicWorld,false,0,true);   
 
 } else if (GeomConfig == 4){
 G4RotationMatrix* rM = new G4RotationMatrix();

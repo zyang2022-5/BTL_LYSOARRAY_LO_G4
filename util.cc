@@ -12,6 +12,8 @@
 #include <unistd.h> /* for access() */
 #include <stdlib.h> /* for getenv() */
 #include <stdio.h> /* for sprintf(), fopen() */
+#include <ctime>
+
 
 /* Equivalent to fopen() but uses find_file() to find the path to the filename. */
 FILE *open_file(const char *filename, const char *mode)
@@ -216,4 +218,21 @@ void quickSort(double arr[], int start, int end)
  
     // Sorting the right part
     quickSort(arr, p + 1, end);
+}
+
+///////////////
+// DATETIME
+///////////////
+
+std::string datetime()
+{
+    time_t rawtime;
+    struct tm * timeinfo;
+    char buffer[80];
+
+    time (&rawtime);
+    timeinfo = localtime(&rawtime);
+
+    strftime(buffer,80,"%d-%m-%Y %H-%M-%S",timeinfo);
+    return std::string(buffer);
 }

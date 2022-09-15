@@ -11,12 +11,13 @@
 #include "G4GenericMessenger.hh"
 
 #include "construction.hh"
+#include "G4Args.hh"
 
 class MyPrimaryGenerator : public G4VUserPrimaryGeneratorAction
 {
 
 public:
-    MyPrimaryGenerator();
+    MyPrimaryGenerator(MyG4Args*);
     ~MyPrimaryGenerator();
     
     virtual void GeneratePrimaries(G4Event*); 
@@ -25,6 +26,8 @@ private:
     G4ParticleGun *fParticleGun;
     G4double zParPos;
     G4GenericMessenger *fMessenger;
+    MyG4Args* PassArgs;
+
 };
 
 #endif

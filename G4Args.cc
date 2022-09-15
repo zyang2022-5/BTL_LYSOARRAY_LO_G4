@@ -187,10 +187,33 @@ MyG4Args :: MyG4Args(int mainargc,char** mainargv)
                 {   
                     Znode = atoi(mainargv[j+1]);j=j+1;
                     G4cout<< " ### The Number of sections for the LYSO crystal is:  "<< incr <<G4endl;         
+                }else if(strcmp(mainargv[j],"-Muon")==0)
+                {   
+                    Muon = 1;
+                    G4cout<< " ### Selected Muons."  <<G4endl;         
+                }
+                else if(strcmp(mainargv[j],"-date")==0)
+                {   
+                    dateflag = 1;
+	                time_t curr_time;
+	                tm * curr_tm;
+	                
+	                time(&curr_time);
+	                curr_tm = localtime(&curr_time);
+
+                    strftime (datechar,22,"_%Y_%m_%d_%H_%M_",curr_tm);
+                    G4cout<< " ### Add date to filename" <<G4endl;     
+                        
                 }
         }
 
     if (Oin == 0 ) {  OutName = DefOutName;   }
+    if(dateflag == 1){   
+        
+        for(int i=0;i<18;i++){
+            OutName=OutName+datechar[i];  
+        }
+    }
 
         xv0 = new G4double[Onode*(Znode+1)];   
         G4double Pi=atan(1)*4;

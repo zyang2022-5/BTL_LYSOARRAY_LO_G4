@@ -1,21 +1,41 @@
 #include "generator.hh"
 
-MyPrimaryGenerator :: MyPrimaryGenerator()
+MyPrimaryGenerator :: MyPrimaryGenerator(MyG4Args* MainArgs)
 {
+    PassArgs=MainArgs;
     fParticleGun = new G4ParticleGun(1); /*Number of particles*/
 
     // Add to constructor what we want to use in macro files or modify per event or it will be overwritten 
     G4ParticleTable *particleTable = G4ParticleTable::GetParticleTable();
-    G4String particleName ="gamma";
-    G4ParticleDefinition *particle = particleTable->FindParticle(particleName);
-    
 
-        G4ThreeVector pos(0.*m,0.1*m,0.*m);
-        G4ThreeVector mom(0.,-1.,0.);
-        fParticleGun->SetParticlePosition (pos);
-        fParticleGun->SetParticleMomentumDirection (mom);
-        fParticleGun->SetParticleMomentum (511. *keV);
-        fParticleGun->SetParticleDefinition(particle);
+    if(PassArgs->GetMuonFlag()==1){
+            G4String particleName ="mu+";
+            G4ParticleDefinition *particle = particleTable->FindParticle(particleName);
+            
+                G4ThreeVector mom(0.,-1.,0.);
+
+                fParticleGun->SetParticleMomentumDirection (mom);
+                fParticleGun->SetParticleMomentum (2. *GeV);
+                fParticleGun->SetParticleDefinition(particle); 
+
+        }else{
+            G4String particleName ="gamma";
+            G4ParticleDefinition *particle = particleTable->FindParticle(particleName);
+            
+                G4ThreeVector mom(0.,-1.,0.);
+                fParticleGun->SetParticleMomentumDirection (mom);
+                fParticleGun->SetParticleMomentum (511. *keV);
+                fParticleGun->SetParticleDefinition(particle); 
+        }
+
+            G4double LT=PassArgs->GetGeom_LYSO_thick();
+                if(PassArgs->GetGeomConfig()==3){
+                    G4ThreeVector pos(-1*LT*mm,0.05*m,0.*m);
+                    fParticleGun->SetParticlePosition (pos);
+                }else{
+                    G4ThreeVector pos(0.*m,0.05*m,0.*m);
+                    fParticleGun->SetParticlePosition (pos);
+                }
 
 }
 

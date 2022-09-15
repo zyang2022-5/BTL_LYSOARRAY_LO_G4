@@ -52,7 +52,7 @@ echo "*** Sourcing G4:"
 if [ $Valg = 0 ]; then
     cd $BASEDIR
     echo $(pwd)
-    ./$SimName -o Muon_Module_0922_1355 -GeomConfig 3 -mn runMuon.mac 10
+    ./$SimName -o Muon_Module_1509_1014_ -GeomConfig 3 -mn runMuon.mac 10
     cd $BASEDIR
 fi
 

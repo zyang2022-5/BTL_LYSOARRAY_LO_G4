@@ -9,6 +9,8 @@
 #include "G4UImanager.hh"
 #include <fstream>
 #include <cstring>
+#include <ctime>
+
 
 
 class MyG4Args 
@@ -91,6 +93,7 @@ public:
     G4double GetnEvtEdep(G4int runid) const {return nEdepEvts[runid];}  
     G4int GetZnode() const {return Znode;}
     G4double* GetNodeRadValues() const {return xv0;}
+    G4int GetMuonFlag() const {return Muon;}
 private:
 
     // Default values modifiable by arguments and able to be returned!!!
@@ -122,6 +125,8 @@ private:
     G4int Znode=1;
     G4int Onode=5;
     G4double* xv0 = NULL;
+    G4int Muon = 0;
+    G4int dateflag;
 
 // Counters!!!
     G4int ArgLO=0;
@@ -132,6 +137,7 @@ private:
     G4int nPhotR=0;
     G4int nPhotL=0;
     G4int NEdep=0;
+    char datechar [22];
 
 
 };    

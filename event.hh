@@ -30,7 +30,7 @@ public :
 private :
     G4double fEdep;
     G4double fPhCount;
-    G4double fLO;
+    G4double fLO,GenX,GenZ;
     G4double PDE420;
     G4PhysicsOrderedFreeVector *PDE;
     G4double PXd ;

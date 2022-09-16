@@ -57,8 +57,8 @@ if(PassArgs->GetRnd_Part()==1)
 
     //G4cout<< "Data from construction: "<< LYSO_L << " " << LYSO_T << " " << GeomConfig << G4endl;
     if (GeomConfig == 1){
-        G4double GenX=(-LYSO_T+LYSO_T*2*G4UniformRand())/1000.;
-        G4double GenZ=(-LYSO_L+LYSO_L*2*G4UniformRand())/1000.;
+        GenX=(-LYSO_T+LYSO_T*2*G4UniformRand())/1000.;
+        GenZ=(-LYSO_L+LYSO_L*2*G4UniformRand())/1000.;
         command = "/gun/position "+std::to_string(GenX)+" 0.05 "+std::to_string(GenZ)+" m"; 
         G4cout<< command << G4endl;
         UImanager->ApplyCommand(command);     
@@ -66,8 +66,8 @@ if(PassArgs->GetRnd_Part()==1)
         G4cout<< command << G4endl;
         UImanager->ApplyCommand(command); 
     }else if (GeomConfig == 2){
-        G4double GenX=(-LYSO_T2+LYSO_T2*2*G4UniformRand())/1000.;
-        G4double GenZ=(-LYSO_T+LYSO_T2*2*G4UniformRand())/1000.;
+        GenX=(-LYSO_T2+LYSO_T2*2*G4UniformRand())/1000.;
+        GenZ=(-LYSO_T+LYSO_T2*2*G4UniformRand())/1000.;
         command = "/gun/position "+std::to_string(GenX)+" "+std::to_string(GenZ)+" -0.05 "+"m"; 
         G4cout<< command << G4endl;
         UImanager->ApplyCommand(command);     
@@ -75,8 +75,8 @@ if(PassArgs->GetRnd_Part()==1)
         G4cout<< command << G4endl;
         UImanager->ApplyCommand(command); 
     }else if (GeomConfig == 3){
-        G4double GenX=(-LYSO_T*2.*mm-0.194/2*mm+LYSO_T*mm*2*G4UniformRand())/1000.;
-        G4double GenZ=(-LYSO_L+LYSO_L*2*G4UniformRand())/1000.;
+        GenX=(-LYSO_T*2.*mm-0.194/2*mm+LYSO_T*mm*2*G4UniformRand())/1000.;
+        GenZ=(-LYSO_L+LYSO_L*2*G4UniformRand())/1000.;
         command = "/gun/position "+std::to_string(GenX)+" 0.05 "+std::to_string(GenZ)+" m"; 
         G4cout<< command << G4endl;
         UImanager->ApplyCommand(command);     
@@ -188,14 +188,14 @@ if(PassArgs->GetTree_EndOfEvent()==1){
     man->FillNtupleDColumn(4, 2, PC);
     man->FillNtupleDColumn(4, 3, PDE420);
     man->FillNtupleDColumn(4, 4, PC/(PassArgs->GetEdep()/MeV)/2.);
-    man->FillNtupleDColumn(4, 5, PXd*1000);
-    man->FillNtupleDColumn(4, 6, PZd*1000);
-    man->FillNtupleDColumn(4, 7, GLUEL/mm);
-    man->FillNtupleDColumn(4, 8, RESINL/mm);
-    man->FillNtupleDColumn(4, 9, XPOS/mm);
-    man->FillNtupleDColumn(4, 10, YPOS/mm);
-    man->FillNtupleDColumn(4, 11, XPOS2/mm);
-    man->FillNtupleDColumn(4, 12, YPOS2/mm);
+    man->FillNtupleDColumn(4, 5, GenX);
+    man->FillNtupleDColumn(4, 6, GenZ);
+    man->FillNtupleDColumn(4, 7, GLUEL);//mm
+    man->FillNtupleDColumn(4, 8, RESINL);//mm
+    man->FillNtupleDColumn(4, 9, XPOS);
+    man->FillNtupleDColumn(4, 10, YPOS);
+    man->FillNtupleDColumn(4, 11, XPOS2);
+    man->FillNtupleDColumn(4, 12, YPOS2);
     if (GeomConfig == 3){
     man->FillNtupleDColumn(4, 13, CT);
     man->FillNtupleDColumn(4, 14, CT/(PassArgs->GetEdep()/MeV));}

@@ -20,66 +20,11 @@ VISUALIZATION: Everythin in between * Vis -> Visualizer* lines of with it at the
 
 /////////////////////////////////// PROGRAM START ///////////////////////////////////
 
-#include <iostream>
-#include "G4RunManager.hh" /* Run */
-#include "G4UImanager.hh"
-
-///////* Vis -> Visualizer*//////
-#include "G4VisManager.hh"      /* Vis -> Visualizer*/
-#include "G4VisExecutive.hh"    /* Vis -> Visualizer*/
-#include "G4UIExecutive.hh"     /* Vis -> Visualizer*/
-///////* Vis -> Visualizer*//////
-
-/*Simulation created files*/
-#include "construction.hh"
-#include "physics.hh"
-#include "action.hh"
-#include <cstdlib>
-#include "G4Args.hh"
+#include "G4sim.hh"
 
 
 int main(int argc, char** argv) /* argc, argv are the argument passed to the sim*/
 {   
-    // Set Up / Run  Initialization
-    G4RunManager *runManager = new G4RunManager();
-    MyG4Args *ArgInp = new MyG4Args(argc, argv);
-
-    runManager -> SetUserInitialization(new MyDetectorConstruction(ArgInp)); /*Define geometry*/
-    runManager -> SetUserInitialization(new MyPhysicsList()); /*Define physics*/
-    runManager -> SetUserInitialization(new MyActionInitialization(ArgInp)); /*Define actions*/
-
-
-    runManager -> Initialize();
-
-///////* Vis -> Visualizer*//////
-    G4UIExecutive *ui = 0; // ui initialization
-    // Show *user interface only if we do not use a macro, or it will be inefficient    
-    if (ArgInp->GetVis() ==1) // argc only one option introduced
-    {
-        ui = new G4UIExecutive(argc,argv); // ui definition-declaration
-    }   
-    /* Vis -> Visualizer*/  // Initialization
-    G4VisManager *visManager = new G4VisExecutive();
-    visManager->Initialize();
-///////* Vis -> Visualizer*//////
-
-    G4UImanager *UImanager = G4UImanager::GetUIpointer();
-    if(ArgInp->GetVis() ==1)
-    {
-        UImanager->ApplyCommand("/control/execute vis.mac");
-        ui->SessionStart();     ///////* Vis -> Visualizer*//////
-    }
-    else
-    {
-                    G4String command = "/control/execute ";  
-                    G4String fileName = ArgInp->GetMacName();
-                    G4int nrep = ArgInp->Getnrep();
-                    for (int i = 1; i <= nrep; i=i+1){
-                        UImanager->ApplyCommand(command+fileName);
-                    }
-        }
-
-
-
+    G4simulation *sim = new G4simulation(argc, argv);
     return 0;
 }

@@ -126,6 +126,30 @@ void MyRunAction::BeginOfRunAction(const G4Run* run)
     // Creation of Output file
     man->OpenFile("./Results/"+OutputName+strRunID.str()+".root");
 
+    if(PassArgs->GetRnd_Geom()==1)
+        {
+        G4double GLUE_L = 0.15+0.1*G4UniformRand();   GLUE_L=GLUE_L/2.;
+        G4double RESIN_L =0.5+0.2*G4UniformRand();   RESIN_L=RESIN_L/2.;
+        G4double XposTol = -0.08+G4UniformRand()*0.16;
+        G4double YposTol = -0.08+G4UniformRand()*0.16;
+        G4double XposTol2 = -0.08+G4UniformRand()*0.16;
+        G4double YposTol2 = -0.08+G4UniformRand()*0.16;
+        command="/detector/GLUE_L " + std::to_string(GLUE_L);
+        UImanager->ApplyCommand(command);  G4cout<< command << G4endl;
+        command="/detector/RESIN_L " + std::to_string(RESIN_L);
+        UImanager->ApplyCommand(command);  G4cout<< command << G4endl;
+        command="/detector/XposTol " + std::to_string(XposTol);
+        UImanager->ApplyCommand(command);  G4cout<< command << G4endl;
+        command="/detector/YposTol " + std::to_string(YposTol);
+        UImanager->ApplyCommand(command);  G4cout<< command << G4endl;
+        UImanager->ApplyCommand(command);  G4cout<< command << G4endl;
+        command="/detector/XposTol2 " + std::to_string(XposTol2);
+        UImanager->ApplyCommand(command);  G4cout<< command << G4endl;
+        command="/detector/YposTol2 " + std::to_string(YposTol2);
+        UImanager->ApplyCommand(command);  G4cout<< command << G4endl;
+        PassArgs->GeomReinit();
+        }
+
 }
 void MyRunAction::EndOfRunAction(const G4Run* run)
 {
@@ -165,29 +189,7 @@ void MyRunAction::EndOfRunAction(const G4Run* run)
     G4cout<<"#################### " <<G4endl;
     // Modify random parameter in the geometry 
     //  #### This does nothing unless we do another run, the geometry can only be changed in between runs not events !!!
-    if(PassArgs->GetRnd_Geom()==1)
-        {
-        G4double GLUE_L = 0.15+0.1*G4UniformRand();   GLUE_L=GLUE_L/2.;
-        G4double RESIN_L =0.5+0.2*G4UniformRand();   RESIN_L=RESIN_L/2.;
-        G4double XposTol = -0.08+G4UniformRand()*0.16;
-        G4double YposTol = -0.08+G4UniformRand()*0.16;
-        G4double XposTol2 = -0.08+G4UniformRand()*0.16;
-        G4double YposTol2 = -0.08+G4UniformRand()*0.16;
-        command="/detector/GLUE_L " + std::to_string(GLUE_L);
-        UImanager->ApplyCommand(command);  G4cout<< command << G4endl;
-        command="/detector/RESIN_L " + std::to_string(RESIN_L);
-        UImanager->ApplyCommand(command);  G4cout<< command << G4endl;
-        command="/detector/XposTol " + std::to_string(XposTol);
-        UImanager->ApplyCommand(command);  G4cout<< command << G4endl;
-        command="/detector/YposTol " + std::to_string(YposTol);
-        UImanager->ApplyCommand(command);  G4cout<< command << G4endl;
-        UImanager->ApplyCommand(command);  G4cout<< command << G4endl;
-        command="/detector/XposTol2 " + std::to_string(XposTol2);
-        UImanager->ApplyCommand(command);  G4cout<< command << G4endl;
-        command="/detector/YposTol2 " + std::to_string(YposTol2);
-        UImanager->ApplyCommand(command);  G4cout<< command << G4endl;
-        PassArgs->GeomReinit();
-        }
+
 
     
     // Close the output file for this event

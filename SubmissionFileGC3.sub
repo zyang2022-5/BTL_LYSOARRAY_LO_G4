@@ -37,4 +37,4 @@ should_transfer_files = Yes
 max_retries = 3
 #requirements = Machine =!= LastRemoteHost
 #universe = vanilla
-Queue 3
+Queue 1

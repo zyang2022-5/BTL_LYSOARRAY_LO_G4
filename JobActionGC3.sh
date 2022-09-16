@@ -3,11 +3,10 @@
 #BASEDIR=$(pwd)          # Current folder where the G4 files can be found
 BASEDIR="/storage/af/user/greales/simG4/Repov2/"
 
-buildfol="buildSing"    # bulding folder nae
 SimName="sim"    # Name of the G4 executable
 MacroName="run.mac"     # Name of the macro file to run with the G4 executable
 SimArgs="-m"            # Arguments for the G4 executable (any)
-OutPut="TestClusterName"   # Name of the Root output files from the G4 executable 
+OutPut="Name"   # Name of the Root output files from the G4 executable 
 
 while getopts "a:n:s:" arg; do
     case $arg in
@@ -23,7 +22,9 @@ while getopts "a:n:s:" arg; do
     esac
 done
 
+echo "*** Sourcing G4:"
+. $BASEDIR/G4SourceCVMFS.sh
 
-### Main action
-ActionSH=$BASEDIR/G4SimScriptGC3.sh
-. $ActionSH -a $SimArgs -n $SimName -m $MacroName -b $BASEDIR -f $buildfol -v 0 -o $OutPut
+echo "Running Simulation" 
+cd $BASEDIR
+./$SimName -o $OutName -GeomConfig 3 -m run.mac -Muon

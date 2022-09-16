@@ -52,7 +52,7 @@ echo "*** Sourcing G4:"
 if [ $Valg = 0 ]; then
     cd $BASEDIR
     echo $(pwd)
-    ./$SimName -o SimMuon_SingleSiPM_3mmResin_0922_1045 -m runMuonCG1.mac -GeomConfig 1 -RESIN_W 1.6
+    ./$SimName -o $OutName -m runMuonCG1.mac -GeomConfig 1 -RESIN_W 1.6
     cd $BASEDIR
 fi
 

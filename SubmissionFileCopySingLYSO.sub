@@ -1,7 +1,7 @@
 ### Submission File
 Universe = vanilla
 executable = /storage/af/user/greales/simG4/Repov2/JobActionCopy.sh
-arguments = 0
+arguments ="-a $(Cluster)_$(Process)_"
 Output  = /storage/af/user/greales/simG4/outputs/Out_job$(Cluster).out
 Error   = /storage/af/user/greales/simG4/errors/error_job$(Cluster).out
 Log     = /storage/af/user/greales/simG4/logs/log_job$(Cluster).out

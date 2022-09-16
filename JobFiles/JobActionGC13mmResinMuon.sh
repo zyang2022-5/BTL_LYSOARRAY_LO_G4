@@ -6,7 +6,7 @@ BASEDIR="/storage/af/user/greales/simG4/Repov2/"
 SimName="sim"    # Name of the G4 executable
 MacroName="run.mac"     # Name of the macro file to run with the G4 executable
 SimArgs="-m"            # Arguments for the G4 executable (any)
-OutPut="Name"   # Name of the Root output files from the G4 executable 
+OutPut="GC1_3mmResin_Muon_"   # Name of the Root output files from the G4 executable 
 
 while getopts "a:n:s:" arg; do
     case $arg in
@@ -27,4 +27,4 @@ echo "*** Sourcing G4:"
 
 echo "Running Simulation" 
 cd $BASEDIR
-./$SimName -o $OutName -GeomConfig 3 -m run.mac -Muon
+./$SimName -o $OutName -GeomConfig 1 RESIN_W 1.6 -m run.mac -Muon

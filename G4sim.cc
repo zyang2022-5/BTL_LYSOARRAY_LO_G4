@@ -1,6 +1,6 @@
 #include "G4sim.hh"
 
-G4simulation::G4simulation(int mainargc,char** mainargv)
+G4simulation::G4simulation(int mainargc,char** mainargv, int nr, G4double* radp)
 {
   // Set Up / Run  Initialization
     G4RunManager *runManager = new G4RunManager();

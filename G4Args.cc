@@ -380,6 +380,7 @@ void MyG4Args :: FillStdTim(G4int runid){
 }
 
     void MyG4Args ::SetRadiusVect(G4double* radp, G4int Onodeinp, G4int Znodeinp){
+    G4cout<< " ### Modified Default LYSO Geometry" <<G4endl;         
     xv0 = radp;   
     Onode = Onodeinp;
     Znode = Znodeinp;

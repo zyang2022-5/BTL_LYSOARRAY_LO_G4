@@ -236,3 +236,15 @@ std::string datetime()
     strftime(buffer,80,"%d-%m-%Y %H-%M-%S",timeinfo);
     return std::string(buffer);
 }
+
+/////////////////////////////////////
+// Triangular mesh volume calculation
+/////////////////////////////////////
+
+double LYSOMeshVolume(G4double* radv){
+
+return 0.;
+}
+
+
+

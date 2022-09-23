@@ -1,10 +1,16 @@
 #include "G4sim.hh"
 
-G4simulation::G4simulation(int mainargc,char** mainargv, int nr, G4double* radp)
+G4simulation::G4simulation(int mainargc,char** mainargv, G4int Onode , G4int Znode , G4double* radp)
 {
   // Set Up / Run  Initialization
     G4RunManager *runManager = new G4RunManager();
     MyG4Args *ArgInp = new MyG4Args(mainargc, mainargv);
+    
+    if(radp == NULL){
+        ArgInp->DefaultRadiusVect();
+    }else{
+        ArgInp->SetRadiusVect(radp,Onode,Znode);
+    }
 
     runManager -> SetUserInitialization(new MyDetectorConstruction(ArgInp)); /*Define geometry*/
     runManager -> SetUserInitialization(new MyPhysicsList()); /*Define physics*/

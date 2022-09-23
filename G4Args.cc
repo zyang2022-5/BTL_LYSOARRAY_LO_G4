@@ -213,21 +213,7 @@ MyG4Args :: MyG4Args(int mainargc,char** mainargv)
         for(int i=0;i<18;i++){
             OutName=OutName+datechar[i];  
         }
-    }
-
-        xv0 = new G4double[Onode*(Znode+1)];   
-        G4double Pi=atan(1)*4;
-        G4double DTheta=Pi/(Onode-1);
-        // radius vector initialization
-            for(int i = 0; i < Znode+1; i++){
-                for (int j = 1; j < Onode+1; j++){
-                    if(j==1 || j==3 || j==5){xv0[i*Onode-1+j]=Geom_LYSO[0];}
-                    else{xv0[i*Onode-1+j]=pow(2*pow(Geom_LYSO[0],2),0.5);}
-                G4cout <<i*Onode-1+j<< " " <<xv0[i*Onode-1+j] << G4endl;
-
-                }
-            }
-    
+    }    
 
 }
 MyG4Args :: ~MyG4Args()
@@ -378,6 +364,25 @@ void MyG4Args :: FillStdTim(G4int runid){
 }
 
 
+    void MyG4Args ::DefaultRadiusVect(){
+        xv0 = new G4double[Onode*(Znode+1)];   
+        G4double Pi=atan(1)*4;
+        G4double DTheta=Pi/(Onode-1);
+        // radius vector initialization
+            for(int i = 0; i < Znode+1; i++){
+                for (int j = 1; j < Onode+1; j++){
+                    if(j==1 || j==3 || j==5){xv0[i*Onode-1+j]=Geom_LYSO[0];}
+                    else{xv0[i*Onode-1+j]=pow(2*pow(Geom_LYSO[0],2),0.5);}
+                G4cout <<i*Onode-1+j<< " " <<xv0[i*Onode-1+j] << G4endl;
 
+                }
+            }
+}
+
+    void MyG4Args ::SetRadiusVect(G4double* radp, G4int Onodeinp, G4int Znodeinp){
+    xv0 = radp;   
+    Onode = Onodeinp;
+    Znode = Znodeinp;
+}
 
 

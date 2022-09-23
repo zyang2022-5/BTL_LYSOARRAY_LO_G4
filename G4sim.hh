@@ -22,7 +22,7 @@ class G4simulation
 {
 
 public:
-    G4simulation(int, char**, int nr = 1 , G4double* radp = 0);
+    G4simulation(int, char**, G4int Onode = 5, G4int Znode = 1 , G4double* radp = NULL);
     ~G4simulation();
     G4double GetAvgLO(){}
 

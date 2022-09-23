@@ -86,6 +86,8 @@ public:
     void FillAvgLO(G4int); 
     void FillStdTim(G4int);
     void FillStdLO(G4int);
+    void DefaultRadiusVect();
+    void SetRadiusVect(G4double*, G4int, G4int);
     G4double GetLOAvg(G4int runid) const {return nRuntLOAvg[runid];}  
     G4double GetLOStd(G4int runid) const {return nRuntLOStd[runid];}  
     G4double GetTimAvg(G4int runid) const {return nRunTimingAvg[runid];}  

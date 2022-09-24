@@ -11,5 +11,5 @@ char *find_file(const char *filename);
 int read_tsv_file(const char *filename, double *energy, double *values, double xunit, double yunit);
 int partition(double arr[], int start, int end);
 void quickSort(double arr[], int start, int end);
-double LYSOMeshVolume(G4double* radv);
+double LYSOMeshVolume(G4double* xv0, G4int Onode, G4int Znode);
 #endif

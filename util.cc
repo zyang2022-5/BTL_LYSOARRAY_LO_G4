@@ -13,7 +13,7 @@
 #include <stdlib.h> /* for getenv() */
 #include <stdio.h> /* for sprintf(), fopen() */
 #include <ctime>
-
+#include <G4Types.hh>
 
 /* Equivalent to fopen() but uses find_file() to find the path to the filename. */
 FILE *open_file(const char *filename, const char *mode)
@@ -241,9 +241,89 @@ std::string datetime()
 // Triangular mesh volume calculation
 /////////////////////////////////////
 
-double LYSOMeshVolume(G4double* radv){
+double LYSOMeshVolume(G4double* xv0, G4int Onode, G4int Znode){
 
-return 0.;
+        // initialization of symmetry faces for testing
+        G4double Pi=atan(1)*4;
+        G4double DTheta=Pi/(Onode-1);
+            G4double theta = -Pi/2;G4double tolxy=1e-10; G4double LYSO_L=57.;
+            G4double x[3];            G4double y[3]; G4double z[3]; 
+            double Vol=0.;       
+        // End face
+            for(int i = 0; i < Onode-1; i++){ // 1 less triangle than nodes                
+                x[1] = xv0[i]*cos(theta);if (abs(x[1])<tolxy){x[1]=0;}
+                y[1] = xv0[i]*sin(theta);if (abs(y[1])<tolxy){y[1]=0;}
+                z[1]=LYSO_L/2;
+                theta = theta + DTheta;
+                x[2] = xv0[i+1]*cos(theta);if (abs(x[2])<tolxy){x[2]=0;}
+                y[2] = xv0[i+1]*sin(theta);if (abs(y[2])<tolxy){y[2]=0;}
+                z[2]=LYSO_L/2;
+                x[0]=0.;y[0]=0.;z[0]=LYSO_L/2;
+                Vol=Vol+(   -x[2]*y[1]*z[0]   +x[1]*y[2]*z[0]   +x[2]*y[0]*z[1]
+                                -x[0]*y[2]*z[1]   -x[1]*y[0]*z[2]   +x[0]*y[1]*z[2])/6;
+                // First and fourth irregular tetrahedron : 1/3*Ab*h=1/3*(t*L/2)*t = 10.6875
+                // Second and third irregular tetrahedron : 1/3*Ab*h=1/3*(t*t/2)*L = 10.6875
+                /*
+                std::cout <<"prod: "<<-x[2]*y[1]*z[0]<< std::endl;
+                std::cout <<"prod: "<<+x[1]*y[2]*z[0]<< std::endl;
+                std::cout <<"prod: "<<+x[2]*y[0]*z[1]<< std::endl;
+                std::cout <<"prod: "<<-x[0]*y[2]*z[1]<< std::endl;
+                std::cout <<"prod: "<<-x[1]*y[0]*z[2]<< std::endl;
+                std::cout <<"prod: "<<+x[0]*y[1]*z[2]<< std::endl;
+                std::cout <<"rad: "<<xv0[i]<< " "<<xv0[i+1]<< " "<< std::endl;
+                std::cout <<"x: "<<x[0]<< " "<<x[1]<< " "<<x[2]<< " "<<x[3]<< " "<< std::endl;
+                std::cout <<"y: "<<y[0]<< " "<<y[1]<< " "<<y[2]<< " "<<y[3]<< " "<< std::endl;
+                std::cout <<"z: "<<z[0]<< " "<<z[1]<< " "<<z[2]<< " "<<z[3]<< " "<< std::endl;
+                std::cout <<"End Face: " << i <<" Accumulated Volume: "<<Vol<< std::endl;*/
+            }
+        // Lateral faces
+            G4double z0,z1,x0,x2,x1,x3,y0,y2,y1,y3,LYSOalt;
+            LYSOalt=LYSO_L/2;
+            for (int j = 0; j < Znode; j++){
+                theta = -Pi/2;
+               for(int i = 1; i < Onode; i++){ // 1 less triangle than nodes
+                    z0=+LYSOalt-LYSOalt/Znode*j;z1=+LYSOalt-LYSOalt/Znode*(j+1);
+
+                    x0 = xv0[j*Onode-1+i]*cos(theta); if (abs(x0)<tolxy){x0=0;}
+                    x2 = xv0[(j+1)*Onode-1+i]*cos(theta);if (abs(x2)<tolxy){x2=0;}
+                    y0 = xv0[j*Onode-1+i]*sin(theta);if (abs(y0)<tolxy){y0=0;}
+                    y2 = xv0[(j+1)*Onode-1+i]*sin(theta);if (abs(y2)<tolxy){y2=0;}
+                    theta = theta + DTheta;
+                    x1 = xv0[j*Onode-1+i+1]*cos(theta);if (abs(x1)<tolxy){x1=0;}
+                    x3 = xv0[(j+1)*Onode-1+i+1]*cos(theta);if (abs(x3)<tolxy){x3=0;}
+                    y1 = xv0[j*Onode-1+i+1]*sin(theta);if (abs(y1)<tolxy){y1=0;}
+                    y3 = xv0[(j+1)*Onode-1+i+1]*sin(theta);if (abs(y3)<tolxy){y3=0;}
+
+                    x[0]=x3;x[1]=x1;x[2]=x0;
+                    y[0]=y3;y[1]=y1;y[2]=y0;
+                    z[0]=z1;z[1]=z0;z[2]=z0;
+                Vol=Vol+(   -x[2]*y[1]*z[0]   +x[1]*y[2]*z[0]   +x[2]*y[0]*z[1]
+                                -x[0]*y[2]*z[1]   -x[1]*y[0]*z[2]   +x[0]*y[1]*z[2])/6;
+                    x[0]=x3;x[1]=x0;x[2]=x2;
+                    y[0]=y3;y[1]=y0;y[2]=y2;
+                    z[0]=z1;z[1]=z0;z[2]=z1;
+                Vol=Vol+(   -x[2]*y[1]*z[0]   +x[1]*y[2]*z[0]   +x[2]*y[0]*z[1]
+                                -x[0]*y[2]*z[1]   -x[1]*y[0]*z[2]   +x[0]*y[1]*z[2])/6;
+                /*
+                std::cout <<"prod: "<<-x[2]*y[1]*z[0]<< std::endl;
+                std::cout <<"prod: "<<+x[1]*y[2]*z[0]<< std::endl;
+                std::cout <<"prod: "<<+x[2]*y[0]*z[1]<< std::endl;
+                std::cout <<"prod: "<<-x[0]*y[2]*z[1]<< std::endl;
+                std::cout <<"prod: "<<-x[1]*y[0]*z[2]<< std::endl;
+                std::cout <<"prod: "<<+x[0]*y[1]*z[2]<< std::endl;
+                std::cout <<"rad: "<<xv0[i]<< " "<<xv0[i+1]<< " "<< std::endl;
+                std::cout <<"x: "<<x[0]<< " "<<x[1]<< " "<<x[2]<< " "<<x[3]<< " "<< std::endl;
+                std::cout <<"y: "<<y[0]<< " "<<y[1]<< " "<<y[2]<< " "<<y[3]<< " "<< std::endl;
+                std::cout <<"z: "<<z[0]<< " "<<z[1]<< " "<<z[2]<< " "<<z[3]<< " "<< std::endl;
+                std::cout <<"End Face: "<< j << " " << i <<" Accumulated Volume: "<<Vol<< std::endl;*/
+                }
+            }
+
+        Vol=Vol*4.;
+                std::cout <<"End Volume: " <<" Accumulated Volume: "<<Vol<< std::endl;
+    
+
+return Vol;
 }
 
 

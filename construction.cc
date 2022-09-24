@@ -600,7 +600,7 @@ logicDetector->SetSensitiveDetector(sensDet);
         }
     else{
         GLUE_L = 0.2;   GLUE_L=GLUE_L/2.;
-        RESIN_L =0.5;   RESIN_L=RESIN_L/2.;
+        RESIN_L =RESIN_LNOM;   RESIN_L=RESIN_L/2.;
         XposTol = 0.;
         YposTol = 0.;
         XposTol2 = 0.;

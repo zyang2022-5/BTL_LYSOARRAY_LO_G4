@@ -178,6 +178,7 @@ void MyEventAction::EndOfEventAction(const G4Event*)
     // Fill evt values
     if(PassArgs->Getnrep()>0){
     PassArgs->FillEvtLO(evt, PC/(PassArgs->GetEdep()/MeV)/2.);
+    PassArgs->FillEvtLD(evt, PC);
     if(PassArgs->GetTimeTrue()==1){PassArgs->FillEvtTim(evt,  PassArgs->GetPhotTiming());}
     }   
 

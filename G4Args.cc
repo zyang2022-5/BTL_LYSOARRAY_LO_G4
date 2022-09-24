@@ -29,6 +29,7 @@ MyG4Args :: MyG4Args(int mainargc,char** mainargv)
                     G4cout<< " ### Number of events : " << nEvents <<G4endl;  
                     nEventTiming = new G4double[nEvents];
                     nEventLO = new G4double[nEvents];
+                    nEventLD = new G4double[nEvents];
 
                     nRunTimingAvg = new G4double[nrep];
                     nRuntLOAvg = new G4double[nrep];
@@ -49,11 +50,14 @@ MyG4Args :: MyG4Args(int mainargc,char** mainargv)
                     G4cout<< " ### Number of events : " << nEvents <<G4endl;  
                     nEventTiming = new G4double[nEvents];
                     nEventLO = new G4double[nEvents];
+                    nEventLD = new G4double[nEvents];
 
                     nRunTimingAvg = new G4double[nrep];
                     nRuntLOAvg = new G4double[nrep];
+                    nRuntLDAvg = new G4double[nrep];
                     nRunTimingStd = new G4double[nrep];
                     nRuntLOStd = new G4double[nrep];
+                    nRuntLDStd = new G4double[nrep];
                     nEdepEvts = new G4int[nrep];
                     MainTrees[5]=1;
                 }
@@ -215,6 +219,8 @@ MyG4Args :: MyG4Args(int mainargc,char** mainargv)
         }
     }    
 
+
+
 }
 MyG4Args :: ~MyG4Args()
 {}
@@ -328,14 +334,17 @@ void MyG4Args :: FillAvgTim(G4int runid){
 void MyG4Args :: FillAvgLO(G4int runid) {
 
     nRuntLOAvg[runid]=0;
+    nRuntLDAvg[runid]=0;
     G4int cnt=0;
     for (int j = 1; j < nEvents; j=j+1){
         if(nEventLO[j]>0){
             cnt+=1;
-            nRuntLOAvg[runid]+=nEventLO[j];      
+            nRuntLOAvg[runid]+=nEventLO[j];    
+            nRuntLDAvg[runid]+=nEventLD[j];        
         }
     }
     nRuntLOAvg[runid]=nRuntLOAvg[runid]/cnt;
+    nRuntLDAvg[runid]=nRuntLDAvg[runid]/cnt;
     nEdepEvts[runid]=cnt;
 }
 
@@ -353,13 +362,17 @@ void MyG4Args :: FillStdTim(G4int runid){
 }
     void MyG4Args :: FillStdLO(G4int runid){
     G4int cnt=0;
+    nRuntLOStd[runid]=0;
+    nRuntLDStd[runid]=0;
     for (int j = 1; j < nEvents; j=j+1){
         if(nEventLO[j]>0){
             cnt+=1;
             nRuntLOStd[runid]+=pow(nEventLO[j]-nRuntLOAvg[runid],2);      
+            nRuntLDStd[runid]+=pow(nEventLD[j]-nRuntLDAvg[runid],2);      
         }
     }
     nRuntLOStd[runid]=pow(nRuntLOStd[runid]/cnt,0.5);
+    nRuntLDStd[runid]=pow(nRuntLDStd[runid]/cnt,0.5);
     nEdepEvts[runid]=cnt;
 }
 

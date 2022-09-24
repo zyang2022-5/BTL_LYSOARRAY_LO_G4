@@ -39,7 +39,7 @@ int main(int argc, char** argv) /* argc, argv are the argument passed to the sim
                     else{radv[i*Onode-1+j]=pow(2*pow(3./2.,2),0.5);}
                 }
             }
-    G4double Vol = LYSOMeshVolume(radv, Onode,  Znode);
+    G4double Vol = LYSOMeshVolume(radv, Onode,  Znode); // Solution in [mm³]
     // Volume Calculation 57*3*3=513
     G4simulation *sim = new G4simulation(argc, argv, Onode, Znode, radv);
 

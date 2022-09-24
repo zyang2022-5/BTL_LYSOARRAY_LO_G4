@@ -25,9 +25,14 @@ public:
     G4simulation(int, char**, G4int Onode = 5, G4int Znode = 1 , G4double* radp = NULL);
     ~G4simulation();
     G4double GetAvgLO(){}
+    double GetLO_avg(int runid){return ArgInp->GetLOAvg(runid);}
+    double GetLO_std(int runid){return ArgInp->GetLOStd(runid);}
+    double GetLD_avg(int runid){return ArgInp->GetLDAvg(runid);}
+    double GetLD_std(int runid){return ArgInp->GetLDStd(runid);}
 
 private:
 
+    MyG4Args *ArgInp;
 };    
 
 #endif

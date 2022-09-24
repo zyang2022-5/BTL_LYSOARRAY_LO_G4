@@ -79,6 +79,7 @@ public:
     G4int GetNEdep() const {return NEdep;}
 
     void FillEvtLO(G4int evt, G4double val){nEventLO[evt]=val;}  
+    void FillEvtLD(G4int evt, G4double val){nEventLD[evt]=val;}  
     G4double GetEvtLO(G4int evt) const {return nEventLO[evt];}  
     void FillEvtTim(G4int evt, G4double val){nEventTiming[evt]=val;}  
     G4double GetEvtTim(G4int evt) const {return nEventLO[evt];}  
@@ -90,6 +91,8 @@ public:
     void SetRadiusVect(G4double*, G4int, G4int);
     G4double GetLOAvg(G4int runid) const {return nRuntLOAvg[runid];}  
     G4double GetLOStd(G4int runid) const {return nRuntLOStd[runid];}  
+    G4double GetLDAvg(G4int runid) const {return nRuntLDAvg[runid];}  
+    G4double GetLDStd(G4int runid) const {return nRuntLDStd[runid];}  
     G4double GetTimAvg(G4int runid) const {return nRunTimingAvg[runid];}  
     G4double GetTimStd(G4int runid) const {return nRunTimingStd[runid];}  
     G4double GetnEvtEdep(G4int runid) const {return nEdepEvts[runid];}  
@@ -121,7 +124,7 @@ private:
     G4double KillLTime=200;
     G4int KillLTTrue=0;
     G4int nEvents=0;
-    G4double *nEventTiming, *nEventLO, *nRunTimingAvg, *nRuntLOAvg, *nRunTimingStd, *nRuntLOStd;        
+    G4double *nEventTiming, *nEventLO, *nEventLD, *nRunTimingAvg, *nRuntLOAvg, *nRuntLDAvg, *nRunTimingStd, *nRuntLOStd, *nRuntLDStd;        
     G4int *nEdepEvts;
     G4double incr=0;
     G4int Znode=1;

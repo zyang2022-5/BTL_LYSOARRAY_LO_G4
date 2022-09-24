@@ -4,7 +4,7 @@ G4simulation::G4simulation(int mainargc,char** mainargv, G4int Onode , G4int Zno
 {
   // Set Up / Run  Initialization
     G4RunManager *runManager = new G4RunManager();
-    MyG4Args *ArgInp = new MyG4Args(mainargc, mainargv);
+    ArgInp = new MyG4Args(mainargc, mainargv);
     
     if(radp == NULL){
         ArgInp->DefaultRadiusVect();

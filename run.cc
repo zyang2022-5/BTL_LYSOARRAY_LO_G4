@@ -179,12 +179,14 @@ void MyRunAction::EndOfRunAction(const G4Run* run)
                 man->AddNtupleRow(5);
             }
         }
+    }
     G4cout<<"* Average LO: " << PassArgs->GetLOAvg(runid) <<G4endl;
     G4cout<<"* Std LO: " << PassArgs->GetLOStd(runid) <<G4endl;
+    G4cout<<"* Average LD: " << PassArgs->GetLDAvg(runid) <<G4endl;
+    G4cout<<"* Std LD: " << PassArgs->GetLDStd(runid) <<G4endl;
     G4cout<<"* Average Timing: " << PassArgs->GetTimAvg(runid) <<G4endl;
     G4cout<<"* Std Timing: " << PassArgs->GetTimStd(runid) <<G4endl;
     G4cout<<"* Number of events with energy deposition: " << PassArgs->GetnEvtEdep(runid) <<G4endl;
-    }
     G4cout<<"### END OF RUN: " << run-> GetRunID() << " ### " <<G4endl;
     G4cout<<"#################### " <<G4endl;
     // Modify random parameter in the geometry 

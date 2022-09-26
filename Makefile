@@ -14,7 +14,7 @@ $(info $$OBJFIN is [${OBJFIN}])
 all: sim 
 
 Makefile.dep:
-	-$(CXX) $(CXXFLAGS) -MM *.cc > Makefile.dep
+	-$(CXX) $(CXXFLAGS) -MM $(SOURCECXXG4) > Makefile.dep
 
 -include Makefile.dep
 

@@ -20,8 +20,8 @@ VISUALIZATION: Everythin in between * Vis -> Visualizer* lines of with it at the
 
 /////////////////////////////////// PROGRAM START ///////////////////////////////////
 
-#include "G4sim.hh"
-#include "util.hh"
+#include "src_G4/G4sim.hh"
+#include "src_G4/util.hh"
 
 
 int main(int argc, char** argv) /* argc, argv are the argument passed to the sim*/

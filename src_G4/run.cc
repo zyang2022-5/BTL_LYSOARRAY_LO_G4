@@ -180,6 +180,8 @@ void MyRunAction::EndOfRunAction(const G4Run* run)
             }
         }
     }
+
+    if(PassArgs->GetVis()==0){
     G4cout<<"* Average LO: " << PassArgs->GetLOAvg(runid) <<G4endl;
     G4cout<<"* Std LO: " << PassArgs->GetLOStd(runid) <<G4endl;
     G4cout<<"* Average LD: " << PassArgs->GetLDAvg(runid) <<G4endl;
@@ -189,6 +191,7 @@ void MyRunAction::EndOfRunAction(const G4Run* run)
     G4cout<<"* Number of events with energy deposition: " << PassArgs->GetnEvtEdep(runid) <<G4endl;
     G4cout<<"### END OF RUN: " << run-> GetRunID() << " ### " <<G4endl;
     G4cout<<"#################### " <<G4endl;
+    }
     // Modify random parameter in the geometry 
     //  #### This does nothing unless we do another run, the geometry can only be changed in between runs not events !!!
 

@@ -41,49 +41,66 @@ void MyEventAction::BeginOfEventAction(const G4Event *anEvent)
   G4double _perCent = 10.; // status increment in percent
 
    
-// Randomizing the impact point of the initial particle gun
-if(PassArgs->GetRnd_Part()==1)
-{
-    const MyDetectorConstruction *detectorConstruction = static_cast<const MyDetectorConstruction*> (G4RunManager::GetRunManager()->GetUserDetectorConstruction());
-    G4int GeomConfig  = PassArgs->GetGeomConfig();
+    // Randomizing the impact point of the initial particle gun
+    if(PassArgs->GetRnd_Part()==1)
+    {
+        const MyDetectorConstruction *detectorConstruction = static_cast<const MyDetectorConstruction*> (G4RunManager::GetRunManager()->GetUserDetectorConstruction());
+        G4int GeomConfig  = PassArgs->GetGeomConfig();
 
-// Setting limits to the randomizer for the particle gun
-    G4double LYSO_L  = detectorConstruction->GetLYSOL();
-    LYSO_L=LYSO_L-LYSO_L*0.01;
-    G4double LYSO_T  = detectorConstruction->GetLYSOT();
-    LYSO_T=LYSO_T-LYSO_T*0.01;
-    G4double LYSO_T2  = detectorConstruction->GetLYSOT();
-    LYSO_T2=LYSO_T2-LYSO_T2*0.01;
+    // Setting limits to the randomizer for the particle gun
+        G4double LYSO_L  = detectorConstruction->GetLYSOL();
+        LYSO_L=LYSO_L-LYSO_L*0.01;
+        G4double LYSO_T  = detectorConstruction->GetLYSOT();
+        LYSO_T=LYSO_T-LYSO_T*0.01;
+        G4double LYSO_T2  = detectorConstruction->GetLYSOT();
+        LYSO_T2=LYSO_T2-LYSO_T2*0.01;
 
-    //G4cout<< "Data from construction: "<< LYSO_L << " " << LYSO_T << " " << GeomConfig << G4endl;
-    if (GeomConfig == 1){
-        GenX=(-LYSO_T+LYSO_T*2*G4UniformRand())/1000.;
-        GenZ=(-LYSO_L+LYSO_L*2*G4UniformRand())/1000.;
-        command = "/gun/position "+std::to_string(GenX)+" 0.05 "+std::to_string(GenZ)+" m"; 
-        G4cout<< command << G4endl;
-        UImanager->ApplyCommand(command);     
-        command = "/gun/direction 0. -1. 0."; 
-        G4cout<< command << G4endl;
-        UImanager->ApplyCommand(command); 
-    }else if (GeomConfig == 2){
-        GenX=(-LYSO_T2+LYSO_T2*2*G4UniformRand())/1000.;
-        GenZ=(-LYSO_T+LYSO_T2*2*G4UniformRand())/1000.;
-        command = "/gun/position "+std::to_string(GenX)+" "+std::to_string(GenZ)+" -0.05 "+"m"; 
-        G4cout<< command << G4endl;
-        UImanager->ApplyCommand(command);     
-        command = "/gun/direction 0. 0. 1."; 
-        G4cout<< command << G4endl;
-        UImanager->ApplyCommand(command); 
-    }else if (GeomConfig == 3){
-        GenX=(-LYSO_T*2.*mm-0.194/2*mm+LYSO_T*mm*2*G4UniformRand())/1000.;
-        GenZ=(-LYSO_L+LYSO_L*2*G4UniformRand())/1000.;
-        command = "/gun/position "+std::to_string(GenX)+" 0.05 "+std::to_string(GenZ)+" m"; 
-        G4cout<< command << G4endl;
-        UImanager->ApplyCommand(command);     
-        command = "/gun/direction 0. -1. 0."; 
-        G4cout<< command << G4endl;
-        UImanager->ApplyCommand(command); 
-}
+        //G4cout<< "Data from construction: "<< LYSO_L << " " << LYSO_T << " " << GeomConfig << G4endl;
+        if (GeomConfig == 1){
+            GenX=(-LYSO_T+LYSO_T*2*G4UniformRand())/1000.;
+            GenZ=(-LYSO_L+LYSO_L*2*G4UniformRand())/1000.;
+            command = "/gun/position "+std::to_string(GenX)+" 0.05 "+std::to_string(GenZ)+" m"; 
+            G4cout<< command << G4endl;
+            UImanager->ApplyCommand(command);     
+            command = "/gun/direction 0. -1. 0."; 
+            G4cout<< command << G4endl;
+            UImanager->ApplyCommand(command); 
+        }else if (GeomConfig == 2){
+            GenX=(-LYSO_T2+LYSO_T2*2*G4UniformRand())/1000.;
+            GenZ=(-LYSO_T+LYSO_T2*2*G4UniformRand())/1000.;
+            command = "/gun/position "+std::to_string(GenX)+" "+std::to_string(GenZ)+" -0.05 "+"m"; 
+            G4cout<< command << G4endl;
+            UImanager->ApplyCommand(command);     
+            command = "/gun/direction 0. 0. 1."; 
+            G4cout<< command << G4endl;
+            UImanager->ApplyCommand(command); 
+        }else if (GeomConfig == 3){
+            GenX=(-LYSO_T*2.*mm-0.194/2*mm+LYSO_T*mm*2*G4UniformRand())/1000.;
+            GenZ=(-LYSO_L+LYSO_L*2*G4UniformRand())/1000.;
+            command = "/gun/position "+std::to_string(GenX)+" 0.05 "+std::to_string(GenZ)+" m"; 
+            G4cout<< command << G4endl;
+            UImanager->ApplyCommand(command);     
+            command = "/gun/direction 0. -1. 0."; 
+            G4cout<< command << G4endl;
+            UImanager->ApplyCommand(command); 
+    }else if (PassArgs->GetRnd_Part()==2){
+        if (GeomConfig == 1){
+            GenX=PassArgs->GetGunPosX(eventID)/1000;
+            GenZ=PassArgs->GetGunPosY(eventID)/1000;
+            command = "/gun/position "+std::to_string(GenX)+" 0.05 "+std::to_string(GenZ)+" m"; 
+            G4cout<< command << G4endl;
+            UImanager->ApplyCommand(command);     
+        }else if (GeomConfig == 2){
+            GenX=PassArgs->GetGunPosX(eventID)/1000;
+            GenZ=PassArgs->GetGunPosY(eventID)/1000;
+            command = "/gun/position "+std::to_string(GenX)+" 0.05 "+std::to_string(GenZ)+" m"; 
+            G4cout<< command << G4endl;
+            UImanager->ApplyCommand(command);    
+            command = "/gun/direction 0. 0. 1."; 
+            G4cout<< command << G4endl;
+            UImanager->ApplyCommand(command); 
+        }
+    }
 }
 
 

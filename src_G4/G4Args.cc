@@ -360,7 +360,7 @@ void MyG4Args :: FillStdTim(G4int runid){
     nRunTimingStd[runid]=pow(nRunTimingStd[runid]/cnt,0.5);
     nEdepEvts[runid]=cnt;
 }
-    void MyG4Args :: FillStdLO(G4int runid){
+void MyG4Args :: FillStdLO(G4int runid){
     G4int cnt=0;
     nRuntLOStd[runid]=0;
     nRuntLDStd[runid]=0;
@@ -377,7 +377,7 @@ void MyG4Args :: FillStdTim(G4int runid){
 }
 
 
-    void MyG4Args ::DefaultRadiusVect(){
+void MyG4Args ::DefaultRadiusVect(){
         xv0 = new G4double[Onode*(Znode+1)];   
         G4double Pi=atan(1)*4;
         G4double DTheta=Pi/(Onode-1);
@@ -392,11 +392,55 @@ void MyG4Args :: FillStdTim(G4int runid){
             }
 }
 
-    void MyG4Args ::SetRadiusVect(G4double* radp, G4int Onodeinp, G4int Znodeinp){
+void MyG4Args ::SetRadiusVect(G4double* radp, G4int Onodeinp, G4int Znodeinp){
     G4cout<< " ### Modified Default LYSO Geometry" <<G4endl;         
     xv0 = radp;   
     Onode = Onodeinp;
     Znode = Znodeinp;
+}
+
+void MyG4Args ::SetNSGAII(){
+                    // Muons
+                    Muon = 1;
+                    G4cout<< " ### Selected Muons."  <<G4endl; 
+                    // Mac Name & initialization of storage arrays
+                    VisTrue=0;
+                    MacName = "run78.mac";
+                    nrep =  1;      
+                    G4cout<< " ### Set Run Macro name to : " << MacName <<G4endl;         
+                    G4cout<< " ### Number of runs : " << nrep <<G4endl;  
+                    nEvents=78;
+                    G4cout<< " ### Number of events : " << nEvents <<G4endl;  
+                    nEventTiming = new G4double[nEvents];
+                    nEventLO = new G4double[nEvents];
+                    nEventLD = new G4double[nEvents];
+
+                    nRunTimingAvg = new G4double[nrep];
+                    nRuntLOAvg = new G4double[nrep];
+                    nRuntLDAvg = new G4double[nrep];
+                    nRunTimingStd = new G4double[nrep];
+                    nRuntLOStd = new G4double[nrep];
+                    nRuntLDStd = new G4double[nrep];
+                    nEdepEvts = new G4int[nrep];
+                    // Root file storage                    
+                    MainTrees[5]=0;
+                    MainTrees[1]=0;
+                    RootCreate=0;
+                    // Random values & particle gun
+                        RndGen[0] = 0;
+                        RndGen[1] = 2;
+                        RndGen[2] = 0;
+                        G4cout<< " ### Random Particle Position set to  : " << RndGen[1] <<G4endl;         
+                        G4cout<< " ### Random Geometry Parameters set to  : " << RndGen[2];
+                        nGunPosX = new G4double[nEvents];
+                        nGunPosY = new G4double[nEvents];
+                for (int i = 0; i < 4; i++){
+                    for (int j = 0; j < 19; j++){
+                        nGunPosX[i*4+j]=1.45/4*(i);
+                        nGunPosY[i*4+j]=28.45/19*(j);
+                    }
+                }
+                        
 }
 
 

@@ -14,7 +14,7 @@ MyRunAction :: MyRunAction(G4String OutName,MyG4Args* MainArgs)
     G4AnalysisManager *man = G4AnalysisManager::Instance();
 
     // Content of output.root (tuples created only once in the constructor)
-
+    if(PassArgs->GetRootCreate()==1){
         // Tuple containing all data from the Photons arriving to the detector
             man->CreateNtuple("Arrivals","Arrivals");   // Photons
             man->CreateNtupleIColumn("fEvent"); // columns ,I == Integer
@@ -82,7 +82,7 @@ MyRunAction :: MyRunAction(G4String OutName,MyG4Args* MainArgs)
             man->CreateNtupleDColumn("fTimStd");
             man->CreateNtupleDColumn("frun");
             man->FinishNtuple(5); // Finish our first tuple or Ntuple number 0
-
+        }
 }
 MyRunAction :: ~MyRunAction()
 {}
@@ -90,12 +90,14 @@ MyRunAction :: ~MyRunAction()
 void MyRunAction::BeginOfRunAction(const G4Run* run)
 {
     G4UImanager *UImanager = G4UImanager::GetUIpointer();
-    command="/vis/initialize ";
-    UImanager->ApplyCommand(command);  G4cout<< command << G4endl;
-    command="/vis/drawVolume";
-    UImanager->ApplyCommand(command);  G4cout<< command << G4endl;
-    command="/vis/scene/add/trajectories smooth";
-    UImanager->ApplyCommand(command);  G4cout<< command << G4endl;
+    if(PassArgs->GetVis()==1){
+        command="/vis/initialize ";
+        UImanager->ApplyCommand(command);  G4cout<< command << G4endl;
+        command="/vis/drawVolume";
+        UImanager->ApplyCommand(command);  G4cout<< command << G4endl;
+        command="/vis/scene/add/trajectories smooth";
+        UImanager->ApplyCommand(command);  G4cout<< command << G4endl;
+    }
 
 
     // Initialization of G4 random generator through computer time
@@ -199,7 +201,9 @@ void MyRunAction::EndOfRunAction(const G4Run* run)
     
     // Close the output file for this event
     G4AnalysisManager *man = G4AnalysisManager::Instance();
-    man->Write();// Write out the root file to avoid damaging it
-    man->CloseFile();
+    if(PassArgs->GetRootCreate()==1){
+        man->Write();// Write out the root file to avoid damaging it
+        man->CloseFile();
+    }
 
 }

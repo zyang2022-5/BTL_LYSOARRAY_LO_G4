@@ -20,6 +20,7 @@ public:
     MyG4Args(int, char**);
     ~MyG4Args();
 
+    void SetNSGAII();
     G4String GetOutName() const {return OutName;}
     G4String GetMacName() const {return MacName;}
     G4double GetVov() const {return Detection[0];}
@@ -31,6 +32,7 @@ public:
     G4double GetGeom_LYSO_L() const {return Geom_LYSO[2];}
     G4double GetGeom_LYSO_thick() const {return Geom_LYSO[0];}
     G4double GetGeom_Resin_width() const {return Geom_Resin[1];}
+    G4int GetRootCreate() const {return RootCreate;}
     G4int GetRnd_true() const {return RndGen[0];}
     G4int GetRnd_Part() const {return RndGen[1];}
     G4int GetRnd_Geom() const {return RndGen[2];}
@@ -45,6 +47,8 @@ public:
     G4int GetStepSize() const {return StepSize;}
     G4double GetNPhotTiming() const {return NPhotTiming;}
     G4double GetPhotTiming();
+    G4double GetGunX(G4int evt) const {return nGunPosX[evt];}
+    G4double GetGunY(G4int evt) const {return nGunPosY[evt];}
     G4int GetTimeTrue() const {return TimeTrue;}
     G4double GetKillTL() const {return KillLTime;}
     G4int GetKillTLTrue() const {return KillLTTrue;}
@@ -124,7 +128,7 @@ private:
     G4double KillLTime=200;
     G4int KillLTTrue=0;
     G4int nEvents=0;
-    G4double *nEventTiming, *nEventLO, *nEventLD, *nRunTimingAvg, *nRuntLOAvg, *nRuntLDAvg, *nRunTimingStd, *nRuntLOStd, *nRuntLDStd;        
+    G4double *nEventTiming, *nEventLO, *nEventLD, *nRunTimingAvg, *nRuntLOAvg, *nRuntLDAvg, *nRunTimingStd, *nRuntLOStd, *nRuntLDStd, *nGunPosX, *nGunPosY;        
     G4int *nEdepEvts;
     G4double incr=0;
     G4int Znode=1;
@@ -132,6 +136,7 @@ private:
     G4double* xv0 = NULL;
     G4int Muon = 0;
     G4int dateflag;
+    G4int RootCreate=1;
 
 // Counters!!!
     G4int ArgLO=0;

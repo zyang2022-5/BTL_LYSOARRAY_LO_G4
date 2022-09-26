@@ -85,14 +85,14 @@ void MyEventAction::BeginOfEventAction(const G4Event *anEvent)
             UImanager->ApplyCommand(command); 
     }else if (PassArgs->GetRnd_Part()==2){
         if (GeomConfig == 1){
-            GenX=PassArgs->GetGunPosX(eventID)/1000;
-            GenZ=PassArgs->GetGunPosY(eventID)/1000;
+            GenX=PassArgs->GetGunX(eventID)/1000;
+            GenZ=PassArgs->GetGunY(eventID)/1000;
             command = "/gun/position "+std::to_string(GenX)+" 0.05 "+std::to_string(GenZ)+" m"; 
             G4cout<< command << G4endl;
             UImanager->ApplyCommand(command);     
         }else if (GeomConfig == 2){
-            GenX=PassArgs->GetGunPosX(eventID)/1000;
-            GenZ=PassArgs->GetGunPosY(eventID)/1000;
+            GenX=PassArgs->GetGunX(eventID)/1000;
+            GenZ=PassArgs->GetGunY(eventID)/1000;
             command = "/gun/position "+std::to_string(GenX)+" 0.05 "+std::to_string(GenZ)+" m"; 
             G4cout<< command << G4endl;
             UImanager->ApplyCommand(command);    

@@ -6,6 +6,11 @@ PREFIX?=$(HOME)/local
 INSTALL_BIN=$(PREFIX)/build
 INSTALL=install
 
+SOURCECXXG4 = $(wildcard *.cc)
+OBJECTCXXG4 =  $(patsubst %, %,$(notdir $(SOURCECXXG4:.cc=.o))) 
+
+OBJFIN = $(OBJECTCXXG4)
+$(info $$OBJFIN is [${OBJFIN}])
 all: sim 
 
 Makefile.dep:
@@ -13,7 +18,7 @@ Makefile.dep:
 
 -include Makefile.dep
 
-sim: action.o construction.o detector.o event.o generator.o physics.o run.o sim.o stepping.o tracking.o G4Args.o util.o materials.o
+sim: $(OBJFIN)
 
 geant4:
 	test ! -f geant4-v11.0.2.tar.gz && \

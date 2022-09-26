@@ -73,19 +73,21 @@ if (PassArgs->GetTree_Hits() == 1){
 
     PassArgs->AddPhHit();
     G4double PDElim =PDE->Value(wlen);
-if (PassArgs->GetTree_Detected() == 1){
+
     if (G4UniformRand() < PDElim){
-        man->FillNtupleIColumn(1, 0,  evt);
-        man->FillNtupleIColumn(1, 1,  trID);
-        man->FillNtupleDColumn(1, 2,  posPhoton[0]/mm);// D==double
-        man->FillNtupleDColumn(1, 3,  posPhoton[1]/mm);
-        man->FillNtupleDColumn(1, 4,  posPhoton[2]/mm);
-        man->FillNtupleDColumn(1, 5,  timeG/ps);
-        man->FillNtupleDColumn(1, 6,  timeL/ps);
-        man->FillNtupleDColumn(1, 7,  PDElim);
-        man->FillNtupleDColumn(1, 8,  wlen);
-        man->FillNtupleDColumn(1, 9,  Tlength/mm);
-        man->AddNtupleRow(1);
+        if (PassArgs->GetTree_Detected() == 1){
+                man->FillNtupleIColumn(1, 0,  evt);
+                man->FillNtupleIColumn(1, 1,  trID);
+                man->FillNtupleDColumn(1, 2,  posPhoton[0]/mm);// D==double
+                man->FillNtupleDColumn(1, 3,  posPhoton[1]/mm);
+                man->FillNtupleDColumn(1, 4,  posPhoton[2]/mm);
+                man->FillNtupleDColumn(1, 5,  timeG/ps);
+                man->FillNtupleDColumn(1, 6,  timeL/ps);
+                man->FillNtupleDColumn(1, 7,  PDElim);
+                man->FillNtupleDColumn(1, 8,  wlen);
+                man->FillNtupleDColumn(1, 9,  Tlength/mm);
+                man->AddNtupleRow(1);
+        }
         countdet=countdet+1;
         //G4cout<< "Photon "<< PassArgs->GetLO() <<" GTiming : " << timeG/ps << G4endl;
         if (PassArgs->GetGeomConfig()==3 && posPhoton[0]/mm>-3.1 && posPhoton[0]/mm<-0.01){
@@ -106,8 +108,8 @@ if (PassArgs->GetTree_Detected() == 1){
             }
             if(PassArgs->GetTimeTrue()==1){PassArgs->AddPhotTiming(posPhoton[2]/mm , timeG/ps);}
         }
+    
     }
-}
 
     return true;
 }

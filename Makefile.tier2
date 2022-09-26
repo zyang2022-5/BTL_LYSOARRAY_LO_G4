@@ -19,7 +19,9 @@ Makefile.dep:
 
 -include Makefile.dep
 
+
 sim: $(OBJFIN)
+
 
 install:
 	@mkdir -p $(INSTALL_BIN)

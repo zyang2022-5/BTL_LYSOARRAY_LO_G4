@@ -1,0 +1,40 @@
+### Submission File
+Universe = vanilla
+executable = /storage/af/user/greales/simG4/Repov2/JobActionCopy.sh
+arguments ="-a $(Cluster)_$(Process)_"
+Output  = /storage/af/user/greales/simG4/outputs/Out_job$(Cluster).out
+Error   = /storage/af/user/greales/simG4/errors/error_job$(Cluster).out
+Log     = /storage/af/user/greales/simG4/logs/log_job$(Cluster).out
+
+requirements = Machine =!= LastRemoteHost
+#Requirements = (TARGET.OpSysAndVer == "CentOS70" && regexp("blade-.*", TARGET.Machine))
+#Requirements = (HAS_SINGULARITY == TRUE && SINGULARITY_CAN_USE_SIF == TRUE)
+
+WHEN_TO_TRANSFER_OUTPUT = ON_EXIT_OR_EVICT
++JobQueue = "Short"
++MaxRuntime = 7000
++RunAsOwner = True
++InteractiveUser = True
++SingularityBindCVMFS = True
++SingularityImage = "/cvmfs/singularity.opensciencegrid.org/cmssw/cms:rhel7"
+#+SingularityImage = "/cvmfs/singularity.opensciencegrid.org/opensciencegrid/osgvo-el8:latest"
+#+SingularityImage = "/storage/af/user/greales/SingDir/G4SingCont.sif"
+#+SingularityBindCVMFS = True
++run_as_owner = True
+
+x509userproxy = $ENV(X509_USER_PROXY)
+
+RequestDisk = 2000000
+RequestMemory = 2000
+RequestCpus = 1
+#x509userproxy = $ENV(X509_USER_PROXY)
+on_exit_remove = ((ExitBySignal == False) && (ExitCode == 0)) || (JobStatus=?=3)
+on_exit_hold = (ExitBySignal == True) || (ExitCode != 0)
+#periodic_release = (NumJobStarts <2) && ((CurrentTime - EnteredCurrentStatus) > (60*20))i
++PeriodicRemove = ((JobStatus =?= 2) && ((MemoryUsage =!= UNDEFINED && MemoryUsage > 2.5*RequestMemory)))
+should_transfer_files = Yes
+#when_to_transfer_output = ON_EXIT
+max_retries = 3
+#requirements = Machine =!= LastRemoteHost
+#universe = vanilla
+Queue 1

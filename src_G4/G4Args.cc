@@ -205,7 +205,7 @@ MyG4Args :: MyG4Args(int mainargc,char** mainargv)
 	                time(&curr_time);
 	                curr_tm = localtime(&curr_time);
 
-                    strftime (datechar,22,"_%Y_%m_%d_%H_%M_",curr_tm);
+                    strftime (datechar,22,"_%Y_%m_%d_%H_%M_%S_",curr_tm);
                     G4cout<< " ### Add date to filename" <<G4endl;     
                         
                 }
@@ -214,7 +214,7 @@ MyG4Args :: MyG4Args(int mainargc,char** mainargv)
     if (Oin == 0 ) {  OutName = DefOutName;   }
     if(dateflag == 1){   
         
-        for(int i=0;i<18;i++){
+        for(int i=0;i<21;i++){
             OutName=OutName+datechar[i];  
         }
     }    

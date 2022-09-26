@@ -1,6 +1,6 @@
-#include "G4sim.hh"
+#include "G4simTierII.hh"
 
-G4simulation::G4simulationNOVIS(int mainargc,char** mainargv, G4int Onode , G4int Znode , G4double* radp)
+G4simulationNOVIS::G4simulationNOVIS(int mainargc,char** mainargv, G4int Onode , G4int Znode , G4double* radp)
 {
   // Set Up / Run  Initialization
     G4RunManager *runManager = new G4RunManager();
@@ -47,6 +47,6 @@ G4simulation::G4simulationNOVIS(int mainargc,char** mainargv, G4int Onode , G4in
         }
 
 }
-G4simulation::~G4simulation()
+G4simulationNOVIS::~G4simulationNOVIS()
 {}
 

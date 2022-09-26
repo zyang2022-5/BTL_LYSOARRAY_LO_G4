@@ -52,7 +52,8 @@ echo "*** Sourcing G4:"
 if [ $Valg = 0 ]; then
     cd $BASEDIR
     echo $(pwd)
-    ./$SimName $simargsprev $macname -o $OutName
+    echo $(Cluster)
+    ./$SimName -o $OutName -GeomConfig 3 -m run.mac -Muon
     cd $BASEDIR
 fi
 

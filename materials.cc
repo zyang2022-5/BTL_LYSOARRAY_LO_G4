@@ -20,7 +20,7 @@
  *
  * `light_yield` should be in photons/MeV, and `rise_time` in ps.
  *
- * FIXME: What is scale resolution? A uniform distribution setting how much the LIGHT YIELD can move from its set distribution */
+ * FIXME: What is scale resolution? */
 G4Material *get_lyso(double light_yield, double rise_time, double scale_resolution)
 {
     int n;

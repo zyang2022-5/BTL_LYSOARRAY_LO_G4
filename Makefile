@@ -6,14 +6,26 @@ PREFIX?=$(HOME)/local
 INSTALL_BIN=$(PREFIX)/build
 INSTALL=install
 
+SRC = src_G4
+
+SOURCECXXG4 = $(wildcard *.cc)
+OBJECTCXXG4 =  $(patsubst %, %,$(notdir $(SOURCECXXG4:.cc=.o))) 
+
+SOURCECXXG4src = $(wildcard $(SRC)/*.cc)
+OBJECTCXXG4src =  $(patsubst %, $(SRC)/%,$(notdir $(SOURCECXXG4src:.cc=.o))) 
+
+SOURCEFIN== $(SOURCECXXG4) $(SOURCECXXG4src)
+OBJFIN = $(OBJECTCXXG4) $(OBJECTCXXG4src)
+$(info $$SOURCEFIN is [${SOURCEFIN}])
+$(info $$OBJFIN is [${OBJFIN}])
 all: sim 
 
 Makefile.dep:
-	-$(CXX) $(CXXFLAGS) -MM *.cc > Makefile.dep
+	-$(CXX) $(CXXFLAGS) -MM $(SOURCECXXG4) > Makefile.dep
 
 -include Makefile.dep
 
-sim: action.o construction.o detector.o event.o generator.o physics.o run.o sim.o stepping.o tracking.o G4Args.o util.o materials.o
+sim: $(OBJFIN)
 
 geant4:
 	test ! -f geant4-v11.0.2.tar.gz && \

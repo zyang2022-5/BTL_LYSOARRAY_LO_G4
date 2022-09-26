@@ -31,11 +31,11 @@ VISUALIZATION: Everythin in between * Vis -> Visualizer* lines of with it at the
 ///////* Vis -> Visualizer*//////
 
 /*Simulation created files*/
-#include "construction.hh"
-#include "physics.hh"
-#include "action.hh"
+#include "src_G4/construction.hh"
+#include "src_G4/physics.hh"
+#include "src_G4/action.hh"
 #include <cstdlib>
-#include "G4Args.hh"
+#include "src_G4/G4Args.hh"
 
 
 int main(int argc, char** argv) /* argc, argv are the argument passed to the sim*/

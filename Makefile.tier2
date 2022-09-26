@@ -5,11 +5,17 @@ PREFIX?=$(HOME)/local
 INSTALL_BIN=$(PREFIX)/build
 INSTALL=install
 
+SRC = src_G4
 
 SOURCECXXG4 = $(wildcard *.cc)
 OBJECTCXXG4 =  $(patsubst %, %,$(notdir $(SOURCECXXG4:.cc=.o))) 
 
-OBJFIN = $(OBJECTCXXG4)
+SOURCECXXG4src = $(wildcard $(SRC)/*.cc)
+OBJECTCXXG4src =  $(patsubst %, $(SRC)/%,$(notdir $(SOURCECXXG4src:.cc=.o))) 
+
+SOURCEFIN== $(SOURCECXXG4) $(SOURCECXXG4src)
+OBJFIN = $(OBJECTCXXG4) $(OBJECTCXXG4src)
+$(info $$SOURCEFIN is [${SOURCEFIN}])
 $(info $$OBJFIN is [${OBJFIN}])
 
 all: sim 

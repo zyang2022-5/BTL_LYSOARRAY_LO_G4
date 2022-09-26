@@ -21,7 +21,7 @@ VISUALIZATION: Everythin in between * Vis -> Visualizer* lines of with it at the
 /////////////////////////////////// PROGRAM START ///////////////////////////////////
 
 
-#include "src_G4/G4sim.hh"
+#include "src_G4/G4simTierII.hh"
 #include "src_G4/util.hh"
 
 int main(int argc, char** argv) /* argc, argv are the argument passed to the sim*/
@@ -42,7 +42,7 @@ int main(int argc, char** argv) /* argc, argv are the argument passed to the sim
             }
     G4double Vol = LYSOMeshVolume(radv, Onode,  Znode); // Solution in [mm³]
     // Volume Calculation 57*3*3=513
-    G4simulation *sim = new G4simulation(argc, argv, Onode, Znode, radv);
+    G4simulationNOVIS *sim = new G4simulationNOVIS(argc, argv, Onode, Znode, radv);
 
 
     return 0;

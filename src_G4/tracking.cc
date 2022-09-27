@@ -32,8 +32,9 @@ void MyTrackingAction::PostUserTrackingAction(const G4Track*)
             if ((*secTracks)[i]->GetDefinition() == G4OpticalPhoton::Definition()) {
 
                 if (PassArgs->GetGeomConfig()==3)
-                    if(TranslVol[0]/mm<-0.09&&  TranslVol[0]/mm>-3.1)){
-                    PassArgs->AddTP();
+                    TranslVol     =  preStepPoint->GetPosition();
+                    if(TranslVol[0]/mm<-0.09&&  TranslVol[0]/mm>-3.1){
+                        PassArgs->AddTP();
                     }
                 }else{
                     PassArgs->AddTP();

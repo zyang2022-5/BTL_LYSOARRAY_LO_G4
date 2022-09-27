@@ -2,6 +2,8 @@ CXXFLAGS=-fdiagnostics-color -O2 -g $(shell geant4-config --cflags) -O2
 LDLIBS=-Wl,--copy-dt-needed-entries -fdiagnostics-color -lm $(shell geant4-config --libs)
 PWD=$(shell pwd)
 
+
+
 PREFIX?=$(HOME)/local
 INSTALL_BIN=$(PREFIX)/build
 INSTALL=install
@@ -12,16 +14,21 @@ SOURCECXXG4 = $(wildcard *.cc)
 OBJECTCXXG4 =  $(patsubst %, %,$(notdir $(SOURCECXXG4:.cc=.o))) 
 
 SOURCECXXG4src = $(wildcard $(SRC)/*.cc)
-OBJECTCXXG4src =  $(patsubst %, $(SRC)/%,$(notdir $(SOURCECXXG4src:.cc=.o))) 
+$(info $$SOURCECXXG4src is [${SOURCECXXG4src}])
+SOURCECXXG4srcfilter=$(filter-out $(SRC)/G4sim.cc, $(SOURCECXXG4src))
+$(info $$SOURCECXXG4srcfilter is [${SOURCECXXG4srcfilter}])
+OBJECTCXXG4src =  $(patsubst %, $(SRC)/%,$(notdir $(SOURCECXXG4srcfilter:.cc=.o))) 
 
-SOURCEFIN== $(SOURCECXXG4) $(SOURCECXXG4src)
+SOURCEFIN= $(SOURCECXXG4) $(SOURCECXXG4srcfilter)
+
 OBJFIN = $(OBJECTCXXG4) $(OBJECTCXXG4src)
 $(info $$SOURCEFIN is [${SOURCEFIN}])
 $(info $$OBJFIN is [${OBJFIN}])
+
 all: sim 
 
 Makefile.dep:
-	-$(CXX) $(CXXFLAGS) -MM $(SOURCECXXG4) > Makefile.dep
+	-$(CXX) $(CXXFLAGS) -MM $(SRC_FILES) > Makefile.dep
 
 -include Makefile.dep
 

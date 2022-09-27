@@ -11,9 +11,12 @@ SOURCECXXG4 = $(wildcard *.cc)
 OBJECTCXXG4 =  $(patsubst %, %,$(notdir $(SOURCECXXG4:.cc=.o))) 
 
 SOURCECXXG4src = $(wildcard $(SRC)/*.cc)
-OBJECTCXXG4src =  $(patsubst %, $(SRC)/%,$(notdir $(SOURCECXXG4src:.cc=.o))) 
+#$(info $$SOURCECXXG4src is [${SOURCECXXG4src}])
+SOURCECXXG4srcfilter=$(filter-out $(SRC)/G4sim.cc, $(SOURCECXXG4src))
+#$(info $$SOURCECXXG4srcfilter is [${SOURCECXXG4srcfilter}])
+OBJECTCXXG4src =  $(patsubst %, $(SRC)/%,$(notdir $(SOURCECXXG4srcfilter:.cc=.o))) 
 
-SOURCEFIN== $(SOURCECXXG4) $(SOURCECXXG4src)
+SOURCEFIN= $(SOURCECXXG4) $(SOURCECXXG4src)
 OBJFIN = $(OBJECTCXXG4) $(OBJECTCXXG4src)
 $(info $$SOURCEFIN is [${SOURCEFIN}])
 $(info $$OBJFIN is [${OBJFIN}])
@@ -24,7 +27,6 @@ Makefile.dep:
 	-$(CXX) $(CXXFLAGS) -MM $(SOURCECXXG4) > Makefile.dep
 
 -include Makefile.dep
-
 
 sim: $(OBJFIN)
 

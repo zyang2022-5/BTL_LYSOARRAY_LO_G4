@@ -19,7 +19,7 @@ void MyTrackingAction::PostUserTrackingAction(const G4Track*)
 {
     // The user tracking action class holds the pointer to the tracking manager:
     // fpTrackingManager
-    
+    G4ThreeVector TranslVol;
     // From the tracking manager we can retrieve the secondary track vector,
     // which is a container class for tracks:
     G4TrackVector* secTracks = fpTrackingManager -> GimmeSecondaries();
@@ -31,8 +31,8 @@ void MyTrackingAction::PostUserTrackingAction(const G4Track*)
          for (size_t i = 0; i < nmbSecTracks; i++) { 
             if ((*secTracks)[i]->GetDefinition() == G4OpticalPhoton::Definition()) {
 
-                if (PassArgs->GetGeomConfig()==3)
-                    TranslVol     =  preStepPoint->GetPosition();
+                if (PassArgs->GetGeomConfig()==3){
+                    TranslVol     =  (*secTracks)[i]->GetVertexPosition();
                     if(TranslVol[0]/mm<-0.09&&  TranslVol[0]/mm>-3.1){
                         PassArgs->AddTP();
                     }

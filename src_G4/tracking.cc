@@ -30,7 +30,15 @@ void MyTrackingAction::PostUserTrackingAction(const G4Track*)
 
          for (size_t i = 0; i < nmbSecTracks; i++) { 
             if ((*secTracks)[i]->GetDefinition() == G4OpticalPhoton::Definition()) {
-                PassArgs->AddTP();
+
+                if (PassArgs->GetGeomConfig()==3)
+                    if(TranslVol[0]/mm<-0.09&&  TranslVol[0]/mm>-3.1)){
+                    PassArgs->AddTP();
+                    }
+                }else{
+                    PassArgs->AddTP();
+                }
+
             }
         }
     }

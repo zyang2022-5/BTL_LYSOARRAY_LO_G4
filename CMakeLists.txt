@@ -3,7 +3,10 @@ cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
 project(sim)
 
 find_package(Geant4 REQUIRED ui_all vis_all)
+find_package(MPI REQUIRED)
+add_definitions(-DOMPI_SKIP_MPICXX)
 
+include_directories(SYSTEM ${MPI_INCLUDE_PATH})
 include(${Geant4_USE_FILE})
 
 file(GLOB sources ${PROJECT_SOURCE_DIR}/*.cc)
@@ -23,8 +26,7 @@ file(GLOB DATA_FILES
 
 file(COPY ${DATA_FILES} DESTINATION ${PROJECT_BINARY_DIR})
 
-
 add_executable(LYSObarsim sim.cc ${sources} ${headers})
-target_link_libraries(LYSObarsim ${Geant4_LIBRARIES})
+target_link_libraries(LYSObarsim ${MPI_C_LIBRARIES} ${CMAKE_DL_LIBS} ${Geant4_LIBRARIES})
 
 add_custom_target(Simulation_Guillermo DEPENDS sim)

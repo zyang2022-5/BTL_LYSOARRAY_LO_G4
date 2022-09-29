@@ -33,11 +33,13 @@ void MySteppingAction::UserSteppingAction(const G4Step *step)
     //G4LogicalVolume *fDetectorVolume  = detectorConstruction->GetDetectorVolume();
     G4AnalysisManager *man = G4AnalysisManager::Instance();
     G4StepPoint *preStepPoint = step->GetPreStepPoint();
+    G4StepPoint *postStepPoint = step->GetPostStepPoint();
     G4double TlengthK;
     G4double TimeK=preStepPoint->GetGlobalTime();
     G4double TimeKL=preStepPoint->GetLocalTime();
     G4double TimeKLLim=PassArgs->GetKillTL();
     G4ThreeVector TranslVol;
+    G4ThreeVector TranslVol2;
     G4Track *track = step -> GetTrack();
 
 //////////////////////////////////////////////////////////////////////////////
@@ -71,12 +73,17 @@ void MySteppingAction::UserSteppingAction(const G4Step *step)
 // Energy Deposition Information
 //////////////////////////////////////////////////////////////////////////////
 
+    if(step -> GetTrack() -> GetDefinition() == G4MuonPlus::Definition()) {
+            G4double edepM = step->GetTotalEnergyDeposit();  
+            PassArgs->AddMuonEdep(edepM);
+    }
+
     if(step -> GetTrack() -> GetDefinition() != G4OpticalPhoton::Definition()) {
-        if(volume != fScoringVolume)
-            return;
+        //if(volume != fScoringVolume)
+        //    return;
         TranslVol     =  preStepPoint->GetPosition();
         if (PassArgs->GetGeomConfig()==3){
-            if(TranslVol[0]/mm<-0.09&&  TranslVol[0]/mm>-3.1){
+            if(TranslVol[0]/mm<-0.9&&  TranslVol[0]/mm>-3.11){
                 G4double edep = step->GetTotalEnergyDeposit();  
                 PassArgs->AddEdep(edep);
                 PassArgs->AddNEdep();

@@ -4,5 +4,5 @@ export LCGENV_PATH=/cvmfs/sft.cern.ch/lcg/releases/
 #eval "` /cvmfs/sft.cern.ch/lcg/releases/lcgenv/latest/lcgenv -p LCG_102rc1 x86_64-centos7-gcc11-opt Geant4 `"
 #. /cvmfs/sft.cern.ch/lcg/releases/lcgenv/latest/lcgenv -p LCG_102rc1 x86_64-centos7-gcc11-opt Geant4 
 eval "` $LCGENV_PATH/lcgenv/latest/lcgenv -p LCG_102rc1 x86_64-centos7-gcc11-opt Geant4 `"
-echo `which geant4-config` 
+echo "which geant4-config"
 echo "***G4 is compiled"

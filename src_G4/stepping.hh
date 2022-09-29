@@ -11,6 +11,7 @@
 #include "detector.hh"
 #include "G4Gamma.hh"
 #include "G4Electron.hh"
+#include "G4MuonPlus.hh"
 #include "G4OpticalPhoton.hh"
 #include "G4Args.hh"
 

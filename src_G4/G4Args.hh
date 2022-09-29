@@ -57,13 +57,14 @@ public:
     void GeomReinit();
     G4int FindEvents(G4String);
 
-    void InitAllCount(){ArgLO = 0;ArgCrossTalk = 0;TotPh = 0;PhHit=0;Edep=0.;nPhotL=0;nPhotR=0;PhotTiming[1]=0.;}
+    void InitAllCount(){ArgLO = 0;ArgCrossTalk = 0;TotPh = 0;PhHit=0;Edep=0.;MuonEdep=0.;nPhotL=0;nPhotR=0;PhotTiming[1]=0.;}
     void InitTotPh(){TotPh = 0;}
     void InitLO(){ArgLO = 0;}
     void InitCT(){ArgCrossTalk = 0;}
 
 
     void AddNEdep(){NEdep += 1;}
+    void AddMuonEdep(G4double Edepadd){MuonEdep += Edepadd;}
     void AddEdep(G4double Edepadd){Edep += Edepadd;}
     void AddPhHit(){PhHit += 1;}
     void AddLO(){ArgLO += 1;}
@@ -80,6 +81,7 @@ public:
     G4int GetNPhotR() const {return nPhotR;}
     G4int GetPhHits() const {return PhHit;}
     G4double GetEdep() const {return Edep;}
+    G4double GetMuonEdep() const {return MuonEdep;}
     G4int GetNEdep() const {return NEdep;}
 
     void FillEvtLO(G4int evt, G4double val){nEventLO[evt]=val;}  
@@ -144,6 +146,7 @@ private:
     G4int TotPh=0;
     G4int PhHit=0;
     G4double Edep=0.;
+    G4double MuonEdep=0.;
     G4int nPhotR=0;
     G4int nPhotL=0;
     G4int NEdep=0;

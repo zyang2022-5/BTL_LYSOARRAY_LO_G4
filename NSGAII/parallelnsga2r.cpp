@@ -254,6 +254,11 @@ void setProblemDefinitionFromIndex(int problemIndex)
         problemDefinition = &test_problem_shcf;
       }
       break;
+    case 30:
+      {
+        problemDefinition = &G4_test;
+      }
+      break;
     default:
       {
         problemDefinition = &test_problem_sch1;

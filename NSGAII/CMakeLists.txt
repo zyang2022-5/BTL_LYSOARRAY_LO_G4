@@ -13,7 +13,7 @@ include_directories(SYSTEM ${MPI_INCLUDE_PATH})
 
 file(GLOB headers ${PROJECT_SOURCE_DIR}/ParallelNSGAII_G4/src_NSGAII/*.h ${PROJECT_SOURCE_DIR}/../src_G4/*.hh)
 
-file(GLOB sources ${PROJECT_SOURCE_DIR}/ParallelNSGAII_G4/src_NSGAII/*.c ${PROJECT_SOURCE_DIR}/ParallelNSGAII_G4/src_NSGAII/*.cpp ${PROJECT_SOURCE_DIR}/../src_G4/*.cc)
+file(GLOB sources ${PROJECT_SOURCE_DIR}/ParallelNSGAII_G4/src_NSGAII/*.c  ${PROJECT_SOURCE_DIR}/ParallelNSGAII_G4/src_NSGAII/*.cpp ${PROJECT_SOURCE_DIR}/../src_G4/*.cc)
 
 
 file(GLOB MACRO_FILES

@@ -12,6 +12,10 @@ G4simulation::G4simulation(int mainargc,char** mainargv, G4int Onode , G4int Zno
         ArgInp->SetRadiusVect(radp,Onode,Znode);
     }
 
+    if(ArgInp->GetNSGAII() == 1){
+        ArgInp->SetNSGAII();
+    }
+
     runManager -> SetUserInitialization(new MyDetectorConstruction(ArgInp)); /*Define geometry*/
     runManager -> SetUserInitialization(new MyPhysicsList()); /*Define physics*/
     runManager -> SetUserInitialization(new MyActionInitialization(ArgInp)); /*Define actions*/

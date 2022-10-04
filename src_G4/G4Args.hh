@@ -45,6 +45,7 @@ public:
     G4int GetGeomConfig() const {return GeomConfig;}
     G4int GetVis() const {return VisTrue;}
     G4int GetStepSize() const {return StepSize;}
+    G4int GetNSGAII() const {return NSGAII;}
     G4double GetNPhotTiming() const {return NPhotTiming;}
     G4double GetPhotTiming();
     G4double GetGunX(G4int evt) const {return nGunPosX[evt];}
@@ -139,6 +140,7 @@ private:
     G4int Muon = 0;
     G4int dateflag;
     G4int RootCreate=1;
+    G4int NSGAII=0;
 
 // Counters!!!
     G4int ArgLO=0;

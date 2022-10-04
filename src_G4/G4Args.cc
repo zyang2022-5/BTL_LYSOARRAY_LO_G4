@@ -7,6 +7,7 @@ MyG4Args :: MyG4Args(int mainargc,char** mainargv)
     G4cout << " ### Processing Command line Arguments to the sim : " << G4endl;
 
     for (int j = 1; j < mainargc; j=j+1){
+    G4cout << mainargv[j] <<"\n"<< G4endl;
                 if(strcmp(mainargv[j],"-o")==0)
                 {   
                     OutName = mainargv[j+1];      j=j+1;
@@ -195,6 +196,11 @@ MyG4Args :: MyG4Args(int mainargc,char** mainargv)
                 {   
                     Muon = 1;
                     G4cout<< " ### Selected Muons."  <<G4endl;         
+                }
+                else if(strcmp(mainargv[j],"-NSGAII")==0)
+                {   
+                    NSGAII = 1;
+                    G4cout<< " ### Selected NSGAII Config."  <<G4endl;         
                 }
                 else if(strcmp(mainargv[j],"-date")==0)
                 {   
@@ -405,11 +411,11 @@ void MyG4Args ::SetNSGAII(){
                     G4cout<< " ### Selected Muons."  <<G4endl; 
                     // Mac Name & initialization of storage arrays
                     VisTrue=0;
-                    MacName = "run78.mac";
+                    MacName = "run.mac";
                     nrep =  1;      
                     G4cout<< " ### Set Run Macro name to : " << MacName <<G4endl;         
                     G4cout<< " ### Number of runs : " << nrep <<G4endl;  
-                    nEvents=78;
+                    nEvents=76;
                     G4cout<< " ### Number of events : " << nEvents <<G4endl;  
                     nEventTiming = new G4double[nEvents];
                     nEventLO = new G4double[nEvents];
@@ -425,7 +431,7 @@ void MyG4Args ::SetNSGAII(){
                     // Root file storage                    
                     MainTrees[5]=0;
                     MainTrees[1]=0;
-                    RootCreate=0;
+                    //RootCreate=0;
                     // Random values & particle gun
                         RndGen[0] = 0;
                         RndGen[1] = 2;

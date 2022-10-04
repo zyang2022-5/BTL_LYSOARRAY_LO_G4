@@ -2,6 +2,8 @@
 
 G4simulationNOVIS::G4simulationNOVIS(int mainargc,char** mainargv, G4int Onode , G4int Znode , G4double* radp)
 {
+
+    G4cout<< mainargc << "\n" << mainargv[0]<< "\n" << mainargv[1] << G4endl;
   // Set Up / Run  Initialization
     G4RunManager *runManager = new G4RunManager();
     ArgInp = new MyG4Args(mainargc, mainargv);
@@ -10,6 +12,10 @@ G4simulationNOVIS::G4simulationNOVIS(int mainargc,char** mainargv, G4int Onode ,
         ArgInp->DefaultRadiusVect();
     }else{
         ArgInp->SetRadiusVect(radp,Onode,Znode);
+    }
+
+    if(ArgInp->GetNSGAII() == 1){
+        ArgInp->SetNSGAII();
     }
 
     runManager -> SetUserInitialization(new MyDetectorConstruction(ArgInp)); /*Define geometry*/

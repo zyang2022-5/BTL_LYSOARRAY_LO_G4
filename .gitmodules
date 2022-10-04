@@ -1,0 +1,3 @@
+[submodule "NSGAII/ParallelNSGAII_G4"]
+	path = NSGAII/ParallelNSGAII_G4
+	url = https://github.com/grealesguti/ParallelNSGAII_G4.git

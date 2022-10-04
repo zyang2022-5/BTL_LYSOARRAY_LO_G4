@@ -1,0 +1,80 @@
+# required libraries link during compilation
+LDLIBS=-lm -ldl
+# directory where to look for the NSGAII source code
+OBJDIR=src_NSGAII
+SRC = src_NSGAII
+BIN = bin
+INC = inc
+
+
+# Makefile for compiling Parellized version of the NSGA-II source code
+# Comment the next 2 lines for sequential compilation
+USE_MPI = ""
+USE_OPENMP = "" 
+
+ifdef USE_MPI
+ CC=mpicc   # define mpi compiler for c
+ CXX=mpicxx # define mpi compiler for c++
+ LD=mpicxx  
+ $(info  MPI is enabled) # write to screen
+else # defaults
+ CC=gcc
+ CXX=g++
+ LD=g++
+ $(info  MPI is disabled) # write to screen
+endif
+
+INCDIRS = -I/uufs/chpc.utah.edu/sys/installdir/intel/compilers_and_libraries_2017.0.098/linux/mpi/include64
+#INCDIRS = -I/uufs/chpc.utah.edu/sys/installdir/gcc/4.9.2/include
+
+CUSTOMDEFINES =""
+
+ifdef USE_OPENMP
+  CUSTOMDEFINES = -fopenmp -g
+ $(info  OpenMP is enabled)
+else
+ $(info  OpenMP is disabled)
+endif
+
+# command for clean (remove files)
+RM=rm -f
+
+CXXFLAGS =-Wall -Werror -pedantic -g $(CUSTOMDEFINES) -std=c++11 $(INCDIRS) -ldl
+LDFLAGS = $(CUSTOMDEFINES) -ldl
+
+SRC = src_NSGAII
+BIN = bin
+
+SOURCE = $(wildcard *.cpp)
+SOURCEC = $(wildcard $(SRC)/*.c)
+SOURCECXX = $(wildcard $(SRC)/*.cpp)
+
+OBJECT =  $(patsubst %.cpp, %,$(notdir $(SOURCE:.cpp=.o))) 
+OBJECTC =  $(patsubst %.c, $(SRC)/%,$(notdir $(SOURCEC:.c=.o))) 
+OBJECTCXX =  $(patsubst %.cpp, $(SRC)/%,$(notdir $(SOURCECXX:.cpp=.o))) 
+
+#OBJFIN = $(patsubst %.cpp, %,$(notdir $(SOURCE:.cpp=.o))) $(patsubst %.c, $(SRC)/%,$(notdir $(SOURCEC:.c=.o)))  $(patsubst %.cpp, $(SRC)/%,$(notdir $(SOURCECXX:.cpp=.o))) 
+
+OBJFIN = $(OBJECT) $(OBJECTC) $(OBJECTCXX)
+
+# OBJS:=$(MAIN).o $(patsubst %.c,%.o,$(wildcard *.c)) $(OBJDIR)/$(patsubst %.cpp,%.o,$(wildcard *.cpp))
+
+OBJS:=parallelnsga2r.o src_NSGAII/allocate.o src_NSGAII/auxiliary.o src_NSGAII/crossover.o src_NSGAII/crowddist.o src_NSGAII/decode.o src_NSGAII/dominance.o src_NSGAII/fillnds.o src_NSGAII/initialize.o src_NSGAII/list.o src_NSGAII/merge.o src_NSGAII/mutation.o  src_NSGAII/rand.o src_NSGAII/rank.o src_NSGAII/report.o src_NSGAII/sort.o src_NSGAII/tourselect.o src_NSGAII/problemdef.o src_NSGAII/eval.o
+
+$(info $$OBJS is [${OBJS}])
+$(info $$OBJECT is [${OBJECT}])
+$(info $$OBJECTC is [${OBJECTC}])
+$(info $$OBJECTCXX is [${OBJECTCXX}])
+$(info $$OBJFIN is [${OBJFIN}])
+# output name of resulting executable
+MAIN=parallelnsga2r
+
+all:$(MAIN)
+$(BIN)/$(MAIN):$(OBJFIN)
+	$(LD) $(LDFLAGS) $(OBJFIN) -o $(MAIN) $(LDLIBS)
+
+%.o: %.c %.cpp src_NSGAII/global.h src_NSGAII/rand.h
+	$(CC) $(CFLAGS) -c $< 
+
+clean:
+	$(RM) $(OBJS)

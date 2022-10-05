@@ -9,7 +9,17 @@ G4simulationNOVIS::G4simulationNOVIS(int mainargc,char** mainargv, G4int Onode ,
     ArgInp = new MyG4Args(mainargc, mainargv);
     
     if(radp == NULL){
-        ArgInp->DefaultRadiusVect();
+        if(ArgInp->Getrad2Y() == 1){
+            G4cout<< " !!! WARNING !!! rad2Y set to 1 but no arguments were passed, set to 1. " <<G4endl;  
+            G4double radinit[2]={1,2};
+            //radinit[0]=1;radinit[1]=1;
+            G4double* radones=radinit;
+            ArgInp->DefaultRadiusVect();
+            ArgInp->SetCoordVect();
+            ArgInp->SetYVect(radones);      
+        }else{
+            ArgInp->DefaultRadiusVect();
+        }
     }else{
         if(ArgInp->Getrad2Y() == 1){
             ArgInp->DefaultRadiusVect();
@@ -18,10 +28,6 @@ G4simulationNOVIS::G4simulationNOVIS(int mainargc,char** mainargv, G4int Onode ,
         }else{
             ArgInp->SetRadiusVect(radp,Onode,Znode);
         }
-    }
-
-    if(ArgInp->GetNSGAII() == 1){
-        ArgInp->SetNSGAII();
     }
 
     runManager -> SetUserInitialization(new MyDetectorConstruction(ArgInp)); /*Define geometry*/

@@ -21,7 +21,8 @@ VISUALIZATION: Everythin in between * Vis -> Visualizer* lines of with it at the
 /////////////////////////////////// PROGRAM START ///////////////////////////////////
 
 
-#include "src_G4/G4simTierII.hh"
+//#include "src_G4/G4simTierII.hh"
+#include "src_G4/G4sim.hh"
 #include "src_G4/util.hh"
 #include <iostream>
 #include <string>
@@ -34,7 +35,7 @@ int main(int argc, char** argv) /* argc, argv are the argument passed to the sim
     
     G4int Onode=5,Znode=2;
     G4double* radv;
-        radv = new G4double[Onode*(Znode+1)];   
+    /*    radv = new G4double[Onode*(Znode+1)];   
         G4double Pi=atan(1)*4;
         G4double DTheta=Pi/(Onode-1);
         // radius vector initialization
@@ -46,10 +47,10 @@ int main(int argc, char** argv) /* argc, argv are the argument passed to the sim
             }
     G4double Vol = LYSOMeshVolume(radv, Onode,  Znode); // Solution in [mm³]
     // Volume Calculation 57*3*3=513
-
+    */
     // Standard usage    
-    G4simulationNOVIS *sim = new G4simulationNOVIS(argc, argv, Onode, Znode, radv);
-
+    //G4simulationNOVIS *sim = new G4simulationNOVIS(argc, argv, Onode, Znode, radv);
+    G4simulation *sim = new G4simulation(argc, argv, Onode, Znode, radv);
     // Example on how to pass always the same arguments
 /*
     G4int argc1=3;

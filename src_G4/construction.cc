@@ -2,13 +2,21 @@
 #include "util.hh"
 #include "materials.hh"
 
-MyDetectorConstruction::MyDetectorConstruction(MyG4Args* MainArgs)
+MyDetectorConstruction::MyDetectorConstruction(MyG4Args *MainArgs)
 {// constructor
-    ArgsPass=MainArgs;
+    ArgsPass=MainArgs;              
+        G4cout<< " ### Default Construction Values. " <<G4endl;         
     DefaultValues();
+        G4cout<< " ### Default Messengers. " <<G4endl;         
     DefineMessengers();
+        G4cout<< " ### Default Materials. " <<G4endl;         
     DefineMaterial(); // Run material function in the constructor
-
+        G4cout<< " ### END Constructor. " <<G4endl;    
+    //ArgsPass=MainArgs;     
+    // Initialize LYSO nodes
+    //xv=ArgsPass->GetXvec();
+    //yv=ArgsPass->GetYvec();
+    
 }
 
 MyDetectorConstruction::~MyDetectorConstruction()
@@ -22,12 +30,11 @@ void MyDetectorConstruction::DefineMaterial()
     /////////////
     //Materials//
     /////////////
-
-    // import nist material data
-    G4NistManager *nist = G4NistManager::Instance();
-
+        G4cout<< " ### Materials: " <<G4endl;         
+    // import nist1 material data
+        G4cout<< " ### nist1: " <<G4endl;         
     // Find material in G4 database: Air
-    worldMat = nist->FindOrBuildMaterial("G4_AIR");
+    worldMat = nist1->FindOrBuildMaterial("G4_AIR");
     /* Set the refractive index of air. The refractive index is defined by
      * giving a list of photon energies and their corresponding refractive
      * index. Here, we want to set a constant refractive index, so we just
@@ -44,7 +51,7 @@ void MyDetectorConstruction::DefineMaterial()
      */
     mptWorld->AddProperty("RINDEX", energyWorld, rindexWorld, 2);
     worldMat->SetMaterialPropertiesTable(mptWorld);
-
+        G4cout<< " * air. " <<G4endl;         
     /* Define SiO2 material. This is one of the material used to make printed
      * circuit boards (PCBs).
      *
@@ -54,8 +61,8 @@ void MyDetectorConstruction::DefineMaterial()
      *
      * In this case, the density is 2.201 g/cm^3 and it has two elements. */
     SiO2 = new G4Material("SiO2", 2.201*g/cm3, 2);
-    SiO2->AddElement(nist->FindOrBuildElement("Si"),1);
-    SiO2->AddElement(nist->FindOrBuildElement("O"),2);
+    SiO2->AddElement(nist1->FindOrBuildElement("Si"),1);
+    SiO2->AddElement(nist1->FindOrBuildElement("O"),2);
     G4MaterialPropertiesTable *mptSiO2 = new G4MaterialPropertiesTable();
     G4double energySiO2[2] = {1.378*eV, 6.199*eV};
     G4double rindexSiO2[2] = {1.4585, 1.4585};
@@ -68,16 +75,16 @@ void MyDetectorConstruction::DefineMaterial()
 
     RTV3145 = get_rtv();
     scintillator = get_lyso(LYSO_YIELD,LYSO_RT1,LYSO_SCALERESOLUTION);
-
-    H = nist->FindOrBuildElement("H");
-    Si = nist->FindOrBuildElement("Si");
-    O = nist->FindOrBuildElement("O");
-    C = nist->FindOrBuildElement("C");
-
+        G4cout<< " * LYSO. " <<G4endl;         
+    H = nist1->FindOrBuildElement("H");
+    Si = nist1->FindOrBuildElement("Si");
+    O = nist1->FindOrBuildElement("O");
+    C = nist1->FindOrBuildElement("C");
+        G4cout<< " * RTV. " <<G4endl;         
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Epoxy  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    N = nist -> FindOrBuildElement("N");
+    N = nist1 -> FindOrBuildElement("N");
     EPOXY = new G4Material("EPOXY", 1.16*g/cm3,4);
     EPOXY->AddElement(H, 32);
     EPOXY->AddElement(N,2);
@@ -96,7 +103,7 @@ void MyDetectorConstruction::DefineMaterial()
     mptRESIN->AddProperty("RINDEX",    EPOXY_ene,    EPOXY_RINDEX,     numEP); // fraction of the light reflected (all=1)
     mptRESIN->AddProperty("ABSLENGTH", EPOXY_ene,    EPOXY_ABSLEN,     numEP); // fraction of the light reflected (all=1)
     EPOXY-> SetMaterialPropertiesTable(mptRESIN);
-
+        G4cout<< " * EPOXY. " <<G4endl;         
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //FR4 (Glass + Epoxy)  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -110,11 +117,11 @@ void MyDetectorConstruction::DefineMaterial()
 //Alumina from
 //http://geant4-hn.slac.stanford.edu:5090/HyperNews/public/get/emfields/29/1/1.html
 //density = 3.75*g/cm3; //
-Al = nist -> FindOrBuildElement("Al");
+Al = nist1 -> FindOrBuildElement("Al");
 G4Material* Alumina = new G4Material("Alumina"  , 3.75*g/cm3, 2);
 Alumina->AddElement(Al, 2);
 Alumina->AddElement(O, 3);
-
+        G4cout<< " * Alumina. " <<G4endl;         
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // MIRROR PROPERTIES  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -158,7 +165,7 @@ G4double energymirror0[34] ={1.387638658*eV,1.414514446*eV,1.442584622*eV,1.4756
     mirrorSurface -> SetType(dielectric_metal);
     mirrorSurface -> SetFinish(polished);//-backpainted
     mirrorSurface -> SetModel(unified);
-
+        G4cout<< " * ESR. " <<G4endl;         
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // FR4 Interface  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -176,7 +183,7 @@ G4double energymirror0[34] ={1.387638658*eV,1.414514446*eV,1.442584622*eV,1.4756
     G4MaterialPropertiesTable *mptFR4S = new G4MaterialPropertiesTable();
     //mptFR4S->AddProperty("TRANSMITTANCE", energyFR4S, reflFR4S,2); // fraction of the light reflected (all=1)
     SurfFR4 -> SetMaterialPropertiesTable(mptFR4S);
-
+        G4cout<< " * FR4. " <<G4endl;         
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // FR4 Interface  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -194,6 +201,7 @@ G4double energymirror0[34] ={1.387638658*eV,1.414514446*eV,1.442584622*eV,1.4756
     G4MaterialPropertiesTable *mptground = new G4MaterialPropertiesTable();
     //mptground->AddProperty("TRANSMITTANCE", energyground, reflground,2); // fraction of the light reflected (all=1)
     groundSurface -> SetMaterialPropertiesTable(mptground);
+        G4cout<< " * ground. " <<G4endl;         
 }
 
 G4VPhysicalVolume *MyDetectorConstruction::Construct()
@@ -201,7 +209,7 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct()
 ////////////////////
 // SOLID VOLUMES  // G4Box("var", width*m, lengtg*m, thickness*m);
 ////////////////////
-
+    G4cout<< " ### Volume Initialization. " <<G4endl;         
     G4double xWorld = 0.1*m;    xWorld=xWorld/2.;
     G4double yWorld = 0.1*m;    yWorld=yWorld/2.;
     G4double zWorld = 0.1*m;    zWorld=zWorld/2.;
@@ -213,26 +221,38 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct()
 
     solidWorld = new G4Box("solidWorld", xWorld, yWorld, zWorld);
     if(GeomConfig==1 || GeomConfig==3){
-
+        G4cout<< " ### Starting LYSO Construction. " <<G4endl;         
         TessLYSO = new G4TessellatedSolid("solidLYSO");
         // parameter initialization
-        G4int Onode=5;
+        G4int Onode=ArgsPass->GetOnode();
         G4int Znode=ArgsPass->GetZnode();
         G4double* xv0;   
         G4double Pi=atan(1)*4;
         G4double DTheta=Pi/(Onode-1);
         // radius vector initialization
         xv0 = ArgsPass->GetNodeRadValues();
-
+        G4cout<< " ### LYSO Initialized. " <<G4endl;         
         // initialization of symmetry faces for testing
             G4double LYSOalt=LYSO_L*1.;
             theta = -Pi/2;G4double tolxy=1e-10;
             for(int i = 0; i < Onode-1; i++){ // 1 less triangle than nodes
-                x0 = xv0[i]*cos(theta);if (abs(x0)<tolxy){x0=0;}
-                y0 = xv0[i]*sin(theta);if (abs(y0)<tolxy){y0=0;}
-                theta = theta + DTheta;
-                x1 = xv0[i+1]*cos(theta);if (abs(x1)<tolxy){x1=0;}
-                y1 = xv0[i+1]*sin(theta);if (abs(y1)<tolxy){y1=0;}
+                if (ArgsPass->Getrad2Y()==1){
+                    /*x0 = xv[i];
+                    y0 = yv[i];
+                    x1 = xv[i+1];
+                    y1 = yv[i+1];*/
+                    x0 = ArgsPass->GetXvec(i);
+                    y0 = ArgsPass->GetYvec(i);
+                    x1 = ArgsPass->GetXvec(i+1);
+                    y1 = ArgsPass->GetYvec(i+1);
+                }
+                else{
+                    x0 = xv0[i]*cos(theta);if (abs(x0)<tolxy){x0=0;}
+                    y0 = xv0[i]*sin(theta);if (abs(y0)<tolxy){y0=0;}
+                    theta = theta + DTheta;
+                    x1 = xv0[i+1]*cos(theta);if (abs(x1)<tolxy){x1=0;}
+                    y1 = xv0[i+1]*sin(theta);if (abs(y1)<tolxy){y1=0;}
+                 }
                 // +Z
                 facet = new G4TriangularFacet ( G4ThreeVector(0.,0., +LYSOalt),
                                                 G4ThreeVector(x0,y0, +LYSOalt),
@@ -270,12 +290,31 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct()
                 G4cout <<x0<< " " <<y0<< " " <<LYSOalt << G4endl;
                 TessLYSO->AddFacet((G4VFacet*) facet);
             }
-
+        G4cout<< " ### Finished End Faces. " <<G4endl;         
             for (int j = 0; j < Znode; j++){
                 theta = -Pi/2;
                for(int i = 1; i < Onode; i++){ // 1 less triangle than nodes
                     z0=+LYSOalt-LYSOalt/Znode*j;z1=+LYSOalt-LYSOalt/Znode*(j+1);
+                if (ArgsPass->Getrad2Y()==1){
+                    /*x0 = xv[j*Onode-1+i];
+                    y0 = yv[j*Onode-1+i];
+                    x1 = xv[j*Onode-1+i+1];
+                    y1 = yv[j*Onode-1+i+1];
+                    x2 = xv[(j+1)*Onode-1+i];
+                    y2 = yv[(j+1)*Onode-1+i];
+                    x3 = xv[(j+1)*Onode-1+i+1];
+                    y3 = yv[(j+1)*Onode-1+i+1];*/
 
+                    x0 = ArgsPass->GetXvec(j*Onode-1+i);
+                    y0 = ArgsPass->GetYvec(j*Onode-1+i);
+                    x1 = ArgsPass->GetXvec(j*Onode-1+i+1);
+                    y1 = ArgsPass->GetYvec(j*Onode-1+i+1);
+                    x2 = ArgsPass->GetXvec((j+1)*Onode-1+i);
+                    y2 = ArgsPass->GetYvec((j+1)*Onode-1+i);
+                    x3 = ArgsPass->GetXvec((j+1)*Onode-1+i+1);
+                    y3 = ArgsPass->GetYvec((j+1)*Onode-1+i+1);
+                }
+                else{
                     x0 = xv0[j*Onode-1+i]*cos(theta); if (abs(x0)<tolxy){x0=0;}
                     x2 = xv0[(j+1)*Onode-1+i]*cos(theta);if (abs(x2)<tolxy){x2=0;}
                     y0 = xv0[j*Onode-1+i]*sin(theta);if (abs(y0)<tolxy){y0=0;}
@@ -285,6 +324,7 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct()
                     x3 = xv0[(j+1)*Onode-1+i+1]*cos(theta);if (abs(x3)<tolxy){x3=0;}
                     y1 = xv0[j*Onode-1+i+1]*sin(theta);if (abs(y1)<tolxy){y1=0;}
                     y3 = xv0[(j+1)*Onode-1+i+1]*sin(theta);if (abs(y3)<tolxy){y3=0;}
+                 }
                     // +Z
                     facet = new G4TriangularFacet ( G4ThreeVector(x2,y2, +z1),
                                                     G4ThreeVector(x3,y3, +z1),
@@ -338,7 +378,7 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct()
                     TessLYSO->AddFacet((G4VFacet*) facet);
                 }
             }
-
+        G4cout<< " ### Finished Lateral Faces. " <<G4endl;         
         TessLYSO->SetSolidClosed(true);
  
     solidGlue = new G4Box("solidGlue", RESIN_W*mm+0.2*mm*G4UniformRand(), LYSO_thick*mm+0.194*mm+0.2*mm*G4UniformRand(), GLUE_L*mm);

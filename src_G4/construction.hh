@@ -55,6 +55,7 @@ private: // it is not accessed from outside
     G4double LYSO_L, LYSO_YIELD, LYSO_SCALERESOLUTION, Vovcon, LYSO_thick, perincr;
     G4double GLUE_L, RESIN_L, XposTol, YposTol,XposTol2, YposTol2, XYTol, LYSO_SC1, LYSO_RT1, RESIN_W, RESIN_LNOM, RESIN_LTol;
     G4double x0,y0,z0,x1,y1,z1,x2,y2,z2,x3,y3,z3,theta;
+    G4double *xv,*yv;
     
     // Messengers
     G4GenericMessenger *fMessenger,*fMessenger_thick, *fMessenger_SR, *fMessenger_YIELD, *fMessenger_vov, *fMessenger_GlueL, *fMessenger_ResinL, *fMessenger_ResinW, *fMessenger_XPos, *fMessenger_YPos, *fMessenger_GC, *fMessenger_pi, *fMessenger_ESR, *fMessenger_SR1, *fMessenger_RT1, *fMessenger_XPos2, *fMessenger_YPos2;
@@ -83,11 +84,13 @@ private: // it is not accessed from outside
 
     // Surfaces
     G4OpticalSurface *mirrorSurface, *groundSurface, *SurfFR4;
-    G4UserLimits* fStepLimit;  
+    G4UserLimits  *fStepLimit;  
 
     // classes
-    MyG4Args* ArgsPass;
+    MyG4Args *ArgsPass;
     
+    //G4NistManager* nist1
+    G4NistManager *nist1 = G4NistManager::Instance();
     // Functions
     virtual void ConstructSDandField(); // SD==Sensitive Detector
     void DefineMaterial();

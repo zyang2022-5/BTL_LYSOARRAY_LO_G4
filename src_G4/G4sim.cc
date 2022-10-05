@@ -7,17 +7,35 @@ G4simulation::G4simulation(int mainargc,char** mainargv, G4int Onode , G4int Zno
     ArgInp = new MyG4Args(mainargc, mainargv);
     
     if(radp == NULL){
-        ArgInp->DefaultRadiusVect();
+        if(ArgInp->Getrad2Y() == 1){
+            G4cout<< " !!! WARNING !!! rad2Y set to 1 but no arguments were passed, set to 1. " <<G4endl;  
+            G4double radinit[3]={1,1,1};
+            //radinit[0]=1;radinit[1]=1;
+            G4double* radones=radinit;
+            ArgInp->DefaultRadiusVect();
+            ArgInp->SetCoordVect();
+            //ArgInp->SetYVect(radones);      
+        }else{
+            ArgInp->DefaultRadiusVect();
+        }
     }else{
-        ArgInp->SetRadiusVect(radp,Onode,Znode);
+        if(ArgInp->Getrad2Y() == 1){
+            ArgInp->DefaultRadiusVect();
+            ArgInp->SetCoordVect();
+            //ArgInp->SetYVect(radp);
+        }else{
+            ArgInp->SetRadiusVect(radp,Onode,Znode);
+        }
     }
 
     if(ArgInp->GetNSGAII() == 1){
         ArgInp->SetNSGAII();
     }
-
+    G4cout<< " ### Detector Construction " <<G4endl;  
     runManager -> SetUserInitialization(new MyDetectorConstruction(ArgInp)); /*Define geometry*/
+    G4cout<< " ### Physics List " <<G4endl;  
     runManager -> SetUserInitialization(new MyPhysicsList()); /*Define physics*/
+    G4cout<< " ### Action Definition" <<G4endl;  
     runManager -> SetUserInitialization(new MyActionInitialization(ArgInp)); /*Define actions*/
 
     runManager -> Initialize();

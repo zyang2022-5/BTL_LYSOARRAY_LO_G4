@@ -55,6 +55,7 @@ public:
     G4int GetKillTLTrue() const {return KillLTTrue;}
     G4int GetnEvents() const {return nEvents;}
     G4double GetIncr() const {return incr;}
+    G4double Getrad2Y() const {return rad2Y;}
     void GeomReinit();
     G4int FindEvents(G4String);
 
@@ -104,8 +105,14 @@ public:
     G4double GetTimStd(G4int runid) const {return nRunTimingStd[runid];}  
     G4double GetnEvtEdep(G4int runid) const {return nEdepEvts[runid];}  
     G4int GetZnode() const {return Znode;}
+    G4int GetOnode() const {return Onode;}
     G4double* GetNodeRadValues() const {return xv0;}
     G4int GetMuonFlag() const {return Muon;}
+    void SetCoordVect();
+    void SetYVect(G4double*);
+    G4double GetXvec(int ind) const {return xv[ind];}
+    G4double GetYvec(int ind) const {return yv[ind];}
+    G4double GetYvecincr(int ind) const {return yvincr[ind];}
 private:
 
     // Default values modifiable by arguments and able to be returned!!!
@@ -131,7 +138,7 @@ private:
     G4double KillLTime=200;
     G4int KillLTTrue=0;
     G4int nEvents=0;
-    G4double *nEventTiming, *nEventLO, *nEventLD, *nRunTimingAvg, *nRuntLOAvg, *nRuntLDAvg, *nRunTimingStd, *nRuntLOStd, *nRuntLDStd, *nGunPosX, *nGunPosY;        
+    G4double *nEventTiming, *nEventLO, *nEventLD, *nRunTimingAvg, *nRuntLOAvg, *nRuntLDAvg, *nRunTimingStd, *nRuntLOStd, *nRuntLDStd, *nGunPosX, *nGunPosY, *xv, *yv, *yincr, *yvincr;        
     G4int *nEdepEvts;
     G4double incr=0;
     G4int Znode=1;
@@ -141,7 +148,7 @@ private:
     G4int dateflag;
     G4int RootCreate=1;
     G4int NSGAII=0;
-
+    G4int rad2Y=0;
 // Counters!!!
     G4int ArgLO=0;
     G4int ArgCrossTalk=0;

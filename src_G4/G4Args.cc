@@ -202,6 +202,11 @@ MyG4Args :: MyG4Args(int mainargc,char** mainargv)
                     NSGAII = 1;
                     G4cout<< " ### Selected NSGAII Config."  <<G4endl;         
                 }
+                else if(strcmp(mainargv[j],"-rad2Y")==0)
+                {   
+                    rad2Y = 1;
+                    G4cout<< " ### Selected rad2Y Config."  <<G4endl;         
+                }
                 else if(strcmp(mainargv[j],"-date")==0)
                 {   
                     dateflag = 1;
@@ -405,6 +410,55 @@ void MyG4Args ::SetRadiusVect(G4double* radp, G4int Onodeinp, G4int Znodeinp){
     Znode = Znodeinp;
 }
 
+void MyG4Args ::SetCoordVect(){
+    G4cout<< " ### Working with X & Y coordinates for LYSO mesh" <<G4endl;  
+    G4double tolxy=1e-10;          
+        xv = new G4double[Onode*(Znode+1)];   
+        yv = new G4double[Onode*(Znode+1)];   
+
+    G4double Pi=atan(1)*4;
+    G4double DTheta=Pi/(Onode-1); 
+    G4double theta;        
+    int index;
+        // radius vector initialization
+            for(int i = 0; i < Znode+1; i++){
+               theta = -Pi/2;
+                for (int j = 1; j < Onode+1; j++){
+                    index=i*Onode-1+j;
+                    xv[index] = xv0[index]*cos(theta);if (abs(xv[index])<tolxy){xv[index]=0;}
+                    yv[index] = xv0[index]*sin(theta);if (abs(yv[index])<tolxy){yv[index]=0;}
+                    theta = theta + DTheta;
+    G4cout<< " ###"<<"Index :"<< index <<" Angle: "<<theta<<" Radius: "<<xv0[index]<<" X: "<< xv[index]<< " Y: " << yv[index] <<G4endl; 
+                }
+            }
+
+
+            for (int j = 0; j < Znode+1; j++){
+               for(int i = 1; i < Onode+1; i++){ // 1 less triangle than nodes
+    G4cout<< " ###"<<"Index :"<< j*Onode-1+i <<" REDO - Radius: "<<xv0[j*Onode+i-1]<<" X: "<< xv[j*Onode+i-1]<< " Y: " << yv[j*Onode+i-1] <<G4endl;  
+                }                
+            }
+}
+
+void MyG4Args ::SetYVect(G4double* radp){
+    G4cout<< " ### Modified Y Positional Arguments" <<G4endl;         
+    yincr = radp;   
+    yvincr = new G4double[(Znode-1)*Onode];  
+            for (int j = 0; j < Znode+1; j++){
+               for(int i = 1; i < Onode+1; i++){ // 1 less triangle than nodes
+    G4cout<< " ###"<<"Index :"<< j*Onode-1+i <<" Radius: "<<xv0[j*Onode+i-1]<<" X: "<< xv[j*Onode+i-1]<< " Y: " << yv[j*Onode+i-1] <<G4endl;  
+                }                
+            }  
+            for (int j = 0; j < Znode+1; j++){
+    G4cout<< " ### Section "<<j<<" increases in "<< yincr[j] <<G4endl;         
+               for(int i = 1; i < Onode+1; i++){ // 1 less triangle than nodes
+                    yvincr[j*Onode+i-1] = yv[j*Onode+i-1]*1;
+    G4cout<< " ### yvincr: "<<yvincr[j*Onode+i-1]<<   " X: "<<xv[j*Onode+i-1]<<" Y: "<<yv[j*Onode+i-1]<<G4endl;         
+                }
+            }
+    G4cout<< " ### Finished Y modification" <<G4endl;         
+}
+
 void MyG4Args ::SetNSGAII(){
                     // Muons
                     Muon = 1;
@@ -446,6 +500,8 @@ void MyG4Args ::SetNSGAII(){
                         nGunPosY[i*4+j]=28.45/19*(j);
                     }
                 }
+
+
                         
 }
 

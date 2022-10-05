@@ -11,7 +11,13 @@ G4simulationNOVIS::G4simulationNOVIS(int mainargc,char** mainargv, G4int Onode ,
     if(radp == NULL){
         ArgInp->DefaultRadiusVect();
     }else{
-        ArgInp->SetRadiusVect(radp,Onode,Znode);
+        if(ArgInp->Getrad2Y() == 1){
+            ArgInp->DefaultRadiusVect();
+            ArgInp->SetCoordVect();
+            ArgInp->SetYVect(radp);
+        }else{
+            ArgInp->SetRadiusVect(radp,Onode,Znode);
+        }
     }
 
     if(ArgInp->GetNSGAII() == 1){

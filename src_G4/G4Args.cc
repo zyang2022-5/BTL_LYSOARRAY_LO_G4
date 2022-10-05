@@ -432,30 +432,19 @@ void MyG4Args ::SetCoordVect(){
                 }
             }
 
-
-            for (int j = 0; j < Znode+1; j++){
-               for(int i = 1; i < Onode+1; i++){ // 1 less triangle than nodes
-    G4cout<< " ###"<<"Index :"<< j*Onode-1+i <<" REDO - Radius: "<<xv0[j*Onode+i-1]<<" X: "<< xv[j*Onode+i-1]<< " Y: " << yv[j*Onode+i-1] <<G4endl;  
-                }                
-            }
 }
 
 void MyG4Args ::SetYVect(G4double* radp){
     G4cout<< " ### Modified Y Positional Arguments" <<G4endl;         
     yincr = radp;   
-    yvincr = new G4double[(Znode-1)*Onode];  
-            for (int j = 0; j < Znode+1; j++){
-               for(int i = 1; i < Onode+1; i++){ // 1 less triangle than nodes
-    G4cout<< " ###"<<"Index :"<< j*Onode-1+i <<" Radius: "<<xv0[j*Onode+i-1]<<" X: "<< xv[j*Onode+i-1]<< " Y: " << yv[j*Onode+i-1] <<G4endl;  
-                }                
-            }  
-            for (int j = 0; j < Znode+1; j++){
-    G4cout<< " ### Section "<<j<<" increases in "<< yincr[j] <<G4endl;         
-               for(int i = 1; i < Onode+1; i++){ // 1 less triangle than nodes
-                    yvincr[j*Onode+i-1] = yv[j*Onode+i-1]*1;
-    G4cout<< " ### yvincr: "<<yvincr[j*Onode+i-1]<<   " X: "<<xv[j*Onode+i-1]<<" Y: "<<yv[j*Onode+i-1]<<G4endl;         
+    int index;
+            for(int i = 0; i < Znode+1; i++){
+                for (int j = 1; j < Onode+1; j++){
+                     index=i*Onode-1+j;
+                     yv[index] = yv[index]*yincr[i];
                 }
             }
+
     G4cout<< " ### Finished Y modification" <<G4endl;         
 }
 

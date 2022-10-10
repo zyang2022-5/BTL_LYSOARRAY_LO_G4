@@ -22,7 +22,7 @@ class G4simulationNOVIS
 {
 
 public:
-    G4simulationNOVIS(int, char**, G4int Onode = 5, G4int Znode = 1 , G4double* radp = NULL);
+    G4simulationNOVIS( int, char**, G4int Onode = 5, G4int Znode = 1 , G4double* radp = NULL);
     ~G4simulationNOVIS();
     G4double GetAvgLO(){}
     double GetLO_avg(int runid){return ArgInp->GetLOAvg(runid);}
@@ -33,6 +33,7 @@ public:
 private:
 
     MyG4Args *ArgInp;
+    G4double LDavg;
 };    
 
 #endif

@@ -81,6 +81,7 @@ MyRunAction :: MyRunAction(G4String OutName,MyG4Args* MainArgs)
             man->CreateNtupleDColumn("fTimAvg"); 
             man->CreateNtupleDColumn("fTimStd");
             man->CreateNtupleDColumn("frun");
+            man->CreateNtupleDColumn("fincr");
             man->FinishNtuple(5); // Finish our first tuple or Ntuple number 0
         }
 }
@@ -178,6 +179,7 @@ void MyRunAction::EndOfRunAction(const G4Run* run)
                 man->FillNtupleDColumn(5, 4, PassArgs->GetnEvtEdep(j));
                 // geometry values
                 man->FillNtupleDColumn(5, 5, j);
+                man->FillNtupleDColumn(5, 6, PassArgs->GetIncr());
                 man->AddNtupleRow(5);
             }
         }

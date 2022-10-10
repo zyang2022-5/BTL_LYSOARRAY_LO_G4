@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #Default values for optional arguments
 #BASEDIR=$(pwd)          # Current folder where the G4 files can be found
-BASEDIR="/storage/af/user/greales/simG4/Repov2/"
+BASEDIR="/storage/af/user/greales/simG4/BTL_LYSOARRAY_LO_G4/"
 
 SimName="sim"    # Name of the G4 executable
 MacroName="run.mac"     # Name of the macro file to run with the G4 executable
@@ -27,4 +27,4 @@ echo "*** Sourcing G4:"
 
 echo "Running Simulation" 
 cd $BASEDIR
-./$SimName -o $OutPut -GeomConfig 1 -m run.mac -Muon
+./$SimName -o $OutPut -GeomConfig 1 -m run.mac -Muon -incr $(Sopt)

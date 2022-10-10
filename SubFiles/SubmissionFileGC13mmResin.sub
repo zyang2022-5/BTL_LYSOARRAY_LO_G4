@@ -1,6 +1,6 @@
 ### Submission File
 Universe = vanilla
-executable = /storage/af/user/greales/simG4/Repov2/JobFiles/JobActionGC13mmResin.sh
+executable = /storage/af/user/greales/simG4/BTL_LYSOARRAY_LO_G4/JobFiles/JobActionGC13mmResin.sh
 arguments ="-a $(Cluster)_$(Process)_"
 Output  = /storage/af/user/greales/simG4/outputs/Out_job$(Cluster).out
 Error   = /storage/af/user/greales/simG4/errors/error_job$(Cluster).out

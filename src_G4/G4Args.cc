@@ -183,11 +183,6 @@ MyG4Args :: MyG4Args(int mainargc,char** mainargv)
                 {   
                     KillLTTrue = 1;KillLTime = atof(mainargv[j+1]);j=j+1;
                     G4cout<< " ### Killing photons after "<< KillLTime <<" ps" <<G4endl;         
-                }
-                else if(strcmp(mainargv[j],"-incr")==0)
-                {   
-                    incr = atof(mainargv[j+1]);j=j+1;
-                    G4cout<< " ### The thickness of the crystal in the middle is changed to "<< incr <<G4endl;         
                 }else if(strcmp(mainargv[j],"-Znode")==0)
                 {   
                     Znode = atoi(mainargv[j+1]);j=j+1;
@@ -206,6 +201,12 @@ MyG4Args :: MyG4Args(int mainargc,char** mainargv)
                 {   
                     rad2Y = 1;
                     G4cout<< " ### Selected rad2Y Config."  <<G4endl;         
+                }
+                else if(strcmp(mainargv[j],"-incr")==0)
+                {   
+                    rad2Y = 1;
+                    incr = atof(mainargv[j+1])/100;j=j+1;
+                    G4cout<< " ### The thickness of the crystal in the middle is changed to "<< incr <<G4endl;         
                 }
                 else if(strcmp(mainargv[j],"-date")==0)
                 {   

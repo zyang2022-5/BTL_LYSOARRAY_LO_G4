@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-BASEDIR=/storage/af/user/greales/simG4/Repov2
+BASEDIR=/storage/af/user/greales/simG4/BTL_LYSOARRAY_LO_G4
 for((i=1;i<=10;i++))
 do
     condor_submit $BASEDIR/SubFiles/SubmissionFileGC1FLResinMuon.sub

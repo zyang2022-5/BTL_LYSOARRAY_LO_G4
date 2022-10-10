@@ -2,14 +2,15 @@
 
 G4simulationNOVIS::G4simulationNOVIS(int mainargc,char** mainargv, G4int Onode , G4int Znode , G4double* radp)
 {
+    G4RunManager *runManager = new G4RunManager();
 
     G4cout<< mainargc << "\n" << mainargv[0]<< "\n" << mainargv[1] << G4endl;
   // Set Up / Run  Initialization
-    G4RunManager *runManager = new G4RunManager();
+
     ArgInp = new MyG4Args(mainargc, mainargv);
     
     if(radp == NULL){
-        if(ArgInp->Getrad2Y() == 1){
+        if(ArgInp->Getrad2Y() == 1 && ArgInp->GetIncr() == 0){
             G4cout<< " !!! WARNING !!! rad2Y set to 1 but no arguments were passed, set to 1. " <<G4endl;  
             G4double radinit[2]={1,2};
             //radinit[0]=1;radinit[1]=1;
@@ -17,6 +18,13 @@ G4simulationNOVIS::G4simulationNOVIS(int mainargc,char** mainargv, G4int Onode ,
             ArgInp->DefaultRadiusVect();
             ArgInp->SetCoordVect();
             ArgInp->SetYVect(radones);      
+        }else if(ArgInp->GetIncr() > 0){
+            G4double radinit[2]={1,ArgInp->GetIncr()};
+            //radinit[0]=1;radinit[1]=1;
+            G4double* radones=radinit;
+            ArgInp->DefaultRadiusVect();
+            ArgInp->SetCoordVect();
+            ArgInp->SetYVect(radones); 
         }else{
             ArgInp->DefaultRadiusVect();
         }
@@ -63,6 +71,14 @@ G4simulationNOVIS::G4simulationNOVIS(int mainargc,char** mainargv, G4int Onode ,
                         UImanager->ApplyCommand(command+fileName);
                     }
         }
+
+    /*G4int runid=0;
+    G4cout<< " ### Fom G4Args.cc, the LD_avg is "<< ArgInp->GetLOAvg(runid) <<G4endl;     
+    LDavg=ArgInp->GetLOAvg(runid);
+
+  */
+
+  delete runManager;
 
 }
 G4simulationNOVIS::~G4simulationNOVIS()

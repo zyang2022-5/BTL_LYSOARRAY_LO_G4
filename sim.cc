@@ -20,7 +20,7 @@ VISUALIZATION: Everythin in between * Vis -> Visualizer* lines of with it at the
 
 /////////////////////////////////// PROGRAM START ///////////////////////////////////
 
-
+//#include "G4RunManager.hh" /* Run */
 #include "src_G4/G4simTierII.hh"
 //#include "src_G4/G4sim.hh"
 #include "src_G4/util.hh"
@@ -32,7 +32,6 @@ VISUALIZATION: Everythin in between * Vis -> Visualizer* lines of with it at the
 int main(int argc, char** argv) /* argc, argv are the argument passed to the sim*/
 {   
 
-    
     G4int Onode=5,Znode=2;
     G4double* radv;
     /*    radv = new G4double[Onode*(Znode+1)];   
@@ -49,8 +48,16 @@ int main(int argc, char** argv) /* argc, argv are the argument passed to the sim
     // Volume Calculation 57*3*3=513
     */
     // Standard usage    
-    G4simulationNOVIS *sim = new G4simulationNOVIS(argc, argv, Onode, Znode, radv);
-    //G4simulation *sim = new G4simulation(argc, argv, Onode, Znode, radv);
+    G4double* radinit;
+    radinit = new G4double[2];   
+    radinit[0]=1;
+    radinit[1]=0.5;
+    //G4double radinit[2]={1,2};
+    G4simulationNOVIS *sim = new G4simulationNOVIS(argc, argv);
+
+
+    //G4simulationNOVIS *sim1 = new G4simulationNOVIS(runManager,argc, argv, Onode, Znode, radinit);
+    //G4simulation *sim = new G4simulation(argc, argv);
     // Example on how to pass always the same arguments
 /*
     G4int argc1=3;
@@ -62,7 +69,6 @@ int main(int argc, char** argv) /* argc, argv are the argument passed to the sim
 
     G4simulationNOVIS *sim = new G4simulationNOVIS(argc1, args, Onode, Znode, radv);
 */
-
-
+    G4cout<< " ### Fom sim.cc, the LO_avg is "<< sim->GetLO_avg(0) <<G4endl;     
     return 0;
 }

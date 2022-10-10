@@ -7,7 +7,7 @@ G4simulation::G4simulation(int mainargc,char** mainargv, G4int Onode , G4int Zno
     ArgInp = new MyG4Args(mainargc, mainargv);
     
     if(radp == NULL){
-        if(ArgInp->Getrad2Y() == 1){
+        if(ArgInp->Getrad2Y() == 1 && ArgInp->GetIncr() == 0){
             G4cout<< " !!! WARNING !!! rad2Y set to 1 but no arguments were passed, set to 1. " <<G4endl;  
             G4double radinit[2]={1,2};
             //radinit[0]=1;radinit[1]=1;
@@ -15,6 +15,13 @@ G4simulation::G4simulation(int mainargc,char** mainargv, G4int Onode , G4int Zno
             ArgInp->DefaultRadiusVect();
             ArgInp->SetCoordVect();
             ArgInp->SetYVect(radones);      
+        }else if(ArgInp->GetIncr() > 0){
+            G4double radinit[2]={1,ArgInp->GetIncr()};
+            //radinit[0]=1;radinit[1]=1;
+            G4double* radones=radinit;
+            ArgInp->DefaultRadiusVect();
+            ArgInp->SetCoordVect();
+            ArgInp->SetYVect(radones); 
         }else{
             ArgInp->DefaultRadiusVect();
         }
@@ -27,7 +34,6 @@ G4simulation::G4simulation(int mainargc,char** mainargv, G4int Onode , G4int Zno
             ArgInp->SetRadiusVect(radp,Onode,Znode);
         }
     }
-
     if(ArgInp->GetNSGAII() == 1){
         ArgInp->SetNSGAII();
     }

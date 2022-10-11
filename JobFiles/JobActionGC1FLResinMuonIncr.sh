@@ -29,6 +29,6 @@ echo "Running Simulation"
 OutPut=$OutPut$Sopt
 echo $Sopt
 cd $BASEDIR
-./$SimName -o $OutPut -GeomConfig 1 -m run.mac -Muon -incr $Sopt
+./$SimName -o $OutPut -GeomConfig 1 -m run500.mac -Muon -incr $Sopt
 
 

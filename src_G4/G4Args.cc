@@ -232,6 +232,7 @@ MyG4Args :: MyG4Args(int mainargc,char** mainargv)
                         for (int j = 0; j < 19; j++){
                             nGunPosX[i*4+j]=1.45/4*(i);
                             nGunPosY[i*4+j]=28.45/19*(j);
+                        G4cout<< " * Gun Pos "<< i*4+j <<" , XPos  : " << nGunPosX[i*4+j]<<" , YPos  : " << nGunPosY[i*4+j]<<G4endl;    
                         }
                     }     
                 }

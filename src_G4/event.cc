@@ -56,6 +56,8 @@ void MyEventAction::BeginOfEventAction(const G4Event *anEvent)
         LYSO_T2=LYSO_T2-LYSO_T2*0.01;
 
         //G4cout<< "Data from construction: "<< LYSO_L << " " << LYSO_T << " " << GeomConfig << G4endl;
+
+            G4cout<< "Event GeomConfig: "<< GeomConfig <<" ,PartRnd. "<< PassArgs->GetRnd_Part() << G4endl;
         if (GeomConfig == 1){
             GenX=(-LYSO_T+LYSO_T*2*G4UniformRand())/1000.;
             GenZ=(-LYSO_L+LYSO_L*2*G4UniformRand())/1000.;
@@ -83,7 +85,12 @@ void MyEventAction::BeginOfEventAction(const G4Event *anEvent)
             command = "/gun/direction 0. -1. 0."; 
             G4cout<< command << G4endl;
             UImanager->ApplyCommand(command); 
+        }
     }else if (PassArgs->GetRnd_Part()==2){
+        const MyDetectorConstruction *detectorConstruction = static_cast<const MyDetectorConstruction*> (G4RunManager::GetRunManager()->GetUserDetectorConstruction());
+        G4int GeomConfig  = PassArgs->GetGeomConfig();
+
+            G4cout<< "Event GeomConfig: "<< GeomConfig <<" ,PartRnd. "<< PassArgs->GetRnd_Part() << G4endl;
         if (GeomConfig == 1){
             GenX=PassArgs->GetGunX(eventID)/1000;
             GenZ=PassArgs->GetGunY(eventID)/1000;
@@ -100,7 +107,6 @@ void MyEventAction::BeginOfEventAction(const G4Event *anEvent)
             G4cout<< command << G4endl;
             UImanager->ApplyCommand(command); 
         }
-    }
 }
 
 

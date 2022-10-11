@@ -18,8 +18,16 @@ G4simulationNOVIS::G4simulationNOVIS(int mainargc,char** mainargv, G4int Onode ,
             ArgInp->DefaultRadiusVect();
             ArgInp->SetCoordVect();
             ArgInp->SetYVect(radones);      
-        }else if(ArgInp->GetIncr() > 0){
-            G4double radinit[2]={1,ArgInp->GetIncr()};
+        }else if(ArgInp->GetIncrS() > 0){
+            G4double radinit[2]={ArgInp->GetIncrS(),1};
+            //radinit[0]=1;radinit[1]=1;
+            G4double* radones=radinit;
+            ArgInp->DefaultRadiusVect();
+            ArgInp->SetCoordVect();
+            ArgInp->SetYVect(radones); 
+        }else if(ArgInp->GetIncrV() > 0){
+            G4double SiPMIncr = 1-1*(ArgInp->GetIncrV()-1);
+            G4double radinit[2]={SiPMIncr,ArgInp->GetIncrV()};
             //radinit[0]=1;radinit[1]=1;
             G4double* radones=radinit;
             ArgInp->DefaultRadiusVect();

@@ -208,6 +208,18 @@ MyG4Args :: MyG4Args(int mainargc,char** mainargv)
                     incr = atof(mainargv[j+1])/100;j=j+1;
                     G4cout<< " ### The thickness of the crystal in the middle is changed to "<< incr <<G4endl;         
                 }
+                else if(strcmp(mainargv[j],"-incrS")==0)
+                {   
+                    rad2Y = 1;
+                    incrS = atof(mainargv[j+1])/100;j=j+1;
+                    G4cout<< " ### The thickness of the crystal in the SiPM is changed to "<< incr <<G4endl;         
+                }
+                else if(strcmp(mainargv[j],"-incrV")==0)
+                {   
+                    rad2Y = 1;
+                    incrV = atof(mainargv[j+1])/100;j=j+1;
+                    G4cout<< " ### The thickness of the crystal in the middle and SiPM is changed to "<< incr <<G4endl;         
+                }
                 else if(strcmp(mainargv[j],"-date")==0)
                 {   
                     dateflag = 1;

@@ -55,6 +55,8 @@ public:
     G4int GetKillTLTrue() const {return KillLTTrue;}
     G4int GetnEvents() const {return nEvents;}
     G4double GetIncr() const {return incr;}
+    G4double GetIncrS() const {return incrS;}
+    G4double GetIncrV() const {return incrV;}
     G4double Getrad2Y() const {return rad2Y;}
     void GeomReinit();
     G4int FindEvents(G4String);
@@ -141,6 +143,8 @@ private:
     G4double *nEventTiming, *nEventLO, *nEventLD, *nRunTimingAvg, *nRuntLOAvg, *nRuntLDAvg, *nRunTimingStd, *nRuntLOStd, *nRuntLDStd, *nGunPosX, *nGunPosY, *xv, *yv, *yincr, *yvincr;        
     G4int *nEdepEvts;
     G4double incr=0;
+    G4double incrS=0;
+    G4double incrV=0;
     G4int Znode=1;
     G4int Onode=5;
     G4double* xv0 = NULL;

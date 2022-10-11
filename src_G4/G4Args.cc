@@ -207,8 +207,7 @@ MyG4Args :: MyG4Args(int mainargc,char** mainargv)
                     rad2Y = 1;
                     incr = atof(mainargv[j+1])/100;j=j+1;
                     G4cout<< " ### The thickness of the crystal in the middle is changed to "<< incr <<G4endl;         
-                }
-                else if(strcmp(mainargv[j],"-incrS")==0)
+                }else if(strcmp(mainargv[j],"-incrS")==0)
                 {   
                     rad2Y = 1;
                     incrS = atof(mainargv[j+1])/100;j=j+1;
@@ -219,27 +218,22 @@ MyG4Args :: MyG4Args(int mainargc,char** mainargv)
                     rad2Y = 1;
                     incrV = atof(mainargv[j+1])/100;j=j+1;
                     G4cout<< " ### The thickness of the crystal in the middle and SiPM is changed to "<< incr <<G4endl;         
-                }
-                else if(strcmp(mainargv[j],"-gunmesh")==0)
+                }                else if(strcmp(mainargv[j],"-gunmesh")==0)
                 {   
-                    MacName = "run76.mac";
-                    G4cout<< " ### Set Run Macro name to : " << MacName <<G4endl;         
-                    G4cout<< " ### Number of runs : " << nrep <<G4endl;  
-                    nEvents=76;
                     // Random values & particle gun
                         RndGen[0] = 0;
                         RndGen[1] = 2;
                         RndGen[2] = 0;
                         G4cout<< " ### Random Particle Position set to  : " << RndGen[1] <<G4endl;         
-                        G4cout<< " ### Random Geometry Parameters set to  : " << RndGen[2];
-                        nGunPosX = new G4double[nEvents];
-                        nGunPosY = new G4double[nEvents];
+                        G4cout<< " ### Random Geometry Parameters set to  : " << RndGen[2]<<G4endl;    
+                        nGunPosX = new G4double[77];
+                        nGunPosY = new G4double[77];
                     for (int i = 0; i < 4; i++){
                         for (int j = 0; j < 19; j++){
                             nGunPosX[i*4+j]=1.45/4*(i);
                             nGunPosY[i*4+j]=28.45/19*(j);
                         }
-                    }      
+                    }     
                 }
                 else if(strcmp(mainargv[j],"-date")==0)
                 {   

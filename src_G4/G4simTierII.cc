@@ -69,16 +69,24 @@ G4simulationNOVIS::G4simulationNOVIS(int mainargc,char** mainargv, G4int Onode ,
     {
 //        UImanager->ApplyCommand("/control/execute vis.mac");
 //        ui->SessionStart();     ///////* Vis -> Visualizer*//////
+    }else if(ArgInp->GetRunEvt()>0)
+    {
+        int EvtRun = ArgInp->GetRunEvt();
+        G4String command;  
+        command = "/run/beamOn "+std::to_string(EvtRun); 
+        G4cout<< "Running through C++ -- "<<command << G4endl;
+        UImanager->ApplyCommand(command+std::to_string(ArgInp->GetRunEvt()));
     }
     else
     {
                     G4String command = "/control/execute ";  
+        G4cout<< "Running through .mac -- "<<command << G4endl;
                     G4String fileName = ArgInp->GetMacName();
                     G4int nrep = ArgInp->Getnrep();
                     for (int i = 1; i <= nrep; i=i+1){
                         UImanager->ApplyCommand(command+fileName);
                     }
-        }
+    }
 
     /*G4int runid=0;
     G4cout<< " ### Fom G4Args.cc, the LD_avg is "<< ArgInp->GetLOAvg(runid) <<G4endl;     

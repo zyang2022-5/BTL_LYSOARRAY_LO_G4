@@ -108,6 +108,7 @@ public:
     G4double GetnEvtEdep(G4int runid) const {return nEdepEvts[runid];}  
     G4int GetZnode() const {return Znode;}
     G4int GetOnode() const {return Onode;}
+    int GetRunEvt() const {return runevt;}
     G4double* GetNodeRadValues() const {return xv0;}
     G4int GetMuonFlag() const {return Muon;}
     void SetCoordVect();
@@ -163,6 +164,7 @@ private:
     G4int nPhotR=0;
     G4int nPhotL=0;
     G4int NEdep=0;
+    int runevt=0;
     char datechar [22];
 
 

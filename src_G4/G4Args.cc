@@ -218,22 +218,48 @@ MyG4Args :: MyG4Args(int mainargc,char** mainargv)
                     rad2Y = 1;
                     incrV = atof(mainargv[j+1])/100;j=j+1;
                     G4cout<< " ### The thickness of the crystal in the middle and SiPM is changed to "<< incr <<G4endl;         
-                }                else if(strcmp(mainargv[j],"-gunmesh")==0)
+                }else if(strcmp(mainargv[j],"-runevt")==0)
                 {   
+                    runevt=atoi(mainargv[j+1]);j=j+1;
+                    nEvents=runevt;
+                    VisTrue=0;
+                    nrep =  1;      
+                    G4cout<< " ### Number of runs : " << nrep <<G4endl;  
+                    G4cout<< " ### Number of events : " << nEvents <<G4endl;  
+                    nEventTiming = new G4double[nEvents];
+                    nEventLO = new G4double[nEvents];
+                    nEventLD = new G4double[nEvents];
+
+                    nRunTimingAvg = new G4double[nrep];
+                    nRuntLOAvg = new G4double[nrep];
+                    nRuntLDAvg = new G4double[nrep];
+                    nRunTimingStd = new G4double[nrep];
+                    nRuntLOStd = new G4double[nrep];
+                    nRuntLDStd = new G4double[nrep];
+                    nEdepEvts = new G4int[nrep];
+                    MainTrees[5]=1;
+                    G4cout<< " ### Run "<< runevt <<" evts" <<G4endl;     
+                        
+                }else if(strcmp(mainargv[j],"-gunmesh")==0)
+                {   
+                        int index;
+                        int imax=atoi(mainargv[j+1]);j=j+1;
+                        int jmax=atoi(mainargv[j+1]);j=j+1;
+G4cout<< " * imax: "<< imax<< " jmax: "<< jmax <<G4endl;       
                     // Random values & particle gun
                         RndGen[0] = 0;
                         RndGen[1] = 2;
                         RndGen[2] = 0;
                         G4cout<< " ### Random Particle Position set to  : " << RndGen[1] <<G4endl;         
                         G4cout<< " ### Random Geometry Parameters set to  : " << RndGen[2]<<G4endl;    
-                        nGunPosX = new G4double[78];
-                        nGunPosY = new G4double[78];
-                        int index;
-                    for (int i = 0; i < 3; i++){
-                        for (int j = 0; j < 26; j++){
-                            index = i*26+j;
-                            nGunPosX[index]=1.45/3*(i);
-                            nGunPosY[index]=28.45/26*(j);
+
+                        nGunPosX = new G4double[imax*jmax];
+                        nGunPosY = new G4double[imax*jmax];
+                    for (int i = 0; i < imax; i++){
+                        for (int j = 0; j < jmax; j++){
+                            index = i*jmax+j;
+                            nGunPosX[index]=1.49/imax*(i);
+                            nGunPosY[index]=28.49/jmax*(j);
                         G4cout<< " * Gun Pos "<< index <<" , XPos  : " << nGunPosX[index]<<" , YPos  : " << nGunPosY[index]<<G4endl;    
                         }
                     }     

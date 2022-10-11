@@ -226,13 +226,15 @@ MyG4Args :: MyG4Args(int mainargc,char** mainargv)
                         RndGen[2] = 0;
                         G4cout<< " ### Random Particle Position set to  : " << RndGen[1] <<G4endl;         
                         G4cout<< " ### Random Geometry Parameters set to  : " << RndGen[2]<<G4endl;    
-                        nGunPosX = new G4double[77];
-                        nGunPosY = new G4double[77];
-                    for (int i = 0; i < 4; i++){
-                        for (int j = 0; j < 19; j++){
-                            nGunPosX[i*4+j]=1.45/4*(i);
-                            nGunPosY[i*4+j]=28.45/19*(j);
-                        G4cout<< " * Gun Pos "<< i*4+j <<" , XPos  : " << nGunPosX[i*4+j]<<" , YPos  : " << nGunPosY[i*4+j]<<G4endl;    
+                        nGunPosX = new G4double[78];
+                        nGunPosY = new G4double[78];
+                        int index;
+                    for (int i = 0; i < 3; i++){
+                        for (int j = 0; j < 26; j++){
+                            index = i*26+j;
+                            nGunPosX[index]=1.45/3*(i);
+                            nGunPosY[index]=28.45/26*(j);
+                        G4cout<< " * Gun Pos "<< index <<" , XPos  : " << nGunPosX[index]<<" , YPos  : " << nGunPosY[index]<<G4endl;    
                         }
                     }     
                 }
@@ -510,12 +512,12 @@ void MyG4Args ::SetNSGAII(){
                         RndGen[2] = 0;
                         G4cout<< " ### Random Particle Position set to  : " << RndGen[1] <<G4endl;         
                         G4cout<< " ### Random Geometry Parameters set to  : " << RndGen[2];
-                        nGunPosX = new G4double[nEvents];
-                        nGunPosY = new G4double[nEvents];
+                        nGunPosX = new G4double[77];
+                        nGunPosY = new G4double[77];
                 for (int i = 0; i < 4; i++){
                     for (int j = 0; j < 19; j++){
-                        nGunPosX[i*4+j]=1.45/4*(i);
-                        nGunPosY[i*4+j]=28.45/19*(j);
+                        nGunPosX[i*4+j]=1.48/4*(i);
+                        nGunPosY[i*4+j]=28.48/19*(j);
                     }
                 }
 

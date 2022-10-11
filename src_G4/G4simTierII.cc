@@ -75,7 +75,7 @@ G4simulationNOVIS::G4simulationNOVIS(int mainargc,char** mainargv, G4int Onode ,
         G4String command;  
         command = "/run/beamOn "+std::to_string(EvtRun); 
         G4cout<< "Running through C++ -- "<<command << G4endl;
-        UImanager->ApplyCommand(command+std::to_string(ArgInp->GetRunEvt()));
+        UImanager->ApplyCommand(command);
     }
     else
     {

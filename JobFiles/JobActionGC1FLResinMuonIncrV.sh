@@ -6,7 +6,7 @@ BASEDIR="/storage/af/user/greales/simG4/BTL_LYSOARRAY_LO_G4/"
 SimName="sim"    # Name of the G4 executable
 MacroName="run.mac"     # Name of the macro file to run with the G4 executable
 SimArgs="-m"            # Arguments for the G4 executable (any)
-OutPut="GC1_FLResin_Muon_Incr_"   # Name of the Root output files from the G4 executable 
+OutPut="GC1_FLResin_Muon_V_Incr_"   # Name of the Root output files from the G4 executable 
 
 while getopts "a:n:s:" arg; do
     case $arg in
@@ -29,6 +29,6 @@ echo "Running Simulation"
 OutPut=$OutPut$Sopt
 echo $Sopt
 cd $BASEDIR
-./$SimName -o $OutPut -GeomConfig 1 -runevt 100 -Muon -incr $Sopt -nDetected
+./$SimName -o $OutPut -GeomConfig 1 -runevt 100 -Muon -incrV $Sopt -nDetected
 
 

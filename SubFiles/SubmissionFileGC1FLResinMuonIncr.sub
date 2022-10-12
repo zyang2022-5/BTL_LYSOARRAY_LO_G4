@@ -12,7 +12,7 @@ requirements = Machine =!= LastRemoteHost
 #Requirements = (HAS_SINGULARITY == TRUE && SINGULARITY_CAN_USE_SIF == TRUE)
 
 WHEN_TO_TRANSFER_OUTPUT = ON_EXIT_OR_EVICT
-+JobQueue = "Normal"
++JobQueue = "Short"
 +MaxRuntime = 7000
 +RunAsOwner = True
 +InteractiveUser = True
@@ -38,5 +38,5 @@ should_transfer_files = Yes
 max_retries = 3
 #requirements = Machine =!= LastRemoteHost
 #universe = vanilla
-Queue from seq 75 125 |
+Queue from seq 100 120 |
 #Queue 1

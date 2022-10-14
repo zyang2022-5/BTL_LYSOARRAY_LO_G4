@@ -36,6 +36,9 @@ public:
     G4double GetGeom_LYSO_L() const {return Geom_LYSO[2];}
     G4double GetGeom_LYSO_thick() const {return Geom_LYSO[0];}
     G4double GetGeom_Resin_width() const {return Geom_Resin[1];}
+    G4double GetGeom_DET_T() const {return DET_T;}
+    G4double Get_GLUE_Y() const {return Glue_Y;}
+    void SetGeom_GLUE_Y(G4double val) { Glue_Y=val;}
     G4int GetRootCreate() const {return RootCreate;}
     G4int GetRnd_true() const {return RndGen[0];}
     G4int GetRnd_Part() const {return RndGen[1];}
@@ -171,6 +174,8 @@ private:
     G4int nPhotL=0;
     G4int NEdep=0;
     G4int Ystr=0;
+    G4double DET_T=3.;
+    G4double Glue_Y=3.;
     std::string YposStr;
     int runevt=0;
     char datechar [22];

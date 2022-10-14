@@ -35,8 +35,8 @@ G4simulationNOVIS::G4simulationNOVIS(int mainargc,char** mainargv, G4int Onode ,
         }else if(ArgInp->GetIncrV() > 0){
             G4double SiPMIncr = 1-1*(ArgInp->GetIncrV()-1);
             G4double radinit[2];//={SiPMIncr,ArgInp->GetIncrV()};
-            radinit[0]=SiPMIncr;radinit[1]=ArgInp->GetIncrV();
-            G4cout<<"### Rad SiPM: "<< radinit[0]<< " Middle: "<< radinit[1]<<G4endl; 
+            radinit[1]=SiPMIncr;radinit[0]=ArgInp->GetIncrV();
+            G4cout<<"### Rad SiPM: "<< radinit[1]<< " Middle: "<< radinit[0]<<G4endl; 
             G4double* radones=radinit;
             ArgInp->DefaultRadiusVect();
             ArgInp->SetCoordVect();

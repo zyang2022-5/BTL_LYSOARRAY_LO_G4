@@ -218,6 +218,9 @@ MyG4Args :: MyG4Args(int mainargc,char** mainargv)
                     rad2Y = 1;
                     incrV = atof(mainargv[j+1])/100;j=j+1;
                     Glue_Y=Glue_Y*incrV;
+                    RESIN_H=(2.*Geom_LYSO[0]*incrV+3.5)/2;
+                    RESIN_Y=RESIN_H-0.5-Geom_LYSO[0]*incrV;
+                    SiPM_Y=-RESIN_H+Geom_LYSO[0]*incrV+0.5;
                     G4cout<< " ### The thickness of the crystal in the middle and SiPM is changed to "<< incr <<G4endl;     
                 }else if(strcmp(mainargv[j],"-incrSiPM")==0)
                 {   
@@ -288,10 +291,16 @@ G4cout<< " * imax: "<< imax<< " jmax: "<< jmax <<G4endl;
                         rad2Y = 1;
                         Ystr = 1;
                         YposStr=mainargv[j+1];j=j+1;
-                        G4cout<< " ### The string to turn into the yincr vector is: "<<YposStr <<G4endl;     
+                        G4cout<< " ### The string to turn into the yincr vector is: "<<YposStr <<G4endl;                             
+                        RESIN_Y=RESIN_H-0.5-Geom_LYSO[0]*yincr[0];
+                        SiPM_Y=DET_T+0.5-RESIN_H;
                         yincr = Str2DChar(YposStr, Znode+1);
                         Glue_Y=Glue_Y*yincr[0];
+                        RESIN_H=(2.*Geom_LYSO[0]*yincr[0]+3.5)/2;
+                        RESIN_Y=RESIN_H-0.5-Geom_LYSO[0]*yincr[0];
+                        SiPM_Y=DET_T+0.5-RESIN_H+Geom_LYSO[0]*yincr[0];
                     }else{
+
                         G4cout<< " ### WARNING: -Ypos with no Znode input" <<G4endl;     
                     }
                         

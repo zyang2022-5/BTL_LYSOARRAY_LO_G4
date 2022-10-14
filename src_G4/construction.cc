@@ -214,7 +214,7 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct()
     G4double yWorld = 0.1*m;    yWorld=yWorld/2.;
     G4double zWorld = 0.1*m;    zWorld=zWorld/2.;
     G4double DET_L = 0.3*mm;    DET_L=DET_L/2.;    
-    G4double RESIN_H =6.5*mm;   RESIN_H=RESIN_H/2.;
+    //G4double RESIN_H =6.5*mm;   RESIN_H=RESIN_H/2.;
     //G4double RESIN_W =3.1*mm;RESIN_W=RESIN_W/2.;
     G4double FR4_L =0.8/2.*mm;     //FR4_L=FR4_L/2.;
     //G4double DET_T =3.5;DET_T=DET_T/2.;
@@ -493,14 +493,18 @@ if(GeomConfig == 1 ){
     physGlue2 = new G4PVPlacement(0,G4ThreeVector(0.,0.,+1*(+LYSO_L*mm+GLUE_L*mm)),logicGlue,"physGlue2",logicWorld,false,0,true); 
 G4RotationMatrix* rM = new G4RotationMatrix();
   rM->rotateY(180.*deg);
-physResin1 = new G4PVPlacement(0     ,G4ThreeVector(XposTol*mm,YposTol*mm+(RESIN_H-0.5*mm-LYSO_thick),+1*(+LYSO_L*mm+GLUE_L*mm*2+RESIN_L*mm+DET_L)),logicResin_Sub,"physResin1",logicWorld,false,0,true); 
-physResin2 = new G4PVPlacement(rM,G4ThreeVector(XposTol2*mm,YposTol2*mm+(RESIN_H-0.5*mm-LYSO_thick),-1*(+LYSO_L*mm+GLUE_L*mm*2+RESIN_L*mm+DET_L)),logicResin_Sub,"physResin2",logicWorld,false,0,true); 
+physResin1 = new G4PVPlacement(0     ,G4ThreeVector(XposTol*mm,YposTol*mm+RESIN_Y*mm,+1*(+LYSO_L*mm+GLUE_L*mm*2+RESIN_L*mm+DET_L)),logicResin_Sub,"physResin1",logicWorld,false,0,true); 
+physResin2 = new G4PVPlacement(rM,G4ThreeVector(XposTol2*mm,YposTol2*mm+RESIN_Y*mm,-1*(+LYSO_L*mm+GLUE_L*mm*2+RESIN_L*mm+DET_L)),logicResin_Sub,"physResin2",logicWorld,false,0,true); 
     //physDetector = new G4PVPlacement(0,G4ThreeVector(XposTol*mm,YposTol*mm,+1*(+LYSO_L*mm+RESIN_L*mm*2+2*GLUE_L*mm+DET_L)),logicDetector,"physDetector",logicWorld,false,0,true); 
 
-    physDetector = new G4PVPlacement(0,G4ThreeVector(XposTol2*mm,YposTol2*mm+0.5*mm+DET_T-RESIN_H,+1*(+RESIN_L*mm)),logicDetector,"physDetector",logicResin_Sub,false,1,true); 
+//physResin1 = new G4PVPlacement(0     ,G4ThreeVector(XposTol*mm,YposTol*mm+(RESIN_H-0.5*mm-LYSO_thick),+1*(+LYSO_L*mm+GLUE_L*mm*2+RESIN_L*mm+DET_L)),logicResin_Sub,"physResin1",logicWorld,false,0,true); 
+//physResin2 = new G4PVPlacement(rM,G4ThreeVector(XposTol2*mm,YposTol2*mm+(RESIN_H-0.5*mm-LYSO_thick),-1*(+LYSO_L*mm+GLUE_L*mm*2+RESIN_L*mm+DET_L)),logicResin_Sub,"physResin2",logicWorld,false,0,true); 
+    //physDetector = new G4PVPlacement(0,G4ThreeVector(XposTol*mm,YposTol*mm,+1*(+LYSO_L*mm+RESIN_L*mm*2+2*GLUE_L*mm+DET_L)),logicDetector,"physDetector",logicWorld,false,0,true); 
 
-physFR41 = new G4PVPlacement(0     ,G4ThreeVector(XposTol*mm,YposTol*mm+(RESIN_H-0.5*mm-LYSO_thick),+1*(+LYSO_L*mm+GLUE_L*mm*2+2*(RESIN_L*mm+DET_L)+FR4_L)),logicFR4,"physResin1",logicWorld,false,0,true); 
-physFR42 = new G4PVPlacement(rM,G4ThreeVector(XposTol2*mm,YposTol2*mm+(RESIN_H-0.5*mm-LYSO_thick),-1*(+LYSO_L*mm+GLUE_L*mm*2+2*(RESIN_L*mm+DET_L)+FR4_L)),logicFR4,"physResin2",logicWorld,false,0,true);
+    physDetector = new G4PVPlacement(0,G4ThreeVector(XposTol2*mm,YposTol2*mm+SiPM_Y,+1*(+RESIN_L*mm)),logicDetector,"physDetector",logicResin_Sub,false,1,true); 
+
+physFR41 = new G4PVPlacement(0     ,G4ThreeVector(XposTol*mm,YposTol*mm+RESIN_Y,+1*(+LYSO_L*mm+GLUE_L*mm*2+2*(RESIN_L*mm+DET_L)+FR4_L)),logicFR4,"physResin1",logicWorld,false,0,true); 
+physFR42 = new G4PVPlacement(rM,G4ThreeVector(XposTol2*mm,YposTol2*mm+RESIN_Y,-1*(+LYSO_L*mm+GLUE_L*mm*2+2*(RESIN_L*mm+DET_L)+FR4_L)),logicFR4,"physResin2",logicWorld,false,0,true);
 //////////////
 // GEOM TYPE 2
 }else if (GeomConfig == 2) // GEOM TYPE 2
@@ -621,14 +625,17 @@ logicDetector->SetSensitiveDetector(sensDet);
     void MyDetectorConstruction:: DefaultValues()
 {
     LYSO_L = ArgsPass->GetGeom_LYSO_L();
-    LYSO_thick=3./2.;
+    LYSO_thick=ArgsPass->GetGeom_LYSO_thick();
     //RESIN_W=51.5/2.;
     Glue_Y =ArgsPass->Get_GLUE_Y();Glue_Y=Glue_Y/2;
     RESIN_W=ArgsPass->GetGeom_Resin_width();
     LYSO_YIELD=ArgsPass->GetLYSO_Yield();
     LYSO_SCALERESOLUTION=ArgsPass->GetLYSO_ScaleResolution();
     XYTol=0.16;
-    DET_T =ArgsPass->GetGeom_DET_T();DET_T=DET_T/2.;
+    RESIN_H =ArgsPass->GetGeom_RESIN_H();   
+    RESIN_Y=ArgsPass->GetGeom_RESIN_Y();   
+    SiPM_Y=ArgsPass->GetGeom_SiPM_Y();   
+    DET_T =ArgsPass->GetGeom_DET_T();
      RESIN_LNOM=0.5;RESIN_LTol=0.1;
     if(ArgsPass->GetRnd_Geom()==1)
         {

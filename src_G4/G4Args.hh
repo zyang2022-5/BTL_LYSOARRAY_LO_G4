@@ -181,7 +181,7 @@ private:
     G4double Glue_Y=3.;
     G4double RESIN_H=6.5/2;
     G4double RESIN_Y=RESIN_H-0.5-Geom_LYSO[0];
-    G4double SiPM_Y=DET_T+0.5-RESIN_H;
+    G4double SiPM_Y=+Geom_LYSO[0]+0.5-RESIN_H;
     std::string YposStr;
     int runevt=0;
     char datechar [22];

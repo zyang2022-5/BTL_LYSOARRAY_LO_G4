@@ -490,7 +490,7 @@ if(GeomConfig == 1 ){
     physLYSO = new G4PVPlacement(0,G4ThreeVector(0.,0.,0.),logicLYSO,"physLYSO",logicWorld,false,0,true);       
 
     physGlue1 = new G4PVPlacement(0,G4ThreeVector(0.,0.,+1*(+LYSO_L*mm+GLUE_L*mm)),logicGlue,"physGlue1",logicWorld,false,0,true); 
-    physGlue2 = new G4PVPlacement(0,G4ThreeVector(0.,0.,+1*(+LYSO_L*mm+GLUE_L*mm)),logicGlue,"physGlue2",logicWorld,false,0,true); 
+    physGlue2 = new G4PVPlacement(0,G4ThreeVector(0.,0.,-1*(+LYSO_L*mm+GLUE_L*mm)),logicGlue,"physGlue2",logicWorld,false,0,true); 
 G4RotationMatrix* rM = new G4RotationMatrix();
   rM->rotateY(180.*deg);
 physResin1 = new G4PVPlacement(0     ,G4ThreeVector(XposTol*mm,YposTol*mm+RESIN_Y*mm,+1*(+LYSO_L*mm+GLUE_L*mm*2+RESIN_L*mm+DET_L)),logicResin_Sub,"physResin1",logicWorld,false,0,true); 

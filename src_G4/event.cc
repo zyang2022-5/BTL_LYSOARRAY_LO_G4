@@ -226,7 +226,9 @@ if(PassArgs->GetTree_EndOfEvent()==1){
     man->FillNtupleDColumn(4, 14, CT/(PassArgs->GetEdep()/MeV));}
     //else {man->FillNtupleDColumn(4, 11, 0.);}
     man->FillNtupleDColumn(4, 15, PassArgs->GetPhotTiming());
-    man->FillNtupleDColumn(4, 16, evt);
+    man->FillNtupleDColumn(4, 16, PassArgs->GetNPhotL());
+    man->FillNtupleDColumn(4, 17, PassArgs->GetNPhotR());
+    man->FillNtupleDColumn(4, 18, evt);
     /*get ev number from detector!!!*/
     /*Write down particle gun position and angle (x,z,alpha_yz)*/
     man->AddNtupleRow(4);

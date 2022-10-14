@@ -10,7 +10,11 @@
 #include <fstream>
 #include <cstring>
 #include <ctime>
-
+#include <string.h>
+#include <iostream>
+#include <algorithm>
+#include <sstream>
+#include <stdio.h>
 
 
 class MyG4Args 
@@ -116,6 +120,8 @@ public:
     G4double GetXvec(int ind) const {return xv[ind];}
     G4double GetYvec(int ind) const {return yv[ind];}
     G4double GetYvecincr(int ind) const {return yvincr[ind];}
+    G4double* GetYincr() const {return yincr;}
+    G4int GetYstr() const {return Ystr;}
 private:
 
     // Default values modifiable by arguments and able to be returned!!!
@@ -164,6 +170,8 @@ private:
     G4int nPhotR=0;
     G4int nPhotL=0;
     G4int NEdep=0;
+    G4int Ystr=0;
+    std::string YposStr;
     int runevt=0;
     char datechar [22];
 

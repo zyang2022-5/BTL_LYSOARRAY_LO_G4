@@ -15,6 +15,9 @@
 #include <ctime>
 #include <G4Types.hh>
 
+#include <sstream>
+#include <iterator>
+
 /* Equivalent to fopen() but uses find_file() to find the path to the filename. */
 FILE *open_file(const char *filename, const char *mode)
 {
@@ -326,5 +329,25 @@ double LYSOMeshVolume(G4double* xv0, G4int Onode, G4int Znode){
 return Vol;
 }
 
+/////////////////////////////////////
+// Triangular mesh volume calculation
+/////////////////////////////////////
+double *Str2DChar(std::string strinput, G4int nn){
+    // The string must be in the format "{d-d-d...}"
+    //Replace {} and comma's with whitespace.
+    strinput.front() = strinput.back() = ' ';
+    std::replace(strinput.begin(), strinput.end(), '-', ' ');
+
+    //Create stringstream from string.
+    auto my_stream = std::istringstream(strinput);
+    G4double *Arr;
+    Arr = new G4double[nn];
+    for (int j = 0; j < nn; j=j+1){
+        my_stream >> Arr[j]; 
+        std::cout << "Index: "<<j << " Array: "<< Arr[j] <<"\n";
+    }
+
+    return Arr;
+}
 
 

@@ -277,6 +277,19 @@ G4cout<< " * imax: "<< imax<< " jmax: "<< jmax <<G4endl;
                     G4cout<< " ### Add date to filename" <<G4endl;     
                         
                 }
+                else if(strcmp(mainargv[j],"-Ypos")==0)
+                {   
+                    if(Znode>0){
+                        rad2Y = 1;
+                        Ystr = 1;
+                        YposStr=mainargv[j+1];j=j+1;
+                        G4cout<< " ### The string to turn into the yincr vector is: "<<YposStr <<G4endl;     
+                        yincr = Str2DChar(YposStr, Znode+1);
+                    }else{
+                        G4cout<< " ### WARNING: -Ypos with no Znode input" <<G4endl;     
+                    }
+                        
+                }
         }
 
     if (Oin == 0 ) {  OutName = DefOutName;   }

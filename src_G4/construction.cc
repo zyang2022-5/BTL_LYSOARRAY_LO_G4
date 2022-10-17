@@ -409,7 +409,7 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct()
 
     solidResin = new G4Box("solidResin", RESIN_W*mm, RESIN_H*mm, RESIN_L*mm+DET_L*mm);
 
-    solidDetector = new G4Box("solidDetector", DET_T*mm, DET_T*mm, DET_L);
+    solidDetector = new G4Box("solidDetector", DET_TX*mm, DET_T*mm, DET_L);
 
     //G4ThreeVector position1(0, +0.5*mm+DET_T-RESIN_H, RESIN_L*mm);
     G4RotationMatrix rotm  = G4RotationMatrix();
@@ -661,6 +661,7 @@ logicDetector->SetSensitiveDetector(sensDet);
     RESIN_Y=ArgsPass->GetGeom_RESIN_Y();   
     SiPM_Y=ArgsPass->GetGeom_SiPM_Y();   
     DET_T =ArgsPass->GetGeom_DET_T();
+    DET_TX =ArgsPass->GetGeom_DET_TX();
      RESIN_LNOM=0.5;RESIN_LTol=0.1;
     if(ArgsPass->GetRnd_Geom()==1)
         {

@@ -53,7 +53,7 @@ private: // it is not accessed from outside
     // Default Values
     G4int nCols, nRows, GeomConfig, ESRtrue;
     G4double LYSO_L, LYSO_YIELD, LYSO_SCALERESOLUTION, Vovcon, LYSO_thick, perincr;
-    G4double GLUE_L, RESIN_L, XposTol, YposTol,XposTol2, YposTol2, XYTol, LYSO_SC1, LYSO_RT1, RESIN_W, RESIN_LNOM, RESIN_LTol, DET_T, Glue_Y, RESIN_H, RESIN_Y, SiPM_Y;
+    G4double GLUE_L, RESIN_L, XposTol, YposTol,XposTol2, YposTol2, XYTol, LYSO_SC1, LYSO_RT1, RESIN_W, RESIN_LNOM, RESIN_LTol, DET_T,DET_TX, Glue_Y, RESIN_H, RESIN_Y, SiPM_Y;
     G4double x0,y0,z0,x1,y1,z1,x2,y2,z2,x3,y3,z3,theta;
     G4double *xv,*yv;
     

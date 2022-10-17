@@ -37,6 +37,7 @@ public:
     G4double GetGeom_LYSO_thick() const {return Geom_LYSO[0];}
     G4double GetGeom_Resin_width() const {return Geom_Resin[1];}
     G4double GetGeom_DET_T() const {return DET_T;}
+    G4double GetGeom_DET_TX() const {return DET_TX;}
     G4double GetGeom_RESIN_H() const {return RESIN_H;}
     G4double GetGeom_RESIN_Y() const {return RESIN_Y;}
     G4double GetGeom_SiPM_Y() const {return SiPM_Y;}
@@ -134,7 +135,7 @@ private:
     // Default values modifiable by arguments and able to be returned!!!
     G4int Oin=0; 
     G4int nrep=0; 
-    G4int MainTrees[6]={0, 1, 0, 0, 1, 0};// Options to write(1)/orNot(0) the different output trees {Arrivals,Detected,Stepping,Tracking,EndOfEvent}
+    G4int MainTrees[6]={0, 1, 0, 0, 1, 1};// Options to write(1)/orNot(0) the different output trees {Arrivals,Detected,Stepping,Tracking,EndOfEvent}
     G4double LYSOProps[4]={40000.,0.,60.,39.1};//Options to modify default LYSO properties {Yield,ScaleResolution,RiseTime,DecayTime}
     G4int RndGen[3]={1,1,1};             // Options regarding the random generator {Init,Particle,Geometry}
     G4double Geom_LYSO[3]={3./2.,3./2.,57./2.};//Options to modify default Geom properties {...}
@@ -180,6 +181,7 @@ private:
     G4int Ystr=0;
     G4int ResinMach=0;
     G4double DET_T=3./2;
+    G4double DET_TX=3./2;
     G4double Glue_Y=3.;
     G4double RESIN_H=6.5/2;
     G4double RESIN_Y=RESIN_H-0.5-Geom_LYSO[0];

@@ -419,7 +419,14 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct()
     G4Box* box = new G4Box("Box_1",RESIN_W*mm, RESIN_H*mm, RESIN_L*mm+DET_L);
 G4int nSiPM=16;
 if(GeomConfig==1 || GeomConfig==2 ){
-    //Resin_Sub =new G4SubtractionSolid("Resin_Sub", box, solidDetector, tr);
+    if (ArgsPass->GetnResinMach()==1){
+        G4Box* box = new G4Box("Box_1",0.1*mm, 6.5*mm, RESIN_L*mm+DET_L*mm);
+        tr = G4Translate3D(1.55*mm,0., 0.) * G4Rotate3D(rotm) ;
+        Resin_Sub =new G4SubtractionSolid("Resin_Sub0", solidResin, box, tr);
+        tr = G4Translate3D(-1.55*mm,0., 0.) * G4Rotate3D(rotm) ;
+        Resin_Sub =new G4SubtractionSolid("Resin_Sub", Resin_Sub, box, tr);
+    }
+        //Resin_Sub =new G4SubtractionSolid("Resin_Sub", box, solidDetector, tr);
 } else if (GeomConfig==3){
     tr = G4Translate3D(-RESIN_W+DET_T+0.194*mm, +0.5*mm+DET_T-RESIN_H, RESIN_L*mm) * G4Rotate3D(rotm) ;
     //Resin_Sub =new G4SubtractionSolid("Resin_Sub", box, solidDetector, tr);
@@ -466,7 +473,13 @@ tr = G4Translate3D(-RESIN_W+DET_T+0.194*(i+1)*mm+DET_T*2*i,0.,0.) * G4Rotate3D(r
 
     logicGlue = new G4LogicalVolume(solidGlue, RTV3145, "logicGlue");
 
-    logicResin_Sub = new G4LogicalVolume(solidResin, EPOXY, "logicResin");
+
+    if (ArgsPass->GetnResinMach()==1){
+        logicResin_Sub = new G4LogicalVolume(Resin_Sub, EPOXY, "logicResin");
+    }else{    
+        logicResin_Sub = new G4LogicalVolume(solidResin, EPOXY, "logicResin");
+    }
+
     logicDetector = new G4LogicalVolume(solidDetector, worldMat, "logicDetector"); // Defined outside in class
     //logicResin_Sub = new G4LogicalVolume(Resin_Sub, EPOXY, "logicResin");
 

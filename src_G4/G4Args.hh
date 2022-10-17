@@ -64,6 +64,7 @@ public:
     G4double GetKillTL() const {return KillLTime;}
     G4int GetKillTLTrue() const {return KillLTTrue;}
     G4int GetnEvents() const {return nEvents;}
+    G4int GetnResinMach() const {return ResinMach;}
     G4double GetIncr() const {return incr;}
     G4double GetIncrS() const {return incrS;}
     G4double GetIncrV() const {return incrV;}
@@ -177,6 +178,7 @@ private:
     G4int nPhotL=0;
     G4int NEdep=0;
     G4int Ystr=0;
+    G4int ResinMach=0;
     G4double DET_T=3./2;
     G4double Glue_Y=3.;
     G4double RESIN_H=6.5/2;

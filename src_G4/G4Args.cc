@@ -191,8 +191,11 @@ MyG4Args :: MyG4Args(int mainargc,char** mainargv)
                 {   
                     Muon = 1;
                     G4cout<< " ### Selected Muons."  <<G4endl;         
-                }
-                else if(strcmp(mainargv[j],"-NSGAII")==0)
+                }else if(strcmp(mainargv[j],"-ResinMach")==0)
+                {   
+                    ResinMach = 1;
+                    G4cout<< " ### Selected Resin Machined."  <<G4endl;  
+                }else if(strcmp(mainargv[j],"-NSGAII")==0)
                 {   
                     NSGAII = 1;
                     G4cout<< " ### Selected NSGAII Config."  <<G4endl;         

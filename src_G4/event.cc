@@ -92,11 +92,15 @@ void MyEventAction::BeginOfEventAction(const G4Event *anEvent)
 
             G4cout<< "Event GeomConfig: "<< GeomConfig <<" ,PartRnd. "<< PassArgs->GetRnd_Part() << G4endl;
         if (GeomConfig == 1){
+            G4cout<<"Evt" <<eventID << G4endl; 
             GenX=PassArgs->GetGunX(eventID)/1000;
             GenZ=PassArgs->GetGunY(eventID)/1000;
             command = "/gun/position "+std::to_string(GenX)+" 0.05 "+std::to_string(GenZ)+" m"; 
             G4cout<< command << G4endl;
+            UImanager->ApplyCommand(command);    
+            command = "/gun/direction 0. -1. 0."; 
             UImanager->ApplyCommand(command);     
+            G4cout<< command << G4endl; 
         }else if (GeomConfig == 2){
             GenX=PassArgs->GetGunX(eventID)/1000;
             GenZ=PassArgs->GetGunY(eventID)/1000;
@@ -148,6 +152,7 @@ void MyEventAction::EndOfEventAction(const G4Event*)
     G4cout<< "#####################" << G4endl;
     G4cout<< "Event Nº: " << evt << G4endl;
     G4cout<< "Primary position command: " << command << G4endl;
+    G4cout<< "Zpos: " << GenZ << G4endl;
     G4cout<< "Energy deposition: " << PassArgs->GetEdep()/MeV << " [MeV] Performed :" << PassArgs->GetNEdep() << " times"<< G4endl;
     G4cout<< "MUON Energy deposition: "  <<PassArgs->GetMuonEdep()/MeV<< " [MeV]"<< G4endl;
     G4cout<< "Photons created end of event: " << PassArgs->GetTP() << G4endl;

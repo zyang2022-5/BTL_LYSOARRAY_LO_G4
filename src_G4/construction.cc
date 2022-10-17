@@ -420,11 +420,23 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct()
 G4int nSiPM=16;
 if(GeomConfig==1 || GeomConfig==2 ){
     if (ArgsPass->GetnResinMach()==1){
-        G4Box* box = new G4Box("Box_1",0.1*mm, 6.5*mm, RESIN_L*mm+DET_L*mm);
+        box = new G4Box("Box_1",0.1*mm, 6.5*mm, RESIN_L*mm+DET_L*mm);
         tr = G4Translate3D(1.55*mm,0., 0.) * G4Rotate3D(rotm) ;
         Resin_Sub =new G4SubtractionSolid("Resin_Sub0", solidResin, box, tr);
         tr = G4Translate3D(-1.55*mm,0., 0.) * G4Rotate3D(rotm) ;
         Resin_Sub =new G4SubtractionSolid("Resin_Sub", Resin_Sub, box, tr);
+        box = new G4Box("Box_2",1.5*mm, 0.1*mm, RESIN_L*mm+DET_L*mm);
+        tr = G4Translate3D(0.,0.8*mm, 0.) * G4Rotate3D(rotm) ;
+        Resin_Sub =new G4SubtractionSolid("Resin_Sub", Resin_Sub, box, tr);
+    }else if (ArgsPass->GetnResinMach()==2){
+        box = new G4Box("Box_1",0.1*mm, 1.55*mm, RESIN_L*mm+DET_L*mm);
+        tr = G4Translate3D(1.55*mm,0., 0.) * G4Rotate3D(rotm) ;
+        Resin_Sub =new G4SubtractionSolid("Resin_Sub0", solidResin, box, tr);
+        tr = G4Translate3D(-1.55*mm,0., 0.) * G4Rotate3D(rotm) ;
+        Resin_Sub =new G4SubtractionSolid("Resin_Sub", Resin_Sub, box, tr);
+        /*box = new G4Box("Box_2",3.2*mm, 0.1*mm, RESIN_L*mm+DET_L*mm);
+        tr = G4Translate3D(0.,1.55*mm, 0.) * G4Rotate3D(rotm) ;
+        Resin_Sub =new G4SubtractionSolid("Resin_Sub", Resin_Sub, box, tr);*/
     }
         //Resin_Sub =new G4SubtractionSolid("Resin_Sub", box, solidDetector, tr);
 } else if (GeomConfig==3){

@@ -442,18 +442,19 @@ if(GeomConfig==1 || GeomConfig==2 ){
     }
         //Resin_Sub =new G4SubtractionSolid("Resin_Sub", box, solidDetector, tr);
 } else if (GeomConfig==3){
-    tr = G4Translate3D(-RESIN_W+DET_T+0.194*mm, +0.5*mm+DET_T-RESIN_H, RESIN_L*mm) * G4Rotate3D(rotm) ;
-    //Resin_Sub =new G4SubtractionSolid("Resin_Sub", box, solidDetector, tr);
+    G4cout<< " ### GeomConfig 3 LYSO and Resin  "<<G4endl;         
+    tr = G4Translate3D(-RESIN_W+DET_TX+0.194*mm, +0.5*mm+DET_T-RESIN_H, RESIN_L*mm) * G4Rotate3D(rotm) ;
+    Resin_Sub =new G4SubtractionSolid("Resin_Sub", box, solidDetector, tr);
 
-    /*for(int i = 0; i < nSiPM; i++){
-    tr = G4Translate3D(-RESIN_W+DET_T+0.194*(i+1)*mm+DET_T*2*i, +0.5*mm+DET_T-RESIN_H, RESIN_L*mm) * G4Rotate3D(rotm) ;
+    for(int i = 0; i < nSiPM; i++){
+    tr = G4Translate3D(-RESIN_W+DET_TX+0.194*(i+1)*mm+DET_TX*2*i, +0.5*mm+DET_T-RESIN_H, RESIN_L*mm) * G4Rotate3D(rotm) ;
     Resin_Sub =new G4SubtractionSolid("Resin_Sub", Resin_Sub, solidDetector, tr);
-    }*/
+    }
 int i =1;
-tr = G4Translate3D(-RESIN_W+DET_T+0.194*(i+1)*mm+DET_T*2*i,0.,0.) * G4Rotate3D(rotm) ;
+tr = G4Translate3D(-RESIN_W+DET_TX+0.194*(i+1)*mm+DET_TX*2*i,0.,0.) * G4Rotate3D(rotm) ;
     //LYSOAll_Add=new G4UnionSolid("LYSOAll_Add", solidLYSO , solidLYSO, tr);
     for(i = 0; i < nSiPM-1; i++){
-    tr = G4Translate3D(LYSO_thick+DET_T+0.194*(i+1)*mm+DET_T*2*i,0.,0.) * G4Rotate3D(rotm) ;
+    tr = G4Translate3D(LYSO_thick+DET_TX+0.194*(i+1)*mm+DET_TX*2*i,0.,0.) * G4Rotate3D(rotm) ;
     if(i==0){        LYSOAll_Add =new G4UnionSolid("LYSOAll_Add", TessLYSO , TessLYSO, tr);
             }else   {LYSOAll_Add =new G4UnionSolid("LYSOAll_Add", LYSOAll_Add, TessLYSO, tr);}
     }
@@ -463,7 +464,7 @@ tr = G4Translate3D(-RESIN_W+DET_T+0.194*(i+1)*mm+DET_T*2*i,0.,0.) * G4Rotate3D(r
     G4Box* BoxLYSOCover = new G4Box("Box_sideSurf",RESIN_W*mm, LYSO_thick*mm+0.194*mm, LYSO_L);
 
     for(int i = 0; i < nSiPM; i++){
-    tr = G4Translate3D(-RESIN_W+DET_T+0.194*(i+1)*mm+DET_T*2*i,0.,0.) * G4Rotate3D(rotm) ;
+    tr = G4Translate3D(-RESIN_W+DET_TX+0.194*(i+1)*mm+DET_TX*2*i,0.,0.) * G4Rotate3D(rotm) ;
     if(i==0){        LYSOCover_Sub =new G4SubtractionSolid("LYSOCover_Sub", BoxLYSOCover , LYSOBox, tr);
             }else   {LYSOCover_Sub =new G4SubtractionSolid("LYSOCover_Sub", LYSOCover_Sub, LYSOBox, tr);}
     }
@@ -488,7 +489,8 @@ tr = G4Translate3D(-RESIN_W+DET_T+0.194*(i+1)*mm+DET_T*2*i,0.,0.) * G4Rotate3D(r
     logicGlue = new G4LogicalVolume(solidGlue, RTV3145, "logicGlue");
 
 
-    if (ArgsPass->GetnResinMach()>0){
+    if (ArgsPass->GetnResinMach()>0 || GeomConfig==3){
+            G4cout<< " ### SubResin  "<<G4endl;         
         logicResin_Sub = new G4LogicalVolume(Resin_Sub, EPOXY, "logicResin");
     }else{    
         logicResin_Sub = new G4LogicalVolume(solidResin, EPOXY, "logicResin");
@@ -546,19 +548,23 @@ physFR42 = new G4PVPlacement(rM,G4ThreeVector(XposTol2*mm,YposTol2*mm+RESIN_Y,-1
 //////////////
 // GEOM TYPE 3
 } else if (GeomConfig == 3){// GEOM TYPE 3
+            G4cout<< " ### GeomConfig Positioning"<<G4endl;          
     physGlue1 = new G4PVPlacement(0,G4ThreeVector(0.,0.,+1*(+LYSO_L*mm+GLUE_L*mm)),logicGlue,"physGlue1",logicWorld,false,0,true); 
     physGlue2 = new G4PVPlacement(0,G4ThreeVector(0.,0.,-1*(+LYSO_L*mm+GLUE_L*mm)),logicGlue,"physGlue2",logicWorld,false,0,true); 
+            G4cout<< " ### GeomConfig Glue"<<G4endl;          
 G4RotationMatrix* rM = new G4RotationMatrix();
   rM->rotateY(180.*deg);
 physResin1 = new G4PVPlacement(0     ,G4ThreeVector(XposTol*mm,YposTol*mm+(RESIN_H-0.5*mm-LYSO_thick),+1*(+LYSO_L*mm+GLUE_L*mm*2+RESIN_L*mm+DET_L)),logicResin_Sub,"physResin1",logicWorld,false,0,true); 
 physResin2 = new G4PVPlacement(rM,G4ThreeVector(XposTol2*mm,YposTol2*mm+(RESIN_H-0.5*mm-LYSO_thick),-1*(+LYSO_L*mm+GLUE_L*mm*2+RESIN_L*mm+DET_L)),logicResin_Sub,"physResin2",logicWorld,false,0,true); 
-
+            G4cout<< " ### GeomConfig Resin"<<G4endl;          
 
 for(int i = 0; i < nSiPM; i++){
-    physDetector = new G4PVPlacement(0,G4ThreeVector(XposTol*mm-RESIN_W+DET_T+0.194*(i+1)*mm+DET_T*2*i,YposTol*mm,+1*(+LYSO_L*mm+RESIN_L*mm*2+2*GLUE_L*mm+DET_L)),logicDetector,"physDetector",logicWorld,false,i-1,true); 
+            G4cout<< " ### SiPM Positioning Left"<< i<<G4endl;          
+    physDetector = new G4PVPlacement(0,G4ThreeVector(XposTol*mm-RESIN_W+DET_TX+0.194*(i+1)*mm+DET_TX*2*i,YposTol*mm,+1*(+LYSO_L*mm+RESIN_L*mm*2+2*GLUE_L*mm+DET_L)),logicDetector,"physDetector",logicWorld,false,i-1,true); 
 }
-for(int i = 0; i < nSiPM; i++){    
-physDetector = new G4PVPlacement(0,G4ThreeVector(XposTol2*mm-RESIN_W+DET_T+0.194*(i+1)*mm+DET_T*2*i,YposTol2*mm,-1*(+LYSO_L*mm+RESIN_L*mm*2+2*GLUE_L*mm+DET_L)),logicDetector,"physDetector",logicWorld,false,i+nSiPM-1,true); 
+for(int i = 0; i < nSiPM; i++){   
+            G4cout<< " ### SiPM Positioning Right"<< i<<G4endl;          
+physDetector = new G4PVPlacement(0,G4ThreeVector(XposTol2*mm-RESIN_W+DET_TX+0.194*(i+1)*mm+DET_TX*2*i,YposTol2*mm,-1*(+LYSO_L*mm+RESIN_L*mm*2+2*GLUE_L*mm+DET_L)),logicDetector,"physDetector",logicWorld,false,i+nSiPM-1,true); 
 }
 
 physFR41 = new G4PVPlacement(0     ,G4ThreeVector(XposTol*mm,YposTol*mm+(RESIN_H-0.5*mm-LYSO_thick),+1*(+LYSO_L*mm+GLUE_L*mm*2+2*(RESIN_L*mm+DET_L)+FR4_L)),logicFR4,"physResin1",logicWorld,false,0,true); 
@@ -572,7 +578,7 @@ G4RotationMatrix* rM = new G4RotationMatrix();
 physLYSOCover = new G4PVPlacement(0,G4ThreeVector(0.,0.,0.),logicLYSOCover,"physLYSO",logicWorld,false,0,true);    
   rM->rotateY(180.*deg);
 for(int i = 0; i < nSiPM; i++){    
-    physLYSO = new G4PVPlacement(0,G4ThreeVector(-RESIN_W+DET_T+0.194*(i+1)*mm+DET_T*2*i,0.,-LYSO_L/2.*mm),logicLYSO,"physLYSO",logicWorld,false,i-1,true);       
+    physLYSO = new G4PVPlacement(0,G4ThreeVector(-RESIN_W+DET_TX+0.194*(i+1)*mm+DET_TX*2*i,0.,-LYSO_L/2.*mm),logicLYSO,"physLYSO",logicWorld,false,i-1,true);       
 }
 physFR41 = new G4PVPlacement(0     ,G4ThreeVector(XposTol*mm,YposTol*mm+(RESIN_H-0.5*mm-LYSO_thick),+1*(+LYSO_L*mm+GLUE_L*mm*2+2*(RESIN_L*mm+DET_L)+FR4_L)),logicFR4,"physResin1",logicWorld,false,0,true); 
 physFR42 = new G4PVPlacement(rM,G4ThreeVector(XposTol*mm,YposTol*mm+(RESIN_H-0.5*mm-LYSO_thick),-1*(+LYSO_L*mm+GLUE_L*mm*2+2*(RESIN_L*mm+DET_L)+FR4_L)),logicFR4,"physResin2",logicWorld,false,0,true);

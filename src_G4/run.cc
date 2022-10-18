@@ -84,7 +84,9 @@ MyRunAction :: MyRunAction(G4String OutName,MyG4Args* MainArgs)
             man->CreateNtupleDColumn("fTimAvg"); 
             man->CreateNtupleDColumn("fTimStd");
             man->CreateNtupleDColumn("frun");
-            man->CreateNtupleDColumn("fincr");
+            man->CreateNtupleDColumn("fnEdep");
+            man->CreateNtupleDColumn("fLCAvg");
+            man->CreateNtupleDColumn("fLCStd");
             man->FinishNtuple(5); // Finish our first tuple or Ntuple number 0
         }
 }
@@ -172,8 +174,9 @@ void MyRunAction::EndOfRunAction(const G4Run* run)
                 PassArgs-> FillStdLO(runid);
         }
         if(PassArgs->GetTree_EndOfRun()==1){
+    G4cout<<"* End of run root: " << PassArgs->GetTree_EndOfRun() <<G4endl;
         // Storage single values per run
-            for (G4int j = 0; j < runid; j=j+1){
+            for (G4int j = 0; j < runid+1; j=j+1){
                 G4AnalysisManager *man = G4AnalysisManager::Instance();
                 man->FillNtupleDColumn(5, 0, PassArgs->GetLOAvg(j));
                 man->FillNtupleDColumn(5, 1, PassArgs->GetLOStd(j));
@@ -182,13 +185,16 @@ void MyRunAction::EndOfRunAction(const G4Run* run)
                 man->FillNtupleDColumn(5, 4, PassArgs->GetnEvtEdep(j));
                 // geometry values
                 man->FillNtupleDColumn(5, 5, j);
-                man->FillNtupleDColumn(5, 6, PassArgs->GetIncr());
+                man->FillNtupleDColumn(5, 6, PassArgs->GetLDAvg(j));
+                man->FillNtupleDColumn(5, 7, PassArgs->GetLDStd(j));
+                //man->FillNtupleDColumn(5, 6, PassArgs->GetIncr());
                 man->AddNtupleRow(5);
             }
         }
     }
 
     if(PassArgs->GetVis()==0){
+    G4cout<<"* Run ID: " << runid <<G4endl;
     G4cout<<"* Average LO: " << PassArgs->GetLOAvg(runid) <<G4endl;
     G4cout<<"* Std LO: " << PassArgs->GetLOStd(runid) <<G4endl;
     G4cout<<"* Average LD: " << PassArgs->GetLDAvg(runid) <<G4endl;

@@ -21,7 +21,8 @@ class G4Job:
                 self.IndvN = IndvN
 
 def CleanOut(G4Job):
-
+    p = subprocess.call(['condor_rm',"greales"])
+    p = subprocess.call(['rm',"SubFiles/"G4Job.SubName+"*"])
     p = subprocess.call(['rm',G4Job.OutFolder+G4Job.OutName+"*"])
     return 0
 
@@ -29,14 +30,14 @@ def SubWrite(G4Job , Children=[]):
 
     f = open("SubFiles/"+G4Job.SubName+".sub", "a")
     f.write("Universe = vanilla\n")
-    f.write("executable = "+G4Job.CurrentFolder+"JofFiles/"+G4Job.JobName+"\n")
+    f.write("executable = "+G4Job.CurrentFolder+"JobFiles/"+G4Job.JobName+"\n")
     f.write('arguments ="-a Pop_'+str(G4Job.Pop)+'_indv_$(Item)_"\n')
     f.write("Output  ="+G4Job.OutFolder+G4Job.OutName+str(G4Job.Pop)+".out"+"\n")
     f.write("Error   = /storage/af/user/greales/simG4/errors/error_job$(Cluster).out\n")
     f.write("Log     = /storage/af/user/greales/simG4/logs/log_job$(Cluster).out\n")
     f.write("requirements = Machine =!= LastRemoteHost\n")
     f.write("WHEN_TO_TRANSFER_OUTPUT = ON_EXIT_OR_EVICT\n")
-    f.write('+JobQueue = "Normal"\n')
+    f.write('+JobQueue = "Short"\n')
     f.write("+MaxRuntime = 7000\n")
     f.write("+RunAsOwner = True\n")
     f.write("+InteractiveUser = True\n")
@@ -63,6 +64,7 @@ def SubLaunch(G4Job):
 def SubMonitor(G4Job, wait=2, maxwait=3600, ptime=60):
     tc=0
     Subname=G4Job.OutFolder+G4Job.OutName+str(G4Job.Pop)+".out"
+    print("Looking for:"Subname)
     if(path.exists(Subname)):
         print("File Found.")
         subprocess.call(["date"])
@@ -74,6 +76,10 @@ def SubMonitor(G4Job, wait=2, maxwait=3600, ptime=60):
             #print(".", end = "")   
             print(tc/60)
             #sys.stdout.write(". ")
+            if(path.exists(Subname)):
+                print("File Found.")
+                subprocess.call(["date"])
+                return 0
             time.sleep(wait)
             tc+=wait
             if(tc>maxwait):
@@ -96,16 +102,13 @@ def PyROOTLCAvg(PopName="Out_NSGA_POP_",Pop=0,Folder="./Results/",Indv=100):
         print("LCAvg: ",c,arr[c])
         c+=1
 
-def Obj(PopIndv):
-    SubWrite()
-    SubLaunch()
-    SubMonitor()
-    PyROOTLCAvg()
 
 def AllAtOnce():
     test = G4Job()
+    CleanOut(test)
     SubWrite(test)
     SubLaunch(test)
+    SubMonitor(test)
     
           
 

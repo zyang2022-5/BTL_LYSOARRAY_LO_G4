@@ -27,4 +27,4 @@ echo "*** Sourcing G4:"
 
 echo "Running Simulation" 
 cd $BASEDIR
-./$SimName -o $OutPut -GeomConfig 1 -m run1000.mac 
+./$SimName -o $OutPut -GeomConfig 1 -runevt 100

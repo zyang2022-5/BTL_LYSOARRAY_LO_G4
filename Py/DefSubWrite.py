@@ -1,27 +1,37 @@
 import sys
 import os
 from os.path import exists
+import subprocess
 import numpy as np
 import time
-import subprocess
 import ROOT
 from os import listdir
 from os.path import isfile, join
 import os.path
 from os import path
 
-def CleanOut(Folder = "/storage/af/user/greales/simG4/outputs/", Name="Out_job_Pop_*"):
+class G4Job:
+        def __init__(self,CurrentFolder="/storage/af/user/greales/simG4/BTL_LYSOARRAY_LO_G4/",OutFolder="/storage/af/user/greales/simG4/outputs/", SubName="SubDefaultName", OutName="Out_NSGA_POP_", JobName="/JobFiles/JobActionGC1FLResinMuon.sh", Pop=1, IndvN=100):
+                self.CurrentFolder = CurrentFolder
+                self.OutFolder = OutFolder
+                self.SubName = SubName
+                self.OutName = OutName
+                self.JobName = JobName
+                self.Pop = Pop
+                self.IndvN = IndvN
 
-    p = subprocess.call(['rm',Folder+Name])
+def CleanOut(G4Job):
+
+    p = subprocess.call(['rm',G4Job.OutFolder+G4Job.OutName+"*"])
     return 0
 
-def SubWrite(Output = "SubDefaultName.sub",CurrentFolder="/storage/af/user/greales/simG4/BTL_LYSOARRAY_LO_G4/JobFiles",JobName="/JobFiles/JobActionGC1FLResinMuon.sh", Pop=0, IndvN=0 , Children=[]):
+def SubWrite(G4Job , Children=[]):
 
-    f = open(Output, "a")
+    f = open("SubFiles/"+G4Job.SubName+".sub", "a")
     f.write("Universe = vanilla\n")
-    f.write("executable = "+CurrentFolder+JobName+"\n")
-    f.write('arguments ="-a Pop_'+str(Pop)+'_indv_$(Item)_"\n')
-    f.write("Output  = /storage/af/user/greales/simG4/outputs/Out_job$(Cluster).out\n")
+    f.write("executable = "+G4Job.CurrentFolder+"JofFiles/"+G4Job.JobName+"\n")
+    f.write('arguments ="-a Pop_'+str(G4Job.Pop)+'_indv_$(Item)_"\n')
+    f.write("Output  ="+G4Job.OutFolder+G4Job.OutName+str(G4Job.Pop)+".out"+"\n")
     f.write("Error   = /storage/af/user/greales/simG4/errors/error_job$(Cluster).out\n")
     f.write("Log     = /storage/af/user/greales/simG4/logs/log_job$(Cluster).out\n")
     f.write("requirements = Machine =!= LastRemoteHost\n")
@@ -45,18 +55,15 @@ def SubWrite(Output = "SubDefaultName.sub",CurrentFolder="/storage/af/user/greal
     f.close()
     return 0
 
-def SubLaunch(Subname = "SubDefaultName.sub",CurrentFolder="/storage/af/user/greales/simG4/BTL_LYSOARRAY_LO_G4/JobFiles"):
 
-    SubExec="condor_submit "+CurrentFolder+Subname
+def SubLaunch(G4Job):
+    SubExec="condor_submit "+G4Job.CurrentFolder+"SubFiles/"+G4Job.SubName+"sub"
     p = subprocess.run(SubExec)
     return 0
-def SubExec(cmd="ls"):
 
-    p = subprocess.run(cmd)
-    return 0
-
-def SubMonitor(Subname = "/storage/af/user/greales/simG4/outputs/Out_job_Pop_1.out", wait=2, maxwait=3600, ptime=60):
+def SubMonitor(G4Job, wait=2, maxwait=3600, ptime=60):
     tc=0
+    Subname=G4Job.OutFolder+G4Job.OutName+str(G4Job.Pop)+".out"
     if(path.exists(Subname)):
         print("File Found.")
         subprocess.call(["date"])
@@ -71,27 +78,36 @@ def SubMonitor(Subname = "/storage/af/user/greales/simG4/outputs/Out_job_Pop_1.o
             time.sleep(wait)
             tc+=wait
             if(tc>maxwait):
-                print("Time Limit") 
+                print("Time Limit")
                 subprocess.call(["date"])
                 return 1
+
 
 def PyROOTLCAvg(PopName="Out_NSGA_POP_",Pop=0,Folder="./Results/",Indv=100):
     arr=[]
     arr = [0 for i in range(Indv)] 
     Popfiles=[f for f in listdir(Folder) if f.startswith(PopName)]
+    c=0
     for f in Popfiles:
         inFile = ROOT . TFile . Open ( Folder+f ," READ ")
         tree = inFile . Get ("EndOfRun")
         tree.GetEntry(0)
                     # get Indv number from file name!!    
-        #arr[c] = getattr(tree,"fLCAvg")
-
+        arr[c] = getattr(tree,"fLCAvg")
+        print("LCAvg: ",c,arr[c])
+        c+=1
 
 def Obj(PopIndv):
     SubWrite()
     SubLaunch()
     SubMonitor()
     PyROOTLCAvg()
+
+def AllAtOnce():
+    test = G4Job()
+    SubWrite(test)
+    SubLaunch(test)
+    
           
 
 

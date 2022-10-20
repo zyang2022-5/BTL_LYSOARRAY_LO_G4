@@ -11,7 +11,7 @@ import os.path
 from os import path
 
 class G4Job:
-        def __init__(self,CurrentFolder="/storage/af/user/greales/simG4/BTL_LYSOARRAY_LO_G4/",OutFolder="/storage/af/user/greales/simG4/outputs/", SubName="SubDefaultName", OutName="Out_NSGA_POP_", JobName="/JobFiles/JobActionGC1FLResinMuon.sh", Pop=1, IndvN=100):
+        def __init__(self,CurrentFolder="/storage/af/user/greales/simG4/BTL_LYSOARRAY_LO_G4/",OutFolder="/storage/af/user/greales/simG4/outputs/", SubName="SubDefaultName", OutName="Out_NSGA_POP_", JobName="JobActionGC1FLResinMuon.sh", Pop=1, IndvN=100):
                 self.CurrentFolder = CurrentFolder
                 self.OutFolder = OutFolder
                 self.SubName = SubName
@@ -57,8 +57,7 @@ def SubWrite(G4Job , Children=[]):
 
 
 def SubLaunch(G4Job):
-    SubExec="condor_submit "+G4Job.CurrentFolder+"SubFiles/"+G4Job.SubName+"sub"
-    p = subprocess.run(SubExec)
+    p = subprocess.call(["condor_submit",G4Job.CurrentFolder+"SubFiles/"+G4Job.SubName+".sub"])
     return 0
 
 def SubMonitor(G4Job, wait=2, maxwait=3600, ptime=60):

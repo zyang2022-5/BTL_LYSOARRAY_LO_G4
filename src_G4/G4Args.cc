@@ -232,7 +232,11 @@ MyG4Args :: MyG4Args(int mainargc,char** mainargv)
                 }else if(strcmp(mainargv[j],"-incrSiPM")==0)
                 {   
                     DET_T = DET_T*atof(mainargv[j+1])/100;j=j+1;
-                    G4cout<< " ### The thickness of the SiPM changed to "<< incr <<G4endl;       
+                    G4cout<< " ### The thickness of the SiPM changed to "<< incr <<G4endl;     
+                }else if(strcmp(mainargv[j],"-Volume")==0)
+                {   
+                    Volume=1;
+                    G4cout<< " ### Calculate Volume " <<G4endl;   
                 }else if(strcmp(mainargv[j],"-runevt")==0)
                 {   
                     runevt=atoi(mainargv[j+1]);j=j+1;
@@ -299,9 +303,9 @@ G4cout<< " * imax: "<< imax<< " jmax: "<< jmax <<G4endl;
                         Ystr = 1;
                         YposStr=mainargv[j+1];j=j+1;
                         G4cout<< " ### The string to turn into the yincr vector is: "<<YposStr <<G4endl;                             
+                        yincr = Str2DChar(YposStr, Znode+1);
                         RESIN_Y=RESIN_H-0.5-Geom_LYSO[0]*yincr[0];
                         SiPM_Y=DET_T+0.5-RESIN_H;
-                        yincr = Str2DChar(YposStr, Znode+1);
                         Glue_Y=Glue_Y*yincr[0];
                         RESIN_H=(2.*Geom_LYSO[0]*yincr[0]+3.5)/2;
                         RESIN_Y=RESIN_H-0.5-Geom_LYSO[0]*yincr[0];
@@ -321,7 +325,6 @@ G4cout<< " * imax: "<< imax<< " jmax: "<< jmax <<G4endl;
             OutName=OutName+datechar[i];  
         }
     }    
-
 
 
 }
@@ -540,6 +543,62 @@ void MyG4Args ::SetYVect(G4double* radp){
     G4cout<< " ### Finished Y modification" <<G4endl;         
 }
 
+void MyG4Args ::SetLYSOVolumeXY(){
+
+        // initialization of symmetry faces for testing
+        G4double Pi=atan(1)*4;
+        G4double DTheta=Pi/(Onode-1);
+            G4double theta = -Pi/2;G4double tolxy=1e-10; G4double LYSO_L=57.;
+            G4double x[3];            G4double y[3]; G4double z[3]; 
+            double Vol=0.;       
+        // End face
+            for(int i = 0; i < Onode-1; i++){ // 1 less triangle than nodes             
+                x[1] = xv[i];
+                y[1] = yv[i];
+                z[1]=LYSO_L/2;
+                theta = theta + DTheta;
+                x[2] = xv[i+1];
+                y[2] = yv[i+1];
+                z[2]=LYSO_L/2;
+                x[0]=0.;y[0]=0.;z[0]=LYSO_L/2;
+                Vol=Vol+(   -x[2]*y[1]*z[0]   +x[1]*y[2]*z[0]   +x[2]*y[0]*z[1]
+                                -x[0]*y[2]*z[1]   -x[1]*y[0]*z[2]   +x[0]*y[1]*z[2])/6;
+            }
+        // Lateral faces
+            G4double z0,z1,x0,x2,x1,x3,y0,y2,y1,y3,LYSOalt;
+            LYSOalt=LYSO_L/2;
+            for (int j = 0; j < Znode; j++){
+                theta = -Pi/2;
+               for(int i = 1; i < Onode; i++){ // 1 less triangle than nodes
+                    z0=+LYSOalt-LYSOalt/Znode*j;z1=+LYSOalt-LYSOalt/Znode*(j+1);
+
+                    x0 = xv[j*Onode-1+i];
+                    x2 = xv[j*Onode-1+i];
+                    y0 = yv[j*Onode-1+i];
+                    y2 = yv[(j+1)*Onode-1+i];
+                    theta = theta + DTheta;
+                    x1 = xv[j*Onode-1+i+1];
+                    x3 = xv[(j+1)*Onode-1+i+1];
+                    y1 = yv[j*Onode-1+i+1];
+                    y3 = yv[(j+1)*Onode-1+i+1];
+
+                    x[0]=x3;x[1]=x1;x[2]=x0;
+                    y[0]=y3;y[1]=y1;y[2]=y0;
+                    z[0]=z1;z[1]=z0;z[2]=z0;
+                Vol=Vol+(   -x[2]*y[1]*z[0]   +x[1]*y[2]*z[0]   +x[2]*y[0]*z[1]
+                                -x[0]*y[2]*z[1]   -x[1]*y[0]*z[2]   +x[0]*y[1]*z[2])/6;
+                    x[0]=x3;x[1]=x0;x[2]=x2;
+                    y[0]=y3;y[1]=y0;y[2]=y2;
+                    z[0]=z1;z[1]=z0;z[2]=z1;
+                Vol=Vol+(   -x[2]*y[1]*z[0]   +x[1]*y[2]*z[0]   +x[2]*y[0]*z[1]
+                                -x[0]*y[2]*z[1]   -x[1]*y[0]*z[2]   +x[0]*y[1]*z[2])/6;
+                }
+            }
+
+        Volume=Vol*4.;
+                std::cout <<"End Volume: " <<" Accumulated Volume: "<<Vol<< std::endl;
+}
+
 void MyG4Args ::SetNSGAII(){
                     // Muons
                     Muon = 1;
@@ -581,8 +640,6 @@ void MyG4Args ::SetNSGAII(){
                         nGunPosY[i*4+j]=28.48/19*(j);
                     }
                 }
-
-
                         
 }
 

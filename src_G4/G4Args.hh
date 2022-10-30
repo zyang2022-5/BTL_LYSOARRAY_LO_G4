@@ -119,10 +119,13 @@ public:
     G4double GetTimStd(G4int runid) const {return nRunTimingStd[runid];}  
     G4double GetnEvtEdep(G4int runid) const {return nEdepEvts[runid];}  
     G4int GetZnode() const {return Znode;}
+    G4int GetVolume() const {return Volume;}
+    G4int SetVolume(G4double V){Volume=V;}
     G4int GetOnode() const {return Onode;}
     int GetRunEvt() const {return runevt;}
     G4double* GetNodeRadValues() const {return xv0;}
     G4int GetMuonFlag() const {return Muon;}
+    void SetLYSOVolumeXY();
     void SetCoordVect();
     void SetYVect(G4double*);
     G4double GetXvec(int ind) const {return xv[ind];}
@@ -179,6 +182,7 @@ private:
     G4int nPhotL=0;
     G4int NEdep=0;
     G4int Ystr=0;
+    G4double Volume=0.;
     G4int ResinMach=0;
     G4double DET_T=3./2;
     G4double DET_TX=3./2;

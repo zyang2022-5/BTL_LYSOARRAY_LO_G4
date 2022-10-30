@@ -45,6 +45,9 @@ G4simulationNOVIS::G4simulationNOVIS(int mainargc,char** mainargv, G4int Onode ,
             ArgInp->DefaultRadiusVect();
             ArgInp->SetCoordVect();
             ArgInp->SetYVect(ArgInp->GetYincr()); 
+            if (ArgInp->GetVolume()>0){
+                ArgInp->SetLYSOVolumeXY();
+            }
         }else{
             ArgInp->DefaultRadiusVect();
         }

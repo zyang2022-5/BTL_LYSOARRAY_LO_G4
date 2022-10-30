@@ -335,9 +335,11 @@ return Vol;
 double *Str2DChar(std::string strinput, G4int nn){
     // The string must be in the format "{d-d-d...}"
     //Replace {} and comma's with whitespace.
+    std::cout << "Reading String: " <<"\n";
     strinput.front() = strinput.back() = ' ';
+    std::cout << strinput <<"\n";
     std::replace(strinput.begin(), strinput.end(), '-', ' ');
-
+    std::cout << strinput <<"\n";
     //Create stringstream from string.
     auto my_stream = std::istringstream(strinput);
     G4double *Arr;

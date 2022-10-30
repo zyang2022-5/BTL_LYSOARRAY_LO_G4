@@ -1,3 +1,7 @@
 [submodule "NSGAII/ParallelNSGAII_G4"]
 	path = NSGAII/ParallelNSGAII_G4
 	url = https://github.com/grealesguti/ParallelNSGAII_G4.git
+[submodule "NSGAII/PyNSGA/NSGA-II"]
+	path = NSGAII/PyNSGA/NSGA-II
+	url = https://github.com/grealesguti/NSGA-II.git
+	branch = greales/dev

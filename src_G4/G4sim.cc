@@ -42,6 +42,9 @@ G4simulation::G4simulation(int mainargc,char** mainargv, G4int Onode , G4int Zno
             ArgInp->DefaultRadiusVect();
             ArgInp->SetCoordVect();
             ArgInp->SetYVect(ArgInp->GetYincr()); 
+            if (ArgInp->GetVolume()>0){
+                ArgInp->SetLYSOVolumeXY();
+            }
         }else{
             ArgInp->DefaultRadiusVect();
         }

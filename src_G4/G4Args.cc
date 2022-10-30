@@ -309,7 +309,9 @@ G4cout<< " * imax: "<< imax<< " jmax: "<< jmax <<G4endl;
                         Glue_Y=Glue_Y*yincr[0];
                         RESIN_H=(2.*Geom_LYSO[0]*yincr[0]+3.5)/2;
                         RESIN_Y=RESIN_H-0.5-Geom_LYSO[0]*yincr[0];
-                        SiPM_Y=DET_T+0.5-RESIN_H+Geom_LYSO[0]*yincr[0];
+                        //SiPM_Y=DET_T+0.5-RESIN_H+Geom_LYSO[0]*yincr[0];
+                        SiPM_Y=-RESIN_H+Geom_LYSO[0]*yincr[0]+0.5;
+
                     }else{
 
                         G4cout<< " ### WARNING: -Ypos with no Znode input" <<G4endl;     

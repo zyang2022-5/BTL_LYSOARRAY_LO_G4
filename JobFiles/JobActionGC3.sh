@@ -8,7 +8,8 @@ MacroName="run.mac"     # Name of the macro file to run with the G4 executable
 SimArgs="-m"            # Arguments for the G4 executable (any)
 OutPut="GC3_"   # Name of the Root output files from the G4 executable 
 
-while getopts "a:n:s:" arg; do
+Twait=0
+while getopts "a:n:s:w:" arg; do
     case $arg in
         a) OutPut=$OutPut$OPTARG
             echo "*** Change of OutputName"
@@ -19,8 +20,14 @@ while getopts "a:n:s:" arg; do
         s) Sopt=$OPTARG
             echo "*** Change of Source directory"
             echo $Sopt;; # Change G4 source directory
+        w) Twait=$OPTARG
+            echo "*** Waiting n seconds:"
+            echo $Twait;; # Change G4 source directory
     esac
 done
+
+
+sleep $Twait
 
 echo "*** Sourcing G4:"
 . $BASEDIR/G4SourceCVMFS.sh

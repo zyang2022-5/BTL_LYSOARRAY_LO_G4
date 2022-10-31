@@ -67,6 +67,7 @@ public:
     G4int GetnEvents() const {return nEvents;}
     G4int GetnResinMach() const {return ResinMach;}
     G4double GetIncr() const {return incr;}
+    G4double GetGlueZ() const {return Glue_Z;}
     G4double GetIncrS() const {return incrS;}
     G4double GetIncrV() const {return incrV;}
     G4double Getrad2Y() const {return rad2Y;}
@@ -187,6 +188,7 @@ private:
     G4double DET_T=3./2;
     G4double DET_TX=3./2;
     G4double Glue_Y=3.;
+    G4double Glue_Z=0.2;
     G4double RESIN_H=6.5/2;
     G4double RESIN_Y=RESIN_H-0.5-Geom_LYSO[0];
     G4double SiPM_Y=+Geom_LYSO[0]+0.5-RESIN_H;

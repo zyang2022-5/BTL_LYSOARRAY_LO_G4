@@ -6,10 +6,9 @@ BASEDIR="/storage/af/user/greales/simG4/BTL_LYSOARRAY_LO_G4/"
 SimName="sim"    # Name of the G4 executable
 MacroName="run.mac"     # Name of the macro file to run with the G4 executable
 SimArgs="-m"            # Arguments for the G4 executable (any)
-OutPut="GC1_FLResinMach_Muon_Incr_"   # Name of the Root output files from the G4 executable 
-Vars="{1.0-1.0}"
-
-while getopts "a:n:s:" arg; do
+OutPut="GC3_"   # Name of the Root output files from the G4 executable 
+Twait=0
+while getopts "a:n:s:w:t:" arg; do
     case $arg in
         a) OutPut=$OutPut$OPTARG
             echo "*** Change of OutputName"
@@ -20,16 +19,21 @@ while getopts "a:n:s:" arg; do
         s) Sopt=$OPTARG
             echo "*** Change of Source directory"
             echo $Sopt;; # Change G4 source directory
+        w) Twait=$OPTARG
+            echo "*** Waiting n seconds:"
+            echo $Twait;; # Change G4 source directory
+        t) thick=$OPTARG
+            echo "*** Waiting n seconds:"
+            echo $Twait;; # Change G4 source directory
     esac
 done
+
+
+sleep $Twait
 
 echo "*** Sourcing G4:"
 . $BASEDIR/G4SourceCVMFS.sh
 
 echo "Running Simulation" 
-OutPut=$OutPut$Sopt
-echo $Sopt
 cd $BASEDIR
-./$SimName -o $OutPut -GeomConfig 1 -runevt 1 -Muon -nDetected -Ypos $Vars
-
-
+./$SimName -o $OutPut -GeomConfig 3 -runevt 1000 -Glue_Z $thick

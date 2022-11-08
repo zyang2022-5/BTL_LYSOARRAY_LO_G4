@@ -37,7 +37,9 @@ echo "Running Simulation"
 OutPut=$OutPut$Sopt
 echo $Sopt
 cd $BASEDIR
-./$SimName -o $OutPut -GeomConfig 1 -runevt 1 -Muon -nDetected -Znode $Nsections -Ypos $Vars -Volume
+#./$SimName -o $OutPut -GeomConfig 1 -runevt 1 -Muon -nDetected -Znode $Nsections -Ypos $Vars -Volume
+./$SimName -o $OutPut -GeomConfig 1 -runevt 100 -gunmesh 5 20 -Muon -nDetected -Znode 1 -Ypos $Vars -Volume
+#./$SimName -o $OutPut -GeomConfig 1 -runevt 1 -Muon -nDetected -Znode $Nsections -Ypos $Vars -Volume
 
 
 

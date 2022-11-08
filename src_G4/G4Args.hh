@@ -185,6 +185,7 @@ private:
     G4int Ystr=0;
     G4double Volume=0.;
     G4int ResinMach=0;
+    G4int SiPMmatch=0;
     G4double DET_T=3./2;
     G4double DET_TX=3./2;
     G4double Glue_Y=3.;

@@ -237,7 +237,11 @@ MyG4Args :: MyG4Args(int mainargc,char** mainargv)
                 }else if(strcmp(mainargv[j],"-incrSiPM")==0)
                 {   
                     DET_T = DET_T*atof(mainargv[j+1])/100;j=j+1;
-                    G4cout<< " ### The thickness of the SiPM changed to "<< incr <<G4endl;     
+                    G4cout<< " ### The thickness of the SiPM changed to "<< incr <<G4endl;    
+                }else if(strcmp(mainargv[j],"-matchSiPM")==0)
+                {   
+                    SiPMmatch=1;
+                    G4cout<< " ### The thickness of the SiPM is matched to the LYSO end thickness "<< incr <<G4endl;   
                 }else if(strcmp(mainargv[j],"-Volume")==0)
                 {   
                     Volume=1;
@@ -546,6 +550,9 @@ void MyG4Args ::SetYVect(G4double* radp){
                      yv[index] = yv[index]*yincr[i];
                 }
             }
+    if(SiPMmatch==1){
+        DET_T = DET_T*yincr[0];
+    }
 
     G4cout<< " ### Finished Y modification" <<G4endl;         
 }

@@ -191,7 +191,7 @@ MyG4Args :: MyG4Args(int mainargc,char** mainargv)
                 }else if(strcmp(mainargv[j],"-Znode")==0)
                 {   
                     Znode = atoi(mainargv[j+1]);j=j+1;
-                    G4cout<< " ### The Number of sections for the LYSO crystal is:  "<< incr <<G4endl;         
+                    G4cout<< " ### The Number of sections for the LYSO crystal is:  "<< Znode <<G4endl;         
                 }else if(strcmp(mainargv[j],"-Muon")==0)
                 {   
                     Muon = 1;

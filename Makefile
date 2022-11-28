@@ -1,19 +1,19 @@
 
-USE_MPI = ""
+#USE_MPI = ""
 ifdef USE_MPI
  CC=mpicc   # define mpi compiler for c
  CXX=mpicxx # define mpi compiler for c++
  LD=mpicxx  
 # MPI flags/libs https://www.open-mpi.org/doc/v4.0/man1/mpicxx.1.php
  CXXFLAGS=-fdiagnostics-color -O2 -g $(shell geant4-config --cflags) -O2 $(shell mpicc --showme:compile)
- LDLIBS=-Wl,--copy-dt-needed-entries -fdiagnostics-color -lm $(shell geant4-config --libs) $(shell mpicc --showme:link)
+ LDLIBS=-Wl,--copy-dt-needed-entries -fdiagnostics-color -lm $(shell geant4-config --libs) $(shell mpicc --showme:link) -lgmsh
  $(info  MPI is enabled) # write to screen
 else # defaults
  CC=gcc
  CXX=g++
  LD=g++
  CXXFLAGS=-fdiagnostics-color -O2 -g $(shell geant4-config --cflags) -O2 
- LDLIBS=-Wl,--copy-dt-needed-entries -fdiagnostics-color -lm $(shell geant4-config --libs) 
+ LDLIBS=-Wl,--copy-dt-needed-entries -fdiagnostics-color -lm -lgmsh $(shell geant4-config --libs) 
  $(info  MPI is disabled) # write to screen
 endif
 

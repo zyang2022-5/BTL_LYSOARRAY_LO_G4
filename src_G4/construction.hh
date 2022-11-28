@@ -25,6 +25,7 @@
 #include "G4TessellatedSolid.hh"
 #include "G4QuadrangularFacet.hh"
 #include "detector.hh"
+#include "GmshLYSO.hh"
 
 class MyDetectorConstruction : public G4VUserDetectorConstruction
 {
@@ -88,6 +89,7 @@ private: // it is not accessed from outside
 
     // classes
     MyG4Args *ArgsPass;
+    GmshLYSO *GCgmsh;
     
     //G4NistManager* nist1
     G4NistManager *nist1 = G4NistManager::Instance();

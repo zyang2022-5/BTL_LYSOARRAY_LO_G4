@@ -16,21 +16,23 @@
 #include "G4RotationMatrix.hh"
 #include "G4Tet.hh"
 #include <G4UIcommand.hh>
+#include "G4Args.hh"
+
 
 
 class GmshLYSO 
 {
-
-    void CreateG4LYSO(G4Material *material, G4LogicalVolume *logicWorld);
+public:
+    GmshLYSO(MyG4Args *MainArgs);
+    ~GmshLYSO();
+    
+    void CreateG4LYSO(G4Material*, G4LogicalVolume*);
 
     double* GetNodeTags() const {return mesh_nodetags;}
     double* GetNodeCoords() const {return mesh_nodecoords;}
     int GetNumberOfNodes() const {return mesh_totalnodes;}
 
 
-public:
-    GmshLYSO(int Znode, double Xtot, double Ztot,double* ptsY, char* modelname);
-    ~GmshLYSO();
     
 private:
 
@@ -41,6 +43,10 @@ G4Tet *LYSOTet;
 std::vector<std::size_t> tags;
 std::vector<double> coord, param;
 std::vector<std::vector<std::size_t> > elemTags, elemNodeTags;
+
+	G4double Ztot,Xtot,*ptsY;
+	G4int Znode;
+	G4String modelname;
 
 G4ThreeVector *p1,*p2,*p3,*p4;
 G4Tet *LYSOTet_Solid;

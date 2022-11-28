@@ -1,7 +1,15 @@
 #include "GmshLYSO.hh"
 
-GmshLYSO :: GmshLYSO(int Znode, double Xtot, double Ztot, double* ptsY, char* modelname)
+GmshLYSO :: GmshLYSO(MyG4Args *MainArgs)
 {
+	G4cout <<"Initialize Default values" << G4endl;
+
+	Ztot = MainArgs->GetGeom_LYSO_L();
+    Xtot=MainArgs->GetGeom_LYSO_thick()*2;
+	ptsY=MainArgs->GetYincr();
+	Znode=MainArgs->GetZnode();
+	modelname=MainArgs->GetOutName();
+	
 	gmsh::initialize();
 	gmsh::model::add(modelname);
 
@@ -10,9 +18,9 @@ GmshLYSO :: GmshLYSO(int Znode, double Xtot, double Ztot, double* ptsY, char* mo
   std::vector<int> pp;
   std::vector<int> pm;
   for(int i = 0; i < Znode+1; i++) {
-    gmsh::model::geo::addPoint(-Xtot/2, +1*ptsY[i],-1*Ztot+dZ*i ,0,
+    gmsh::model::geo::addPoint(-Xtot/2, +1*ptsY[i]*1.5,-1*Ztot+dZ*i ,0,
                                1000 + i);
-    gmsh::model::geo::addPoint(-Xtot/2, -1*ptsY[i],-1*Ztot+dZ*i ,0,
+    gmsh::model::geo::addPoint(-Xtot/2, -1*ptsY[i]*1.5,-1*Ztot+dZ*i ,0,
                                2000 + i);
     std::cout<<-Xtot/2<< " " <<+1*ptsY[i]<< " " <<+-1*Ztot+dZ*i<< std::endl;
     pp.push_back(1000 + i);
@@ -31,7 +39,7 @@ gmsh::model::geo::mesh::setTransfiniteCurve(l0,2);
 gmsh::model::geo::mesh::setTransfiniteCurve(lm,2);
 
 // Meshing
-int nsecmesh=1;
+int nsecmesh=5;
 gmsh::model::geo::mesh::setTransfiniteCurve(splp,nsecmesh+1);
 gmsh::model::geo::mesh::setTransfiniteCurve(splm,nsecmesh+1);
 gmsh::model::geo::synchronize();
@@ -104,12 +112,12 @@ gmsh::model::mesh::generate(3);
 		  std::cout << ")\n";
 		}
 		//gmsh::model::mesh::getElements(elemTypes, elemTags, elemNodeTags, dim, tag);
+		std::cout<<" - Nodal Tags of size "<< elemNodeTags.size() << ":: ";
+		for(int i = 0; i < elemNodeTags[0].size(); i += 1){
+			std::cout<< elemNodeTags[0][i]<< " ";
+			}
+		std::cout<<std::endl;
 
-		for(auto eNodeTags : elemNodeTags) {
-			std::cout<<" - Nodal Tags:: ";
-			for (int i : eNodeTags) std::cout<< i<< " ";
-			std::cout<<std::endl;
-		}
 		//gmsh::model::mesh::getNodes(nodeTags, nodeCoords, nodeParams, dim, tag);
 		gmsh::model::mesh::getNodes(tags, coord, param);
 		std::cout<<tags.size()<<std::endl;
@@ -118,7 +126,7 @@ gmsh::model::mesh::generate(3);
 	std::cout<<"Coords::"<<coord[i]<<" "<<coord[i+1]<<" "<<coord[i+2]<<std::endl;
     }
     for(std::size_t i = 0; i < tags.size(); i += 1) {
-	std::cout<<"Tags:: "<<i<<" ";
+	std::cout<<"Tags:: "<<tags[i]<<" ";
     }
 	std::cout<<std::endl;
 		
@@ -134,32 +142,46 @@ GmshLYSO :: ~GmshLYSO()
 // Given a material assignment creates the logical and solid volumes 
 // from the gmsh mesh
 void GmshLYSO ::CreateG4LYSO(G4Material *material, G4LogicalVolume *logicWorld){
-		int etag[4], gidx;
+	int etag[4], gidx;
 	double x[4],y[4],z[4];
 	gidx = 1000;
 	G4String tetname="G4Tet_";
 	G4bool *degeneracyFlag;
 	degeneracyFlag=0;
-	for(std::size_t i = 0; i < elemNodeTags.size(); i += 4) {
-		etag[0] = elemNodeTags[0][i];
-		etag[1] = elemNodeTags[0][i+1];
-		etag[2] = elemNodeTags[0][i+2];
-		etag[3] = elemNodeTags[0][i+3];
+	for(int i = 0; i < elemNodeTags[0].size(); i += 4) {
+	//for(int i = 0; i < 1; i += 4) {
+		G4cout <<"Nodetagloop for element "<< i/4 << G4endl;
+		etag[0] = elemNodeTags[0][i]-1;
+		etag[1] = elemNodeTags[0][i+1]-1;
+		etag[2] = elemNodeTags[0][i+2]-1;
+		etag[3] = elemNodeTags[0][i+3]-1;
+		G4cout <<etag[0]<<" "<<etag[1]<<" "<<etag[2]<<" "<<etag[3]<<" "<< G4endl;
         for(int j=0;j<4;j++){
-            x[j]=coord[etag[j]*3+j];
-            y[j]=coord[etag[j]*3+j+1];
-            z[j]=coord[etag[j]*3+j+2];
+            x[j]=coord[etag[j]*3];
+            y[j]=coord[etag[j]*3+1];
+            z[j]=coord[etag[j]*3+2];
 			}
+			G4cout <<"Coords x "<< x[0]<< " "<< x[1]<< " "<< x[2]<< " "<< x[3]<< " "<< G4endl;
+			G4cout <<"Coords y "<< y[0]<< " "<< y[1]<< " "<< y[2]<< " "<< y[3]<< " "<< G4endl;
+			G4cout <<"Coords z "<< z[0]<< " "<< z[1]<< " "<< z[2]<< " "<< z[3]<< " "<< G4endl;
+			G4cout <<"Solid Tet "<< i/4 << G4endl;
+
 			LYSOTet_Solid = new G4Tet(tetname+ G4String("solid_")+G4UIcommand::ConvertToString(gidx),
-								G4ThreeVector(x[0],y[0], z[0]),
-								G4ThreeVector(x[1],y[1], z[1]),
-								G4ThreeVector(x[2],y[2], z[2]),
-								G4ThreeVector(x[3],y[3], z[3]),
+								G4ThreeVector(x[0]*mm,y[0]*mm, z[0]*mm),
+								G4ThreeVector(x[1]*mm,y[1]*mm, z[1]*mm),
+								G4ThreeVector(x[2]*mm,y[2]*mm, z[2]*mm),
+								G4ThreeVector(x[3]*mm,y[3]*mm, z[3]*mm),
 								degeneracyFlag);
+			G4cout <<"Logic Tet "<< i/4 << G4endl;
+
 			LYSOTet_Logic = new G4LogicalVolume(LYSOTet_Solid, material, tetname+ G4String("logical_")+G4UIcommand::ConvertToString(gidx));
+			G4cout <<"Phys Tet "<< i/4 << G4endl;
 			LYSOTet_Phys = new G4PVPlacement(0,G4ThreeVector(0.,0.,0.),LYSOTet_Logic,tetname+ G4String("phys_")+G4UIcommand::ConvertToString(gidx),logicWorld,false,0,true);       
+			G4cout <<"Tet Done "<< i/4 << G4endl;
 			gidx+=1;
+			G4cout <<"gidx "<< gidx << G4endl;
+
 		}
-	
-	
+			G4cout <<"Finished Mesh " << G4endl;
+
 	}

@@ -149,7 +149,7 @@ private:
     G4String DefOutName="DefaultOutputName_Run";
     G4double KillSim[4]={0.,0.,0.,0.}; // Options on how to kill the simulation {Method(0 = all tracks have been killed, 1= nphotons have been detected at each SiPM, 2= x time has passed, 3= kills all photons after x local time, 4= use all parameters to kill the simulation) ,nphotons, global time, local time...}
     G4double StepSize=0.;    
-    G4int GeomConfig=1;
+    G4int GeomConfig=11;
     G4int VisTrue=1;
     G4int TimeTrue=1;
     G4int NPhotTiming=10;

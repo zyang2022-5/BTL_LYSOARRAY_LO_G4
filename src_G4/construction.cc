@@ -418,6 +418,7 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct()
 		GCgmsh = new GmshLYSO(ArgsPass);
 		G4cout <<"Gmsh to G4Tet::" << G4endl;
 		GCgmsh->CreateG4LYSO(scintillator,logicWorld);
+		GCgmsh->SurfaceCoating(physWorld, mirrorSurface);
 		solidGlue = new G4Box("solidGlue", RESIN_W*mm+0.2*mm*G4UniformRand(), Glue_Y*mm+0.194*mm+0.2*mm*G4UniformRand(), GLUE_L*mm);
 
 		}

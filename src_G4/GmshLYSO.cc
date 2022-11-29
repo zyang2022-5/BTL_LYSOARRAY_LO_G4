@@ -13,23 +13,33 @@ GmshLYSO :: GmshLYSO(MyG4Args *MainArgs)
 	gmsh::initialize();
 	gmsh::model::add(modelname);
 
+	ptsYF = new G4double[Znode*2+1];
+	for(int i = 0; i < Znode+1; i++) { ptsYF[i]=ptsY[i];	}
+	for(int i = 0; i < Znode; i++) { ptsYF[Znode+i+1]=ptsYF[Znode-i-1];}
+	//std::cout<<"Vertical Increments: ";
+	//for(int i = 0; i < Znode*2+1; i++) { std::cout<<ptsYF[i]<<" ";}
+	//std::cout<<std::endl;
+	//ptsYF[3]=2;ptsYF[4]=1;
+
 // Geometry
   double dZ=Ztot/Znode;
   std::vector<int> pp;
   std::vector<int> pm;
-  for(int i = 0; i < Znode+1; i++) {
-    gmsh::model::geo::addPoint(-Xtot/2, +1*ptsY[i]*1.5,-1*Ztot+dZ*i ,0,
+  for(int i = 0; i < Znode*2+1; i++) {
+    gmsh::model::geo::addPoint(-Xtot/2, +1*ptsYF[i]*1.5,-1*Ztot+dZ*i ,0,
                                1000 + i);
-    gmsh::model::geo::addPoint(-Xtot/2, -1*ptsY[i]*1.5,-1*Ztot+dZ*i ,0,
+    gmsh::model::geo::addPoint(-Xtot/2, -1*ptsYF[i]*1.5,-1*Ztot+dZ*i ,0,
                                2000 + i);
-    std::cout<<-Xtot/2<< " " <<+1*ptsY[i]<< " " <<+-1*Ztot+dZ*i<< std::endl;
+    std::cout<<-Xtot/2<< " " <<+1*ptsYF[i]*1.5<< " " <<+-1*Ztot+dZ*i<< std::endl;
     pp.push_back(1000 + i);
     pm.push_back(2000 + i);
   }
+
+
   int splp, splm, l0, lm, cl, sf, ext;
 splp=gmsh::model::geo::addSpline(pp);
 splm=gmsh::model::geo::addSpline(pm);
-l0 = gmsh::model::geo::addLine(pp[Znode], pm[Znode]);
+l0 = gmsh::model::geo::addLine(pp[Znode*2], pm[Znode*2]);
 lm = gmsh::model::geo::addLine(pp[0], pm[0]);
 cl = gmsh::model::geo::addCurveLoop({-lm, splp, l0, -splm});
 sf = gmsh::model::geo::addPlaneSurface({cl});
@@ -39,9 +49,9 @@ gmsh::model::geo::mesh::setTransfiniteCurve(l0,2);
 gmsh::model::geo::mesh::setTransfiniteCurve(lm,2);
 
 // Meshing
-int nsecmesh=5;
-gmsh::model::geo::mesh::setTransfiniteCurve(splp,nsecmesh+1);
-gmsh::model::geo::mesh::setTransfiniteCurve(splm,nsecmesh+1);
+int nsecmesh=10;
+gmsh::model::geo::mesh::setTransfiniteCurve(splp,nsecmesh*2+1);
+gmsh::model::geo::mesh::setTransfiniteCurve(splm,nsecmesh*2+1);
 gmsh::model::geo::synchronize();
 gmsh::model::mesh::generate(3);
 
@@ -98,7 +108,7 @@ gmsh::model::mesh::generate(3);
 		for(auto &tags : elemTags) numElem += tags.size();
 		std::cout << " - Mesh has " << nodeTags.size() << " nodes and " << numElem
 				  << " elements\n";
-
+		Nelem=numElem;
 		// * List all types of elements making up the mesh of the entity:
 		for(auto elemType : elemTypes) {
 		  std::string name;
@@ -177,11 +187,22 @@ void GmshLYSO ::CreateG4LYSO(G4Material *material, G4LogicalVolume *logicWorld){
 			LYSOTet_Logic = new G4LogicalVolume(LYSOTet_Solid, material, tetname+ G4String("logical_")+G4UIcommand::ConvertToString(gidx));
 			G4cout <<"Phys Tet "<< i/4 << G4endl;
 			LYSOTet_Phys = new G4PVPlacement(0,G4ThreeVector(0.,0.,0.),LYSOTet_Logic,tetname+ G4String("phys_")+G4UIcommand::ConvertToString(gidx),logicWorld,false,0,true);       
+			lstPhysTet.push_back(LYSOTet_Phys);
 			G4cout <<"Tet Done "<< i/4 << G4endl;
 			gidx+=1;
 			G4cout <<"gidx "<< gidx << G4endl;
 
 		}
 			G4cout <<"Finished Mesh " << G4endl;
+
+	}
+
+
+void GmshLYSO ::SurfaceCoating(G4VPhysicalVolume *physWorld, G4OpticalSurface *coating){
+	
+	for(int i = 0; i < Nelem; i ++){
+		//    G4LogicalBorderSurface *LYSO_Air_Border = new G4LogicalBorderSurface("LYSO_Glue_Border",physLYSO,physWorld,mirrorSurface);   
+		LYSO_Air_Border = new G4LogicalBorderSurface(G4String("ScintillationCoating_")+G4UIcommand::ConvertToString(i),lstPhysTet[i],physWorld,coating);   
+		}
 
 	}

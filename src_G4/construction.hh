@@ -35,6 +35,7 @@ public:
 
     G4LogicalVolume *GetScoringVolume() const {return fScoringVolume;}
     G4LogicalVolume *GetDetectorVolume() const {return fDetectorVolume;}
+	std::vector<G4LogicalVolume*> GetScoringVolumeVec() const {return fScoringVolumeVec;}
 
     // Return Parameter Values
     G4double GetLYSOL() const {return LYSO_L;}
@@ -72,7 +73,8 @@ private: // it is not accessed from outside
     G4LogicalVolume *logicDetector; // We need to refer to this volume. Needs to be outside of the construction.
     G4LogicalVolume *logicWorld, *logicLYSO, *logicGlue, *logicResin, *logicResin_Sub, *logicFR4, *logicLYSOCover;
     G4LogicalVolume *fScoringVolume , *fDetectorVolume;
-
+	std::vector<G4LogicalVolume*> fScoringVolumeVec;
+	
     G4VPhysicalVolume *physWorld, *physLYSO, *physDetector, *physGlue1, *physGlue2, *physResin1, *physResin2, *physFR41, *physFR42, *physLYSOCover;
 
     G4TriangularFacet *facet;

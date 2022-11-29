@@ -39,6 +39,8 @@ public:
     void CreateG4LYSO(G4Material*, G4LogicalVolume*);
 	void SurfaceCoating(G4VPhysicalVolume* , G4OpticalSurface* );
 
+	std::vector<G4LogicalVolume*> GetScoringVolumeVec() const {return fScoringVolumeVec;}
+
     double* GetNodeTags() const {return mesh_nodetags;}
     double* GetNodeCoords() const {return mesh_nodecoords;}
     int GetNumberOfNodes() const {return mesh_totalnodes;}
@@ -68,6 +70,8 @@ G4PVPlacement *LYSOTet_Phys;
 G4LogicalBorderSurface *LYSO_Air_Border;
 
 std::vector<G4PVPlacement*> lstPhysTet;
+std::vector<G4LogicalVolume*> fScoringVolumeVec;
+
 			
 };    
 

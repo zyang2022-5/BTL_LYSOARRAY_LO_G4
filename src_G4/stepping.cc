@@ -29,7 +29,9 @@ void MySteppingAction::UserSteppingAction(const G4Step *step)
 // General defitinions
 //////////////////////////////////////////////////////////////////////////////
 
-    G4LogicalVolume *fScoringVolume  = detectorConstruction->GetScoringVolume();
+	if(PassArgs-> GetGeomConfig()==11){int vec =1; std::vector<G4LogicalVolume*> fScoringVolumeVec;fScoringVolumeVec  = detectorConstruction->GetScoringVolumeVec();}
+	else{G4LogicalVolume *fScoringVolume  = detectorConstruction->GetScoringVolume();int vec=0;}
+    
     //G4LogicalVolume *fDetectorVolume  = detectorConstruction->GetDetectorVolume();
     G4AnalysisManager *man = G4AnalysisManager::Instance();
     G4StepPoint *preStepPoint = step->GetPreStepPoint();

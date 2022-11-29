@@ -74,7 +74,7 @@ void MyEventAction::EndOfEventAction(const G4Event *anEvent)
     G4int evt = G4RunManager::GetRunManager()->GetCurrentEvent()->GetEventID();
     if(PassArgs->GetEdep()>0){
 
-            if (GeomConfig == 1){
+            if (GeomConfig == 1 || GeomConfig == 11){
     G4cout<< "#####################" << G4endl;
     G4cout<< "#####################" << G4endl;
     G4cout<< "Event Nº: " << evt << G4endl;
@@ -190,7 +190,7 @@ if(PassArgs->GetTree_EndOfEvent()==1){
         //G4cout<< "Data from construction: "<< LYSO_L << " " << LYSO_T << " " << GeomConfig << G4endl;
 
             G4cout<< "Event GeomConfig: "<< GeomConfig <<" ,PartRnd. "<< PassArgs->GetRnd_Part() << G4endl;
-        if (GeomConfig == 1){
+        if (GeomConfig == 1 || GeomConfig == 11){
             GenX=(-LYSO_T+LYSO_T*2*G4UniformRand())/1000.;
             GenZ=(-LYSO_L+LYSO_L*2*G4UniformRand())/1000.;
             command = "/gun/position "+std::to_string(GenX)+" 0.05 "+std::to_string(GenZ)+" m"; 
@@ -223,7 +223,7 @@ if(PassArgs->GetTree_EndOfEvent()==1){
         G4int GeomConfig  = PassArgs->GetGeomConfig();
 
             G4cout<< "Event GeomConfig: "<< GeomConfig <<" ,PartRnd. "<< PassArgs->GetRnd_Part() << G4endl;
-        if (GeomConfig == 1){
+        if (GeomConfig == 1 || GeomConfig == 11){
             G4cout<<"Evt" <<eventID << G4endl; 
             GenX=PassArgs->GetGunX(eventID)/1000;
             GenZ=PassArgs->GetGunY(eventID)/1000;

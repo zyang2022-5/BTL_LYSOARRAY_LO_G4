@@ -419,6 +419,8 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct()
 		G4cout <<"Gmsh to G4Tet::" << G4endl;
 		GCgmsh->CreateG4LYSO(scintillator,logicWorld);
 		GCgmsh->SurfaceCoating(physWorld, mirrorSurface);
+		fScoringVolumeVec = GCgmsh->GetScoringVolumeVec();
+
 		solidGlue = new G4Box("solidGlue", RESIN_W*mm+0.2*mm*G4UniformRand(), Glue_Y*mm+0.194*mm+0.2*mm*G4UniformRand(), GLUE_L*mm);
 
 		}
@@ -524,7 +526,8 @@ tr = G4Translate3D(-RESIN_W+DET_TX+0.194*(i+1)*mm+DET_TX*2*i,0.,0.) * G4Rotate3D
     G4LogicalSkinSurface *skinFR4 = new G4LogicalSkinSurface("skin",logicFR4,SurfFR4);
    
  
-    fScoringVolume = logicLYSO; fDetectorVolume=logicDetector;
+    fScoringVolume = logicLYSO; 
+    fDetectorVolume=logicDetector;
     
             G4cout<< " ### Logic Volumes. " <<G4endl;         
 

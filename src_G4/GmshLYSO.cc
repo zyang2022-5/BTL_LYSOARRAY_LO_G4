@@ -49,7 +49,7 @@ gmsh::model::geo::mesh::setTransfiniteCurve(l0,2);
 gmsh::model::geo::mesh::setTransfiniteCurve(lm,2);
 
 // Meshing
-int nsecmesh=10;
+int nsecmesh=20;
 gmsh::model::geo::mesh::setTransfiniteCurve(splp,nsecmesh*2+1);
 gmsh::model::geo::mesh::setTransfiniteCurve(splm,nsecmesh*2+1);
 gmsh::model::geo::synchronize();
@@ -185,6 +185,7 @@ void GmshLYSO ::CreateG4LYSO(G4Material *material, G4LogicalVolume *logicWorld){
 			G4cout <<"Logic Tet "<< i/4 << G4endl;
 
 			LYSOTet_Logic = new G4LogicalVolume(LYSOTet_Solid, material, tetname+ G4String("logical_")+G4UIcommand::ConvertToString(gidx));
+			fScoringVolumeVec.push_back(LYSOTet_Logic);
 			G4cout <<"Phys Tet "<< i/4 << G4endl;
 			LYSOTet_Phys = new G4PVPlacement(0,G4ThreeVector(0.,0.,0.),LYSOTet_Logic,tetname+ G4String("phys_")+G4UIcommand::ConvertToString(gidx),logicWorld,false,0,true);       
 			lstPhysTet.push_back(LYSOTet_Phys);

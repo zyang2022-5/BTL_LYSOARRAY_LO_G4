@@ -49,7 +49,7 @@ gmsh::model::geo::mesh::setTransfiniteCurve(l0,2);
 gmsh::model::geo::mesh::setTransfiniteCurve(lm,2);
 
 // Meshing
-int nsecmesh=20;
+int nsecmesh=MainArgs->GetZelem();
 gmsh::model::geo::mesh::setTransfiniteCurve(splp,nsecmesh*2+1);
 gmsh::model::geo::mesh::setTransfiniteCurve(splm,nsecmesh*2+1);
 gmsh::model::geo::synchronize();

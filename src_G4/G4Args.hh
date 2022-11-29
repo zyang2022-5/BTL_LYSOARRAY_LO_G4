@@ -29,6 +29,7 @@ public:
     G4String GetMacName() const {return MacName;}
     G4double GetVov() const {return Detection[0];}
     G4int Getnrep() const {return nrep;}
+    G4int GetZelem() const {return Zelem;}
     G4double GetLYSO_Yield() const {return LYSOProps[0];}
     G4double GetLYSO_ScaleResolution() const {return LYSOProps[1];}
     G4double GetLYSO_RiseT() const {return LYSOProps[2];}
@@ -196,6 +197,7 @@ private:
     std::string YposStr;
     int runevt=0;
     char datechar [22];
+    int Zelem=10;
 
 
 };    

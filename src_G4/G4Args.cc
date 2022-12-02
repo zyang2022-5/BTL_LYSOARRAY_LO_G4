@@ -317,13 +317,23 @@ G4cout<< " * imax: "<< imax<< " jmax: "<< jmax <<G4endl;
                         YposStr=mainargv[j+1];j=j+1;
                         G4cout<< " ### The string to turn into the yincr vector is: "<<YposStr <<G4endl;                             
                         yincr = Str2DChar(YposStr, Znode+1);
-                        RESIN_Y=RESIN_H-0.5-Geom_LYSO[0]*yincr[0];
-                        SiPM_Y=DET_T+0.5-RESIN_H;
-                        Glue_Y=Glue_Y*yincr[0];
-                        RESIN_H=(2.*Geom_LYSO[0]*yincr[0]+3.5)/2;
-                        RESIN_Y=RESIN_H-0.5-Geom_LYSO[0]*yincr[0];
-                        //SiPM_Y=DET_T+0.5-RESIN_H+Geom_LYSO[0]*yincr[0];
-                        SiPM_Y=-RESIN_H+Geom_LYSO[0]*yincr[0]+0.5;
+                        
+                        if(Geom_LYSO[0]*yincr[0]>=DET_T){
+                        G4cout<< " ### LYSO : "<< Geom_LYSO[0]*yincr[0] << " larger than SiPM : "<<DET_T <<G4endl;                             
+
+							Glue_Y=Glue_Y*yincr[0];
+							RESIN_H=(2.*Geom_LYSO[0]*yincr[0]+3.5)/2;
+							RESIN_Y=RESIN_H-0.5-Geom_LYSO[0]*yincr[0];
+							SiPM_Y=-RESIN_H+Geom_LYSO[0]*yincr[0]+0.5;
+						}else{
+                        G4cout<< " ### LYSO : "<< Geom_LYSO[0]*yincr[0] << " smaller than SiPM : "<<DET_T <<G4endl;                             
+							Glue_Y=Glue_Y*yincr[0];
+							RESIN_H=(DET_T*2+3.5)/2;
+							RESIN_Y=RESIN_H-0.5-DET_T;
+							SiPM_Y=-3.5/2+0.5;
+
+							//SiPM_Y=-RESIN_H+DET_T+Geom_LYSO[0]*yincr[0]/2+0.5;
+							}
 
                     }else{
 

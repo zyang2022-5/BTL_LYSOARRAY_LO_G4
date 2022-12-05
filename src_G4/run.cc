@@ -197,6 +197,7 @@ void MyRunAction::EndOfRunAction(const G4Run* run)
 
     if(PassArgs->GetVis()==0){
     G4cout<<"* Run ID: " << runid <<G4endl;
+    G4cout<<"* Average LC: " << PassArgs->GetLDAvg(runid) <<G4endl;
     G4cout<<"* Average LO: " << PassArgs->GetLOAvg(runid) <<G4endl;
     G4cout<<"* Std LO: " << PassArgs->GetLOStd(runid) <<G4endl;
     G4cout<<"* Average LD: " << PassArgs->GetLDAvg(runid) <<G4endl;

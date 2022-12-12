@@ -12,7 +12,7 @@ MyPrimaryGenerator :: MyPrimaryGenerator(MyG4Args* MainArgs)
             G4String particleName ="mu+";
             G4ParticleDefinition *particle = particleTable->FindParticle(particleName);
             
-                G4ThreeVector mom(0.,-1.,0.);
+                G4ThreeVector mom(PassArgs->GetPartDir(0),PassArgs->GetPartDir(1),PassArgs->GetPartDir(2));
 
                 fParticleGun->SetParticleMomentumDirection (mom);
                 fParticleGun->SetParticleMomentum (2. *GeV);
@@ -22,7 +22,7 @@ MyPrimaryGenerator :: MyPrimaryGenerator(MyG4Args* MainArgs)
             G4String particleName ="gamma";
             G4ParticleDefinition *particle = particleTable->FindParticle(particleName);
             
-                G4ThreeVector mom(0.,-1.,0.);
+                G4ThreeVector mom(PassArgs->GetPartDir(0),PassArgs->GetPartDir(1),PassArgs->GetPartDir(2));
                 fParticleGun->SetParticleMomentumDirection (mom);
                 fParticleGun->SetParticleMomentum (511. *keV);
                 fParticleGun->SetParticleDefinition(particle); 

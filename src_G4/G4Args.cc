@@ -4,8 +4,11 @@
 
 MyG4Args :: MyG4Args(int mainargc,char** mainargv)
 {
-    G4cout << " ### Processing Command line Arguments to the sim : " << G4endl;
+	PartDir[0]=0;	PartDir[1]=-1;	PartDir[2]=0;
 
+
+
+    G4cout << " ### Processing Command line Arguments to the sim : " << G4endl;
     for (int j = 1; j < mainargc; j=j+1){
     G4cout << mainargv[j] <<"\n"<< G4endl;
                 if(strcmp(mainargv[j],"-o")==0)
@@ -249,7 +252,15 @@ MyG4Args :: MyG4Args(int mainargc,char** mainargv)
                 }else if(strcmp(mainargv[j],"-Zelem")==0)
                 {   
                     Zelem = atoi(mainargv[j+1]);j=j+1;
-                    G4cout<< " ### Gmsh divisions along half the Z direction "<< Zelem<<G4endl;                   
+                    G4cout<< " ### Gmsh divisions along half the Z direction "<< Zelem<<G4endl;      
+                }else if(strcmp(mainargv[j],"-PartAngle")==0)
+                {   
+                    PartAngle = atoi(mainargv[j+1]);j=j+1;
+                    G4cout<< " ### Particle angle (XY) "<< PartAngle<<" degrees"<<G4endl;    
+					G4double Pi=atan(1)*4;
+					PartDisplX = -0.05*1000*tan(PartAngle/180*Pi);
+					//PartDir = new G4ThreeVector(sin(PartAngle/180*Pi),-cos(PartAngle/180*Pi),0);
+					PartDir[0]=sin(PartAngle/180*Pi);	PartDir[1]=-cos(PartAngle/180*Pi);	PartDir[2]=0;
                 }else if(strcmp(mainargv[j],"-runevt")==0)
                 {   
                     runevt=atoi(mainargv[j+1]);j=j+1;

@@ -191,32 +191,32 @@ if(PassArgs->GetTree_EndOfEvent()==1){
 
             G4cout<< "Event GeomConfig: "<< GeomConfig <<" ,PartRnd. "<< PassArgs->GetRnd_Part() << G4endl;
         if (GeomConfig == 1 || GeomConfig == 11){
-            GenX=(-LYSO_T+LYSO_T*2*G4UniformRand())/1000.;
+            GenX=(-LYSO_T+LYSO_T*2*G4UniformRand()+PassArgs->GetPartXDispl())/1000.;
             GenZ=(-LYSO_L+LYSO_L*2*G4UniformRand())/1000.;
             command = "/gun/position "+std::to_string(GenX)+" 0.05 "+std::to_string(GenZ)+" m"; 
             G4cout<< command << G4endl;
             UImanager->ApplyCommand(command);     
-            command = "/gun/direction 0. -1. 0."; 
-            G4cout<< command << G4endl;
-            UImanager->ApplyCommand(command); 
+            //command = "/gun/direction 0. -1. 0."; 
+            //G4cout<< command << G4endl;
+            //UImanager->ApplyCommand(command); 
         }else if (GeomConfig == 2){
             GenX=(-LYSO_T2+LYSO_T2*2*G4UniformRand())/1000.;
             GenZ=(-LYSO_T+LYSO_T2*2*G4UniformRand())/1000.;
             command = "/gun/position "+std::to_string(GenX)+" "+std::to_string(GenZ)+" -0.05 "+"m"; 
             G4cout<< command << G4endl;
             UImanager->ApplyCommand(command);     
-            command = "/gun/direction 0. 0. 1."; 
-            G4cout<< command << G4endl;
-            UImanager->ApplyCommand(command); 
+            //command = "/gun/direction 0. 0. 1."; 
+            //G4cout<< command << G4endl;
+            //UImanager->ApplyCommand(command); 
         }else if (GeomConfig == 3){
-            GenX=(-LYSO_T*2.*mm-0.194/2*mm+LYSO_T*mm*2*G4UniformRand())/1000.;
+            GenX=(-LYSO_T*2.*mm-0.194/2*mm+LYSO_T*mm*2*G4UniformRand()+PassArgs->GetPartXDispl())/1000.;
             GenZ=(-LYSO_L+LYSO_L*2*G4UniformRand())/1000.;
             command = "/gun/position "+std::to_string(GenX)+" 0.05 "+std::to_string(GenZ)+" m"; 
             G4cout<< command << G4endl;
             UImanager->ApplyCommand(command);     
-            command = "/gun/direction 0. -1. 0."; 
-            G4cout<< command << G4endl;
-            UImanager->ApplyCommand(command); 
+            //command = "/gun/direction 0. -1. 0."; 
+            //G4cout<< command << G4endl;
+            //UImanager->ApplyCommand(command); 
         }
     }else if (PassArgs->GetRnd_Part()==2){
         const MyDetectorConstruction *detectorConstruction = static_cast<const MyDetectorConstruction*> (G4RunManager::GetRunManager()->GetUserDetectorConstruction());

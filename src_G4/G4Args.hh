@@ -106,6 +106,9 @@ public:
     G4double GetEdep() const {return Edep;}
     G4double GetMuonEdep() const {return MuonEdep;}
     G4int GetNEdep() const {return NEdep;}
+    
+    G4double GetPartDir(G4int i){return PartDir[i];}
+    G4double GetPartXDispl(){return PartDisplX;}
 
     void FillEvtLO(G4int evt, G4double val){nEventLO[evt]=val;}  
     void FillEvtLD(G4int evt, G4double val){nEventLD[evt]=val;}  
@@ -203,6 +206,12 @@ private:
     int runevt=0;
     char datechar [22];
     int Zelem=10;
+    
+    G4double PartDir[3];
+    G4double PartDisplX=0;
+    G4double PartAngle=0;
+    
+    
 
 
 };    

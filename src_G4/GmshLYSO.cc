@@ -2,8 +2,8 @@
 
 GmshLYSO :: GmshLYSO(MyG4Args *MainArgs)
 {
-	G4cout <<"Initialize Default values" << G4endl;
-
+	G4cout <<"Gmsh Initialize Default values" << G4endl;
+	LocalArgs=MainArgs;
 	Ztot = MainArgs->GetGeom_LYSO_L();
     Xtot=MainArgs->GetGeom_LYSO_thick()*2;
 	ptsY=MainArgs->GetYincr();
@@ -22,6 +22,7 @@ GmshLYSO :: GmshLYSO(MyG4Args *MainArgs)
 	//ptsYF[3]=2;ptsYF[4]=1;
 
 // Geometry
+G4cout <<"### Geometry:" << G4endl;
   double dZ=Ztot/Znode;
   std::vector<int> pp;
   std::vector<int> pm;
@@ -48,6 +49,7 @@ gmsh::model::geo::extrude({{2, sf}}, Xtot, 0, 0,ov2,{1},{});
 gmsh::model::geo::mesh::setTransfiniteCurve(l0,2);
 gmsh::model::geo::mesh::setTransfiniteCurve(lm,2);
 
+G4cout <<"### Meshing:" << G4endl;
 // Meshing
 int nsecmesh=MainArgs->GetZelem();
 gmsh::model::geo::mesh::setTransfiniteCurve(splp,nsecmesh*2+1);
@@ -152,6 +154,8 @@ GmshLYSO :: ~GmshLYSO()
 // Given a material assignment creates the logical and solid volumes 
 // from the gmsh mesh
 void GmshLYSO ::CreateG4LYSO(G4Material *material, G4LogicalVolume *logicWorld){
+//	LocalArgs->SetVolume(0);
+
 	int etag[4], gidx;
 	double x[4],y[4],z[4];
 	gidx = 1000;
@@ -182,6 +186,11 @@ void GmshLYSO ::CreateG4LYSO(G4Material *material, G4LogicalVolume *logicWorld){
 								G4ThreeVector(x[2]*mm,y[2]*mm, z[2]*mm),
 								G4ThreeVector(x[3]*mm,y[3]*mm, z[3]*mm),
 								degeneracyFlag);
+			VolTet = TetraVolume(x,y,z);
+			LocalArgs->AddVolume(VolTet);
+			G4cout <<"Tet Volume "<< VolTet << G4endl;
+			G4cout <<"Total Volume "<< LocalArgs->GetVolume() << G4endl;
+
 			G4cout <<"Logic Tet "<< i/4 << G4endl;
 
 			LYSOTet_Logic = new G4LogicalVolume(LYSOTet_Solid, material, tetname+ G4String("logical_")+G4UIcommand::ConvertToString(gidx));

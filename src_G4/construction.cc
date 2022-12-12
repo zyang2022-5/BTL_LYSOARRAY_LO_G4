@@ -414,12 +414,14 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct()
         solidLYSO = new G4UnionSolid("solidLYSO", trapLYSO1, trapLYSO2, transformTrap); 
     solidGlue = new G4Box("solidGlue", RESIN_W*mm, RESIN_H*mm+0.2*mm*G4UniformRand(), GLUE_L*mm);
     }else if (GeomConfig==11){
+				G4cout <<"Get LYSO Volume:: " <<ArgsPass->GetVolume() << G4endl;
 		G4cout <<"Gmsh::" << G4endl;
 		GCgmsh = new GmshLYSO(ArgsPass);
 		G4cout <<"Gmsh to G4Tet::" << G4endl;
 		GCgmsh->CreateG4LYSO(scintillator,logicWorld);
 		GCgmsh->SurfaceCoating(physWorld, mirrorSurface);
 		fScoringVolumeVec = GCgmsh->GetScoringVolumeVec();
+		G4cout <<"Get LYSO Volume:: " <<ArgsPass->GetVolume() << G4endl;
 
 		solidGlue = new G4Box("solidGlue", RESIN_W*mm+0.2*mm*G4UniformRand(), Glue_Y*mm+0.194*mm+0.2*mm*G4UniformRand(), GLUE_L*mm);
 

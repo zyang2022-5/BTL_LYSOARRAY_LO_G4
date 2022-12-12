@@ -330,7 +330,7 @@ return Vol;
 }
 
 /////////////////////////////////////
-// Triangular mesh volume calculation
+// String char to array
 /////////////////////////////////////
 double *Str2DChar(std::string strinput, G4int nn){
     // The string must be in the format "{d-d-d...}"
@@ -352,4 +352,36 @@ double *Str2DChar(std::string strinput, G4int nn){
     return Arr;
 }
 
+/////////////////////////////////////
+// Triangular mesh volume calculation
+/////////////////////////////////////
+double TetraVolume(G4double *x,G4double *y,G4double *z){
+		
+		G4double x1,x2,x3,x4,y1,y2,y3,y4,z1,z2,z3,z4;
+		
+		x1=x[0];y1=y[0];z1=z[0];
+		x2=x[1];y2=y[1];z2=z[1];
+		x3=x[2];y3=y[2];z3=z[2];
+		x4=x[3];y4=y[3];z4=z[3];
+		double det1, det2, det3;
+		
+		det1=+(x1-x4)*( (y2-y4)*(z3-z4)-(y3-y4)*(z2-z4) );
+		det2=-(y1-y4)*( (x2-x4)*(z3-z4)-(x3-x4)*(z2-z4) );
+		det3=+(z1-z4)*( (x2-x4)*(y3-y4)-(x3-x4)*(y2-y4) );
+
+		std::cout<< "Coords Vol: "
+		<< x[0]<<" "<< x[1]<<" "<< x[2]<<" "<< x[3]<<" "
+		<< y[0]<<" "<< y[1]<<" "<< y[2]<<" "<< y[3]<<" "
+		<< z[0]<<" "<< z[1]<<" "<< z[2]<<" "<< z[3]<<" "
+		<< std::endl;
+		
+		std::cout<< "Dets Vol: "
+		<< det1<<" "<< det2<<" "<< det3<<" "
+		<< std::endl;
+
+		G4double vol;
+		vol= abs(1/6.*(det1+det2+det3)) ;
+		std::cout<< "Vol: "<< vol<< std::endl;
+		return vol;
+}
 

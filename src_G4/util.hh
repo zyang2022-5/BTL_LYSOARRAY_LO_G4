@@ -29,4 +29,6 @@ int partition(double arr[], int start, int end);
 void quickSort(double arr[], int start, int end);
 double LYSOMeshVolume(G4double* xv0, G4int Onode, G4int Znode);
 double *Str2DChar(std::string strinput, G4int nn);
+G4double TetraVolume(G4double *x,G4double *y,G4double *z);
+
 #endif

@@ -29,6 +29,7 @@
 #include "G4Tet.hh"
 #include <G4UIcommand.hh>
 #include "G4Args.hh"
+#include "util.hh"
 
 class GmshLYSO 
 {
@@ -44,13 +45,14 @@ public:
     double* GetNodeTags() const {return mesh_nodetags;}
     double* GetNodeCoords() const {return mesh_nodecoords;}
     int GetNumberOfNodes() const {return mesh_totalnodes;}
+    double GetVolume() const {return Volume;}
 
 
     
 private:
 
 int mesh_totalnodes;
-double *mesh_nodetags, *mesh_nodecoords;
+double *mesh_nodetags, *mesh_nodecoords, Volume=0;
 G4Tet *LYSOTet;
 
 std::vector<std::size_t> tags;
@@ -63,6 +65,7 @@ std::vector<std::vector<std::size_t> > elemTags, elemNodeTags;
 
 int Nelem=0;
 
+G4double VolTet=0;
 G4ThreeVector *p1,*p2,*p3,*p4;
 G4Tet *LYSOTet_Solid;
 G4LogicalVolume *LYSOTet_Logic; 
@@ -71,6 +74,8 @@ G4LogicalBorderSurface *LYSO_Air_Border;
 
 std::vector<G4PVPlacement*> lstPhysTet;
 std::vector<G4LogicalVolume*> fScoringVolumeVec;
+
+MyG4Args *LocalArgs;
 
 			
 };    

@@ -91,6 +91,11 @@ public:
     void AddPhotR(){nPhotR += 1;}
     void AddPhotL(){nPhotL += 1;}    
     void AddPhotTiming(G4double , G4double);
+    
+    void AddVolume(G4double Vol){Volume += Vol;}
+    void InitVolume(){Volume = 0;}
+
+
 
     G4int GetLO() const {return ArgLO;}
     G4int GetCT() const {return ArgCrossTalk;}
@@ -121,7 +126,7 @@ public:
     G4double GetTimStd(G4int runid) const {return nRunTimingStd[runid];}  
     G4double GetnEvtEdep(G4int runid) const {return nEdepEvts[runid];}  
     G4int GetZnode() const {return Znode;}
-    G4int GetVolume() const {return Volume;}
+    G4double GetVolume() const {return Volume;}
     G4int SetVolume(G4double V){Volume=V;}
     G4int GetOnode() const {return Onode;}
     int GetRunEvt() const {return runevt;}

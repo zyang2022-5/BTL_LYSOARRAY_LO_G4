@@ -9,8 +9,9 @@ SimArgs="-m"            # Arguments for the G4 executable (any)
 OutPut="GC11_FLResinMach_Muon_Incr_"   # Name of the Root output files from the G4 executable 
 Vars="{1.0-1.0}"
 Nsections="2"
+LYSOLen="28.5"
 
-while getopts "a:n:s:v:z:" arg; do
+while getopts "a:n:s:v:z:l:" arg; do
     case $arg in
         a) OutPut=$OutPut$OPTARG
             echo "*** Change of OutputName"
@@ -27,6 +28,9 @@ while getopts "a:n:s:v:z:" arg; do
         z) Nsections=$OPTARG
             echo "*** Change of Nsections"
             echo $Nsections;; # Change G4 source directory
+        l) LYSOLen=$OPTARG
+            echo "*** Change of LYSO Length"
+            echo $LYSOLen;; # Change G4 source directory
     esac
 done
 
@@ -38,7 +42,7 @@ OutPut=$OutPut$Sopt
 echo $Sopt
 cd $BASEDIR
 #./$SimName -o $OutPut -GeomConfig 11 -runevt 1 -Muon -nDetected -Znode $Nsections -Ypos $Vars -Volume
-./$SimName -o $OutPut -GeomConfig 11 -Muon -nDetected -Volume -rnd 0 -runevt 56 -gunmesh 4 16 -Zelem 10 -incrSiPM 125 -Znode $Nsections -Ypos $Vars  
+./$SimName -o $OutPut -GeomConfig 11 -Muon -nDetected -Volume -LYSO_L $LYSOLen -rnd 0 -runevt 56 -gunmesh 4 16 -Zelem 10 -incrSiPM 125 -Znode $Nsections -Ypos $Vars
 #./$SimName -o $OutPut -GeomConfig 11 -runevt 1 -Muon -nDetected -Znode $Nsections -Ypos $Vars -Volume
 
 

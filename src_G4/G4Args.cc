@@ -301,8 +301,8 @@ G4cout<< " * imax: "<< imax<< " jmax: "<< jmax <<G4endl;
                     for (int i = 0; i < imax; i++){
                         for (int j = 0; j < jmax; j++){
                             index = i*jmax+j;
-                            nGunPosX[index]=1.49/imax*(i);
-                            nGunPosY[index]=28.49/jmax*(j);
+                            nGunPosX[index]=(Geom_LYSO[0]-0.01)/imax*(i);
+                            nGunPosY[index]=(Geom_LYSO[2]-0.01)/jmax*(j);
                         G4cout<< " * Gun Pos "<< index <<" , XPos  : " << nGunPosX[index]<<" , YPos  : " << nGunPosY[index]<<G4endl;    
                         }
                     }     

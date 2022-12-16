@@ -198,6 +198,8 @@ private:
     G4int ResinMach=0;
     G4int SiPMmatch=0;
     G4int SiPMmaterial=2;
+    G4int AreaCte=0;
+
 
     G4double DET_T=3./2;
     G4double DET_TX=3./2;

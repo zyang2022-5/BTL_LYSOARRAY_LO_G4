@@ -253,6 +253,10 @@ MyG4Args :: MyG4Args(int mainargc,char** mainargv)
                 {   
                     SiPMmaterial=atoi(mainargv[j+1]);j=j+1;
                     G4cout<< " ### SiPMmaterial " <<SiPMmaterial<<G4endl; 
+                }else if(strcmp(mainargv[j],"-Acte")==0)
+                {   
+                    AreaCte=1;
+                    G4cout<< " ### AreaCte "<<G4endl; 
 					
                  }else if(strcmp(mainargv[j],"-Zelem")==0)
                 {   
@@ -367,6 +371,10 @@ G4cout<< " * imax: "<< imax<< " jmax: "<< jmax <<G4endl;
         }
     }    
 
+	if(AreaCte==1){
+		//Geom_LYSO[3]={3./2.,3./2.,57./2.};	
+		Geom_LYSO[0]=((57./2.)*3./2.) / Geom_LYSO[2];
+		}
 
 }
 MyG4Args :: ~MyG4Args()

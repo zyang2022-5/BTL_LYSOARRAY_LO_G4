@@ -249,7 +249,12 @@ MyG4Args :: MyG4Args(int mainargc,char** mainargv)
                 {   
                     Volume=1;
                     G4cout<< " ### Calculate Volume " <<G4endl;   
-                }else if(strcmp(mainargv[j],"-Zelem")==0)
+                }else if(strcmp(mainargv[j],"-SiPMmat")==0)
+                {   
+                    SiPMmaterial=atoi(mainargv[j+1]);j=j+1;
+                    G4cout<< " ### SiPMmaterial " <<SiPMmaterial<<G4endl; 
+					
+                 }else if(strcmp(mainargv[j],"-Zelem")==0)
                 {   
                     Zelem = atoi(mainargv[j+1]);j=j+1;
                     G4cout<< " ### Gmsh divisions along half the Z direction "<< Zelem<<G4endl;      

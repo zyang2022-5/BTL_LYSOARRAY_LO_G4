@@ -28,6 +28,8 @@ public:
     G4String GetOutName() const {return OutName;}
     G4String GetMacName() const {return MacName;}
     G4double GetVov() const {return Detection[0];}
+    G4int GetSiPMmaterial() const {return SiPMmaterial;}
+
     G4int Getnrep() const {return nrep;}
     G4int GetZelem() const {return Zelem;}
     G4double GetLYSO_Yield() const {return LYSOProps[0];}
@@ -195,6 +197,8 @@ private:
     G4double Volume=0.;
     G4int ResinMach=0;
     G4int SiPMmatch=0;
+    G4int SiPMmaterial=2;
+
     G4double DET_T=3./2;
     G4double DET_TX=3./2;
     G4double Glue_Y=3.;

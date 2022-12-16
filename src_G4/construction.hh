@@ -82,7 +82,7 @@ private: // it is not accessed from outside
     G4TessellatedSolid *TessLYSO;
 
     // Materials
-    G4Material *worldMat, *SiO2, *H2O, *Aerogel, *prelude, *scintillator,*NaI, *EPOXY, *RTV3145;
+    G4Material *worldMat, *SiO2,*Simat, *H2O, *Aerogel, *prelude, *scintillator,*NaI, *EPOXY, *RTV3145;
     G4Element *C,*Na,*I,*H,*O,*Si,*N,*Al;
 
     // Surfaces

@@ -72,6 +72,19 @@ void MyDetectorConstruction::DefineMaterial()
     mptSiO2->AddProperty("RINDEX", energySiO2, rindexSiO2, 2);
     mptSiO2->AddProperty("ABSLENGTH", energySiO2, ABSSiO2, 2);
     SiO2->SetMaterialPropertiesTable(mptSiO2);
+    
+    Simat = new G4Material("Simat", 2.4*g/cm3, 1);
+    Simat->AddElement(nist1->FindOrBuildElement("Si"),1);
+    G4MaterialPropertiesTable *mptSi = new G4MaterialPropertiesTable();
+    G4double energySi[2] = {1.378*eV, 6.199*eV};
+    G4double rindexSi[2] = {4, 4};
+    /* Set the absorption length. Since optical light doesn't pass through
+     * PCBs, we just set it to 10 microns. */
+    G4double ABSSi[2] = {0.01*mm, 0.01*mm};
+    mptSi->AddProperty("RINDEX", energySi, rindexSi, 2);
+    mptSi->AddProperty("ABSLENGTH", energySi, ABSSi, 2);
+    Simat->SetMaterialPropertiesTable(mptSi);
+    
 
     RTV3145 = get_rtv();
     scintillator = get_lyso(LYSO_YIELD,LYSO_RT1,LYSO_SCALERESOLUTION);
@@ -516,7 +529,16 @@ tr = G4Translate3D(-RESIN_W+DET_TX+0.194*(i+1)*mm+DET_TX*2*i,0.,0.) * G4Rotate3D
         logicResin_Sub = new G4LogicalVolume(solidResin, EPOXY, "logicResin");
     }
 
+	if(ArgsPass->GetSiPMmaterial()==0){
     logicDetector = new G4LogicalVolume(solidDetector, worldMat, "logicDetector"); // Defined outside in class
+	}else if (ArgsPass->GetSiPMmaterial()==1){
+    logicDetector = new G4LogicalVolume(solidDetector, SiO2, "logicDetector"); // Defined outside in class
+	}else if (ArgsPass->GetSiPMmaterial()==2){
+            G4cout<< " ### Si for SiPMs  "<<G4endl;         
+
+    logicDetector = new G4LogicalVolume(solidDetector, Simat, "logicDetector"); // Defined outside in class
+
+	}
     //logicResin_Sub = new G4LogicalVolume(Resin_Sub, EPOXY, "logicResin");
 
     logicFR4 = new G4LogicalVolume(solidFR4, SiO2, "logicFR4");

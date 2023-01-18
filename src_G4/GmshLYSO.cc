@@ -9,33 +9,99 @@ GmshLYSO :: GmshLYSO(MyG4Args *MainArgs)
 	ptsY=MainArgs->GetYincr();
 	Znode=MainArgs->GetZnode();
 	modelname=MainArgs->GetOutName();
-	
+	YSymm=MainArgs->GetYSymtrue();
+
 	gmsh::initialize();
 	gmsh::model::add(modelname);
-
-	ptsYF = new G4double[Znode*2+1];
-	for(int i = 0; i < Znode+1; i++) { ptsYF[i]=ptsY[i];	}
-	for(int i = 0; i < Znode; i++) { ptsYF[Znode+i+1]=ptsYF[Znode-i-1];}
-	//std::cout<<"Vertical Increments: ";
-	//for(int i = 0; i < Znode*2+1; i++) { std::cout<<ptsYF[i]<<" ";}
-	//std::cout<<std::endl;
-	//ptsYF[3]=2;ptsYF[4]=1;
 
 // Geometry
 G4cout <<"### Geometry:" << G4endl;
   double dZ=Ztot/Znode;
   std::vector<int> pp;
   std::vector<int> pm;
-  for(int i = 0; i < Znode*2+1; i++) {
-    gmsh::model::geo::addPoint(-Xtot/2, +1*ptsYF[i]*1.5,-1*Ztot+dZ*i ,0,
-                               1000 + i);
-    gmsh::model::geo::addPoint(-Xtot/2, -1*ptsYF[i]*1.5,-1*Ztot+dZ*i ,0,
-                               2000 + i);
-    std::cout<<-Xtot/2<< " " <<+1*ptsYF[i]*1.5<< " " <<+-1*Ztot+dZ*i<< std::endl;
-    pp.push_back(1000 + i);
-    pm.push_back(2000 + i);
-  }
+  
+///////////////////////////
+	if(YSymm == 0){
+		
+				G4cout <<"Y Symm:" << G4endl;
 
+			ptsYF = new G4double[Znode*2+1];
+			for(int i = 0; i < Znode+1; i++) { ptsYF[i]=ptsY[i];	}
+			for(int i = 0; i < Znode; i++) { ptsYF[Znode+i+1]=ptsYF[Znode-i-1];}
+			for(int i = 0; i < Znode*2+1; i++) {
+				gmsh::model::geo::addPoint(-Xtot/2, +1*ptsYF[i]*1.5,-1*Ztot+dZ*i ,0,
+										   1000 + i);
+				gmsh::model::geo::addPoint(-Xtot/2, -1*ptsYF[i]*1.5,-1*Ztot+dZ*i ,0,
+										   2000 + i);
+				std::cout<<-Xtot/2<< " " <<+1*ptsYF[i]*1.5<< " " <<+-1*Ztot+dZ*i<< std::endl;
+				pp.push_back(1000 + i);
+				pm.push_back(2000 + i);
+		}
+	}else{
+		G4cout <<"No Y Symm:" << G4endl;
+			ptsYF = new G4double[Znode*2+1];
+			ptsYFb = new G4double[Znode*2+1];
+
+			for(int i = 0; i < Znode+1; i++) { ptsYF[i]=ptsY[i];	}
+			for(int i = 0; i < Znode; i++) { ptsYF[Znode+i+1]=ptsYF[Znode-i-1];}
+			
+			for(int i = 0; i < Znode*2+1; i++) {
+				gmsh::model::geo::addPoint(-Xtot/2, +1*ptsYF[i]*1.5,-1*Ztot+dZ*i ,0,
+										   1000 + i);
+				std::cout<<-Xtot/2<< " " <<+1*ptsYF[i]*1.5<< " " <<+-1*Ztot+dZ*i<< std::endl;
+				pp.push_back(1000 + i);
+			}
+			////////////////////////////////
+			ptsYFb = new G4double[Znode*2+1];
+			for(int i = 0; i < Znode+1; i++) { 
+				ptsYFb[i]=ptsY[Znode+i+1];	
+				G4cout <<"Yb: "<< i<<" "<<ptsYFb[i]<<" "<< Znode+i+1 <<" "<<ptsY[i] << G4endl;
+				}
+			for(int i = 0; i < Znode; i++) { 
+				ptsYFb[Znode+i+1]=ptsYFb[Znode-i-1];
+				G4cout << "ZSymm: "<< i << Znode+i+1 << " "<<ptsYFb[Znode+i+1] <<" "<<Znode-i-1<<" "<<ptsYFb[Znode-i-1] << G4endl;
+				}
+			
+			for(int i = 0; i < Znode*2+1; i++) {
+				gmsh::model::geo::addPoint(-Xtot/2, -1*ptsYFb[i]*1.5,-1*Ztot+dZ*i ,0,
+										   2000 + i);
+				std::cout<<-Xtot/2<< " " <<+1*ptsYFb[i]*1.5<< " " <<+-1*Ztot+dZ*i<< std::endl;
+				pm.push_back(2000 + i);
+			}
+
+/*
+		ptsYF = new G4double[Znode*2+1];
+		ptsYFb = new G4double[Znode*2+1];
+			for(int i = 0; i < Znode+1; i++) { ptsYF[i]=ptsY[i];	}
+			for(int i = 0; i < Znode; i++) { ptsYF[Znode+i+1]=ptsYF[Znode-i-1];}
+		G4cout <<"ptsYF:" << G4endl;
+		
+			for(int i = Znode+1; i < (Znode+1)*2; i++) { 
+				ptsYFb[i]=ptsY[i];	
+				G4cout <<ptsYFb[i] << G4endl;
+				}
+				
+			for(int i = 0; i < Znode; i++) { 
+				ptsYFb[Znode+i+1]=ptsYFb[Znode-i-1];
+				G4cout <<ptsYFb[i] << G4endl;
+				}
+		G4cout <<"ptsYFb:" << G4endl;
+
+			for(int i = 0; i < Znode*2+1; i++) {
+						G4cout <<"point loop:" << G4endl;
+				std::cout<<-Xtot/2<< " " <<+1*ptsYF[i]*1.5<< " " <<+-1*Ztot+dZ*i<< std::endl;
+
+				gmsh::model::geo::addPoint(-Xtot/2, +1*ptsYF[i]*1.5,-1*Ztot+dZ*i ,0,
+										   1000 + i);
+				pp.push_back(1000 + i);
+				std::cout<<-Xtot/2<< " " <<-1*ptsYFb[i]*1.5<< " " <<+-1*Ztot+dZ*i<< std::endl;										   
+				gmsh::model::geo::addPoint(-Xtot/2, -1*ptsYFb[i]*1.5,-1*Ztot+dZ*i ,0,
+										   2000 + i);
+				pm.push_back(2000 + i);		
+			}*/
+		}
+
+G4cout <<"making geom:" << G4endl;
 
   int splp, splm, l0, lm, cl, sf, ext;
 splp=gmsh::model::geo::addSpline(pp);
@@ -164,7 +230,7 @@ void GmshLYSO ::CreateG4LYSO(G4Material *material, G4LogicalVolume *logicWorld){
 	degeneracyFlag=0;
 	for(int i = 0; i < elemNodeTags[0].size(); i += 4) {
 	//for(int i = 0; i < 1; i += 4) {
-		G4cout <<"Nodetagloop for element "<< i/4 << G4endl;
+		//G4cout <<"Nodetagloop for element "<< i/4 << G4endl;
 		etag[0] = elemNodeTags[0][i]-1;
 		etag[1] = elemNodeTags[0][i+1]-1;
 		etag[2] = elemNodeTags[0][i+2]-1;
@@ -175,11 +241,12 @@ void GmshLYSO ::CreateG4LYSO(G4Material *material, G4LogicalVolume *logicWorld){
             y[j]=coord[etag[j]*3+1];
             z[j]=coord[etag[j]*3+2];
 			}
+			/*
 			G4cout <<"Coords x "<< x[0]<< " "<< x[1]<< " "<< x[2]<< " "<< x[3]<< " "<< G4endl;
 			G4cout <<"Coords y "<< y[0]<< " "<< y[1]<< " "<< y[2]<< " "<< y[3]<< " "<< G4endl;
 			G4cout <<"Coords z "<< z[0]<< " "<< z[1]<< " "<< z[2]<< " "<< z[3]<< " "<< G4endl;
 			G4cout <<"Solid Tet "<< i/4 << G4endl;
-
+			*/
 			LYSOTet_Solid = new G4Tet(tetname+ G4String("solid_")+G4UIcommand::ConvertToString(gidx),
 								G4ThreeVector(x[0]*mm,y[0]*mm, z[0]*mm),
 								G4ThreeVector(x[1]*mm,y[1]*mm, z[1]*mm),
@@ -188,19 +255,20 @@ void GmshLYSO ::CreateG4LYSO(G4Material *material, G4LogicalVolume *logicWorld){
 								degeneracyFlag);
 			VolTet = TetraVolume(x,y,z);
 			LocalArgs->AddVolume(VolTet);
+			/*
 			G4cout <<"Tet Volume "<< VolTet << G4endl;
 			G4cout <<"Total Volume "<< LocalArgs->GetVolume() << G4endl;
 
 			G4cout <<"Logic Tet "<< i/4 << G4endl;
-
+			*/
 			LYSOTet_Logic = new G4LogicalVolume(LYSOTet_Solid, material, tetname+ G4String("logical_")+G4UIcommand::ConvertToString(gidx));
 			fScoringVolumeVec.push_back(LYSOTet_Logic);
-			G4cout <<"Phys Tet "<< i/4 << G4endl;
+			//G4cout <<"Phys Tet "<< i/4 << G4endl;
 			LYSOTet_Phys = new G4PVPlacement(0,G4ThreeVector(0.,0.,0.),LYSOTet_Logic,tetname+ G4String("phys_")+G4UIcommand::ConvertToString(gidx),logicWorld,false,0,true);       
 			lstPhysTet.push_back(LYSOTet_Phys);
-			G4cout <<"Tet Done "<< i/4 << G4endl;
+			//G4cout <<"Tet Done "<< i/4 << G4endl;
 			gidx+=1;
-			G4cout <<"gidx "<< gidx << G4endl;
+			//G4cout <<"gidx "<< gidx << G4endl;
 
 		}
 			G4cout <<"Finished Mesh " << G4endl;

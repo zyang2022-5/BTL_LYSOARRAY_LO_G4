@@ -59,12 +59,13 @@ std::vector<std::size_t> tags;
 std::vector<double> coord, param;
 std::vector<std::vector<std::size_t> > elemTags, elemNodeTags;
 
-	G4double Ztot,Xtot,*ptsY,*ptsYF;
+	G4double Ztot,Xtot,*ptsY,*ptsYF,*ptsYFb;
 	G4int Znode;
 	G4String modelname;
 
 int Nelem=0;
 
+G4int YSymm=0;
 G4double VolTet=0;
 G4ThreeVector *p1,*p2,*p3,*p4;
 G4Tet *LYSOTet_Solid;

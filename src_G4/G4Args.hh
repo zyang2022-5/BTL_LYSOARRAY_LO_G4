@@ -30,6 +30,7 @@ public:
     G4double GetVov() const {return Detection[0];}
     G4int GetSiPMmaterial() const {return SiPMmaterial;}
 
+    G4int GetYSymtrue() const {return NoYSym;}
     G4int Getnrep() const {return nrep;}
     G4int GetZelem() const {return Zelem;}
     G4double GetLYSO_Yield() const {return LYSOProps[0];}
@@ -212,6 +213,7 @@ private:
     int runevt=0;
     char datechar [22];
     int Zelem=10;
+    int NoYSym=0;
     
     G4double PartDir[3];
     G4double PartDisplX=0;

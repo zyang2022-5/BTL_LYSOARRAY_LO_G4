@@ -328,7 +328,11 @@ G4cout<< " * imax: "<< imax<< " jmax: "<< jmax <<G4endl;
                     strftime (datechar,22,"_%Y_%m_%d_%H_%M_%S_",curr_tm);
                     G4cout<< " ### Add date to filename" <<G4endl;     
                         
-                }
+                }else if(strcmp(mainargv[j],"-NoYSym")==0)
+                {   
+                    NoYSym=1;
+                    G4cout<< " ### NoYSym "<<G4endl; 
+				}
                 else if(strcmp(mainargv[j],"-Ypos")==0)
                 {   
                     if(Znode>0){
@@ -336,8 +340,17 @@ G4cout<< " * imax: "<< imax<< " jmax: "<< jmax <<G4endl;
                         Ystr = 1;
                         YposStr=mainargv[j+1];j=j+1;
                         G4cout<< " ### The string to turn into the yincr vector is: "<<YposStr <<G4endl;                             
-                        yincr = Str2DChar(YposStr, Znode+1);
+
+                    }else{
+
+                        G4cout<< " ### WARNING: -Ypos with no Znode input" <<G4endl;     
+                    }
                         
+                }
+        }
+        
+    if (Ystr==1 && NoYSym==0){
+						yincr = Str2DChar(YposStr, Znode+1);
                         if(Geom_LYSO[0]*yincr[0]>=DET_T){
                         G4cout<< " ### LYSO : "<< Geom_LYSO[0]*yincr[0] << " larger than SiPM : "<<DET_T <<G4endl;                             
 
@@ -351,17 +364,15 @@ G4cout<< " * imax: "<< imax<< " jmax: "<< jmax <<G4endl;
 							RESIN_H=(DET_T*2+3.5)/2;
 							RESIN_Y=RESIN_H-0.5-DET_T;
 							SiPM_Y=-3.5/2+0.5;
-
-							//SiPM_Y=-RESIN_H+DET_T+Geom_LYSO[0]*yincr[0]/2+0.5;
 							}
-
-                    }else{
-
-                        G4cout<< " ### WARNING: -Ypos with no Znode input" <<G4endl;     
-                    }
-                        
-                }
-        }
+	}else if (Ystr==1 && NoYSym==1){
+						yincr = Str2DChar(YposStr, (Znode+1)*2);
+                        G4cout<< " ### LYSO : "<< Geom_LYSO[0]*yincr[0] << " cte position no matter what: "<<DET_T <<G4endl;                             
+							Glue_Y=Glue_Y*2.15; // equal to resin height
+							RESIN_H=(DET_T*2+3.5)/2;
+							RESIN_Y=RESIN_H-0.5-DET_T;
+							SiPM_Y=-3.5/2+0.5;		
+								}
 
     if (Oin == 0 ) {  OutName = DefOutName;   }
     if(dateflag == 1){   

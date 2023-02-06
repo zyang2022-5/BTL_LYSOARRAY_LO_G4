@@ -69,57 +69,64 @@ G4cout <<"### Geometry:" << G4endl;
 				pm.push_back(2000 + i);
 			}
 
-/*
-		ptsYF = new G4double[Znode*2+1];
-		ptsYFb = new G4double[Znode*2+1];
-			for(int i = 0; i < Znode+1; i++) { ptsYF[i]=ptsY[i];	}
-			for(int i = 0; i < Znode; i++) { ptsYF[Znode+i+1]=ptsYF[Znode-i-1];}
-		G4cout <<"ptsYF:" << G4endl;
-		
-			for(int i = Znode+1; i < (Znode+1)*2; i++) { 
-				ptsYFb[i]=ptsY[i];	
-				G4cout <<ptsYFb[i] << G4endl;
-				}
-				
-			for(int i = 0; i < Znode; i++) { 
-				ptsYFb[Znode+i+1]=ptsYFb[Znode-i-1];
-				G4cout <<ptsYFb[i] << G4endl;
-				}
-		G4cout <<"ptsYFb:" << G4endl;
-
-			for(int i = 0; i < Znode*2+1; i++) {
-						G4cout <<"point loop:" << G4endl;
-				std::cout<<-Xtot/2<< " " <<+1*ptsYF[i]*1.5<< " " <<+-1*Ztot+dZ*i<< std::endl;
-
-				gmsh::model::geo::addPoint(-Xtot/2, +1*ptsYF[i]*1.5,-1*Ztot+dZ*i ,0,
-										   1000 + i);
-				pp.push_back(1000 + i);
-				std::cout<<-Xtot/2<< " " <<-1*ptsYFb[i]*1.5<< " " <<+-1*Ztot+dZ*i<< std::endl;										   
-				gmsh::model::geo::addPoint(-Xtot/2, -1*ptsYFb[i]*1.5,-1*Ztot+dZ*i ,0,
-										   2000 + i);
-				pm.push_back(2000 + i);		
-			}*/
 		}
 
 G4cout <<"making geom:" << G4endl;
+	std::vector<int> Cloop ;
+	int splp, splm, l0, lm, cl, sf, ext,li,lii;
+	if (LocalArgs->GetSpline()==1){
+		splp=gmsh::model::geo::addSpline(pp);
+		splm=gmsh::model::geo::addSpline(pm);
+		l0 = gmsh::model::geo::addLine(pp[Znode*2], pm[Znode*2]);
+		lm = gmsh::model::geo::addLine(pp[0], pm[0]);
+		Cloop = {-lm, splp, l0, -splm};
+//G4cout <<Cloop << G4endl;
+	}else{
+		G4cout <<"### Straight:" << G4endl;
 
-  int splp, splm, l0, lm, cl, sf, ext;
-splp=gmsh::model::geo::addSpline(pp);
-splm=gmsh::model::geo::addSpline(pm);
-l0 = gmsh::model::geo::addLine(pp[Znode*2], pm[Znode*2]);
-lm = gmsh::model::geo::addLine(pp[0], pm[0]);
-cl = gmsh::model::geo::addCurveLoop({-lm, splp, l0, -splm});
+		l0 = gmsh::model::geo::addLine(pp[Znode*2], pm[Znode*2]);
+		lm = gmsh::model::geo::addLine(pp[0], pm[0]);
+		Cloop.push_back(-lm);
+		
+		for(int i = 0; i < Znode*2; i++) { 
+			std::cout <<  " lp index: "<< pp[i]<<" "<< pp[i+1]<<std::endl;
+			li=gmsh::model::geo::addLine(pp[i],pp[i+1]);
+			Cloop.push_back(li);
+		}
+		//li=gmsh::model::geo::addLine(pp[0],pp[Znode*2]);
+		//Cloop.push_back(li);
+		Cloop.push_back(l0);
+		//lii=gmsh::model::geo::addLine(pm[0],pm[Znode*2]);
+		//Cloop.push_back(-lii);
+		for(int i = 0; i < Znode*2; i++) { 
+			std::cout <<  " lm index: "<< pm[Znode*2-i]<<" "<< pm[Znode*2-i-1]<<std::endl;
+
+			li=gmsh::model::geo::addLine(pm[Znode*2-i],pm[Znode*2-i-1]);
+			Cloop.push_back(li);
+		}
+
+std::cout <<  " Cloop: ";	}
+for (int i = 0; i < Cloop.size(); i++) {
+  std::cout << Cloop[i] << " ";
+}
+std::cout << std::endl;
+
+cl = gmsh::model::geo::addCurveLoop(Cloop);
 sf = gmsh::model::geo::addPlaneSurface({cl});
 std::vector<std::pair<int, int> > ov2;
 gmsh::model::geo::extrude({{2, sf}}, Xtot, 0, 0,ov2,{1},{});
 gmsh::model::geo::mesh::setTransfiniteCurve(l0,2);
 gmsh::model::geo::mesh::setTransfiniteCurve(lm,2);
+gmsh::model::mesh::setSize(ov2, 100);
+
 
 G4cout <<"### Meshing:" << G4endl;
 // Meshing
 int nsecmesh=MainArgs->GetZelem();
+if (LocalArgs->GetSpline()==1){
 gmsh::model::geo::mesh::setTransfiniteCurve(splp,nsecmesh*2+1);
 gmsh::model::geo::mesh::setTransfiniteCurve(splm,nsecmesh*2+1);
+}
 gmsh::model::geo::synchronize();
 gmsh::model::mesh::generate(3);
 

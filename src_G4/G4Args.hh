@@ -70,6 +70,8 @@ public:
     G4int GetKillTLTrue() const {return KillLTTrue;}
     G4int GetnEvents() const {return nEvents;}
     G4int GetnResinMach() const {return ResinMach;}
+    G4int GetSpline() const {return Spline;}
+
     G4double GetIncr() const {return incr;}
     G4double GetGlueZ() const {return Glue_Z;}
     G4double GetIncrS() const {return incrS;}
@@ -200,6 +202,7 @@ private:
     G4int SiPMmatch=0;
     G4int SiPMmaterial=2;
     G4int AreaCte=0;
+    G4int Spline=1;
 
 
     G4double DET_T=3./2;

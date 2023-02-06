@@ -257,7 +257,11 @@ MyG4Args :: MyG4Args(int mainargc,char** mainargv)
                 {   
                     AreaCte=1;
                     G4cout<< " ### AreaCte "<<G4endl; 
-					
+                }else if(strcmp(mainargv[j],"-Spline")==0)
+                {   
+                    Spline=0;
+                    G4cout<< " ### Spline "<<G4endl; 
+										
                  }else if(strcmp(mainargv[j],"-Zelem")==0)
                 {   
                     Zelem = atoi(mainargv[j+1]);j=j+1;

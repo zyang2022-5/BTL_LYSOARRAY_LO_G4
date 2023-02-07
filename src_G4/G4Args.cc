@@ -399,22 +399,23 @@ MyG4Args :: ~MyG4Args()
 
 void MyG4Args ::matchSiPMf(){
 	if(SiPMmatch==1){
-		if(DET_YMAX>DET_T*yincr[0])
+		if(DET_YMAX>DET_T*yincr[0]){
 				DET_T = DET_T*yincr[0];
 			}
 		if (AreaCte==1){
-			if(DET_XMAX>Geom_LYSO[0])
+			if(DET_XMAX>Geom_LYSO[0]){
 				DET_TX= Geom_LYSO[0];
 			}
+		}
 	}
 	if(SiPMmatch==2){
-		if(DET_YMAX>DET_T*yincr[0])
+		if(DET_YMAX>DET_T*yincr[0]){
 				DET_T = DET_T*yincr[0];
 		}
 	}
 	if(SiPMmatch==3){
 		if (AreaCte==1){
-			if(DET_XMAX>Geom_LYSO[0])
+			if(DET_XMAX>Geom_LYSO[0]){
 				DET_TX= Geom_LYSO[0];
 			}
 		}

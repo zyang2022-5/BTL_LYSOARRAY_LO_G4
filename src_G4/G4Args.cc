@@ -243,7 +243,8 @@ MyG4Args :: MyG4Args(int mainargc,char** mainargv)
                     G4cout<< " ### The thickness of the SiPM changed to "<< incr <<G4endl;    
                 }else if(strcmp(mainargv[j],"-matchSiPM")==0)
                 {   
-                    SiPMmatch=1;
+                    //SiPMmatch=1;
+                    SiPMmatch= atoi(mainargv[j+1]);j=j+1;
                     G4cout<< " ### The thickness of the SiPM is matched to the LYSO end thickness "<< incr <<G4endl;   
                 }else if(strcmp(mainargv[j],"-Volume")==0)
                 {   
@@ -387,13 +388,40 @@ G4cout<< " * imax: "<< imax<< " jmax: "<< jmax <<G4endl;
     }    
 
 	if(AreaCte==1){
-		//Geom_LYSO[3]={3./2.,3./2.,57./2.};	
 		Geom_LYSO[0]=((57./2.)*3./2.) / Geom_LYSO[2];
 		}
-
+		
+	matchSiPMf();
 }
 MyG4Args :: ~MyG4Args()
 {}
+
+
+void MyG4Args ::matchSiPMf(){
+	if(SiPMmatch==1){
+		if(DET_YMAX>DET_T*yincr[0])
+				DET_T = DET_T*yincr[0];
+			}
+		if (AreaCte==1){
+			if(DET_XMAX>Geom_LYSO[0])
+				DET_TX= Geom_LYSO[0];
+			}
+	}
+	if(SiPMmatch==2){
+		if(DET_YMAX>DET_T*yincr[0])
+				DET_T = DET_T*yincr[0];
+		}
+	}
+	if(SiPMmatch==3){
+		if (AreaCte==1){
+			if(DET_XMAX>Geom_LYSO[0])
+				DET_TX= Geom_LYSO[0];
+			}
+		}
+	}
+
+    G4cout<< " ### match SiPM modification" <<G4endl;         
+}
 
 void MyG4Args :: AddPhotTiming(G4double Hitpos, G4double MeasTime ){
 
@@ -603,9 +631,9 @@ void MyG4Args ::SetYVect(G4double* radp){
                      yv[index] = yv[index]*yincr[i];
                 }
             }
-    if(SiPMmatch==1){
+    /*if(SiPMmatch==1){
         DET_T = DET_T*yincr[0];
-    }
+    }*/
 
     G4cout<< " ### Finished Y modification" <<G4endl;         
 }

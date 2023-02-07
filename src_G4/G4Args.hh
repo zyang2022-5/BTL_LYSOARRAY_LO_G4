@@ -96,6 +96,8 @@ public:
     void AddPhotR(){nPhotR += 1;}
     void AddPhotL(){nPhotL += 1;}    
     void AddPhotTiming(G4double , G4double);
+    void matchSiPMf();
+
     
     void AddVolume(G4double Vol){Volume += Vol;}
     void InitVolume(){Volume = 0;}
@@ -203,6 +205,8 @@ private:
     G4int SiPMmaterial=2;
     G4int AreaCte=0;
     G4int Spline=1;
+    G4double DET_YMAX=6;
+    G4double DET_XMAX=6;
 
 
     G4double DET_T=3./2;

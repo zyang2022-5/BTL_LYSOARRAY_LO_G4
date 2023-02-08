@@ -235,6 +235,7 @@ void GmshLYSO ::CreateG4LYSO(G4Material *material, G4LogicalVolume *logicWorld){
 	G4String tetname="G4Tet_";
 	G4bool *degeneracyFlag;
 	degeneracyFlag=0;
+	LocalArgs->InitVolume();
 	for(int i = 0; i < elemNodeTags[0].size(); i += 4) {
 	//for(int i = 0; i < 1; i += 4) {
 		//G4cout <<"Nodetagloop for element "<< i/4 << G4endl;
@@ -278,8 +279,9 @@ void GmshLYSO ::CreateG4LYSO(G4Material *material, G4LogicalVolume *logicWorld){
 			//G4cout <<"gidx "<< gidx << G4endl;
 
 		}
-			G4cout <<"Finished Mesh " << G4endl;
-
+			G4cout <<"    ### "<< G4endl;
+			G4cout <<"    ### Finished Mesh, Volume = "<< LocalArgs->GetVolume()<< G4endl;
+			G4cout <<"    ### "<< G4endl;
 	}
 
 

@@ -241,6 +241,10 @@ MyG4Args :: MyG4Args(int mainargc,char** mainargv)
                 {   
                     DET_T = DET_T*atof(mainargv[j+1])/100;j=j+1;
                     G4cout<< " ### The thickness of the SiPM changed to "<< incr <<G4endl;    
+                }else if(strcmp(mainargv[j],"-incrSiPMW")==0)
+                {   
+                    DET_TX = DET_TX*atof(mainargv[j+1])/100;j=j+1;
+                    G4cout<< " ### The DET_TX of the SiPM changed to "<< incr <<G4endl;                    
                 }else if(strcmp(mainargv[j],"-matchSiPM")==0)
                 {   
                     //SiPMmatch=1;
@@ -399,20 +403,38 @@ MyG4Args :: ~MyG4Args()
 
 void MyG4Args ::matchSiPMf(){
 	if(SiPMmatch==1){
-		if(DET_YMAX>DET_T*yincr[0]){
-				DET_T = DET_T*yincr[0];
-			}else{DET_T= DET_YMAX;}
-			
-		if (AreaCte==1){
-			if(DET_XMAX>Geom_LYSO[0]){
-				DET_TX= Geom_LYSO[0];
-			}else{DET_TX= DET_XMAX;}
-		}
+		if(NoYSym=1){
+				if(DET_YMAX>DET_T/2*(yincr[0]+yincr[Znode+1])){
+						DET_T = DET_T/2*(yincr[0]+yincr[Znode+1]);
+					}else{DET_T= DET_YMAX;}
+					
+				if (AreaCte==1){
+					if(DET_XMAX>Geom_LYSO[0]){
+						DET_TX= Geom_LYSO[0];
+					}else{DET_TX= DET_XMAX;}
+				}
+			}else{
+				if(DET_YMAX>DET_T*yincr[0]){
+						DET_T = DET_T*yincr[0];
+					}else{DET_T= DET_YMAX;}
+					
+				if (AreaCte==1){
+					if(DET_XMAX>Geom_LYSO[0]){
+						DET_TX= Geom_LYSO[0];
+					}else{DET_TX= DET_XMAX;}
+				}
+			}
 	}
 	if(SiPMmatch==2){
-		if(DET_YMAX>DET_T*yincr[0]){
-				DET_T = DET_T*yincr[0];
-		}else{DET_T= DET_YMAX;}
+		if(NoYSym=1){
+			if(DET_YMAX>DET_T/2*(yincr[0]+yincr[Znode+1])){
+					DET_T = DET_T/2*(yincr[0]+yincr[Znode+1]);
+			}else{DET_T= DET_YMAX;}
+		}else{
+			if(DET_YMAX>DET_T*yincr[0]){
+					DET_T = DET_T*yincr[0];
+			}else{DET_T= DET_YMAX;}
+		}
 	}
 	if(SiPMmatch==3){
 		if (AreaCte==1){

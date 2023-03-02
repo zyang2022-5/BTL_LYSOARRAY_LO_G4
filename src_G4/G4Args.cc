@@ -207,6 +207,10 @@ MyG4Args :: MyG4Args(int mainargc,char** mainargv)
                 {   
                     ResinMach = 2;
                     G4cout<< " ### Selected Resin Machined: "<< ResinMach  <<G4endl;  
+                }else if(strcmp(mainargv[j],"-ResinMachN")==0)
+                {   
+                    ResinMachN = atof(mainargv[j+1]);j=j+1;
+                    G4cout<< " ### Selected Resin Machined number: "<< ResinMachN  <<G4endl;  
                 }else if(strcmp(mainargv[j],"-NSGAII")==0)
                 {   
                     NSGAII = 1;

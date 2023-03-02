@@ -70,6 +70,8 @@ public:
     G4int GetKillTLTrue() const {return KillLTTrue;}
     G4int GetnEvents() const {return nEvents;}
     G4int GetnResinMach() const {return ResinMach;}
+    G4double GetnResinMachN() const {return ResinMachN;}
+
     G4int GetSpline() const {return Spline;}
 
     G4double GetIncr() const {return incr;}
@@ -201,6 +203,7 @@ private:
     G4int Ystr=0;
     G4double Volume=0.;
     G4int ResinMach=0;
+    G4double ResinMachN=-1;
     G4int SiPMmatch=0;
     G4int SiPMmaterial=2;
     G4int AreaCte=0;

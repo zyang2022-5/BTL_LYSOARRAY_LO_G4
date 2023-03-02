@@ -454,6 +454,8 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct()
 G4int nSiPM=16;
 if(GeomConfig==1 || GeomConfig==2 || GeomConfig==11 ){
     if (ArgsPass->GetnResinMach()==2){
+                    G4cout<< " ### Selected Resin Machined number: "<< ArgsPass->GetnResinMach()  <<G4endl;  
+
         box = new G4Box("Box_1",0.1*mm, 6.5*mm, RESIN_L*mm+DET_L*mm);
         tr = G4Translate3D((LYSO_thick+0.05)*mm,0., 0.) * G4Rotate3D(rotm) ;
         Resin_Sub =new G4SubtractionSolid("Resin_Sub0", solidResin, box, tr);
@@ -465,6 +467,7 @@ if(GeomConfig==1 || GeomConfig==2 || GeomConfig==11 ){
     }
 
     if (ArgsPass->GetnResinMach()==1){
+                    G4cout<< " ### Selected Resin Machined number: "<< ArgsPass->GetnResinMach()  <<G4endl;  
         box = new G4Box("Box_1",0.1*mm, 6.5*mm, RESIN_L*mm+DET_L*mm);
         tr = G4Translate3D((LYSO_thick+0.05)*mm,0., 0.) * G4Rotate3D(rotm) ;
         Resin_Sub =new G4SubtractionSolid("Resin_Sub0", solidResin, box, tr);
@@ -474,6 +477,21 @@ if(GeomConfig==1 || GeomConfig==2 || GeomConfig==11 ){
         tr = G4Translate3D(0.,1.55*mm, 0.) * G4Rotate3D(rotm) ;
         Resin_Sub =new G4SubtractionSolid("Resin_Sub", Resin_Sub, box, tr);*/
     }
+    
+    if (ArgsPass->GetnResinMachN()>0){
+                    G4cout<< " ### Selected Resin Machined number: "<< ArgsPass->GetnResinMachN()  <<G4endl;  
+
+        box = new G4Box("Box_1",0.1*mm, 6.5*mm, RESIN_L*mm+DET_L*mm);
+        tr = G4Translate3D(((ArgsPass->GetnResinMachN())+0.05)*mm,0., 0.) * G4Rotate3D(rotm) ;
+        Resin_Sub =new G4SubtractionSolid("Resin_Sub0", solidResin, box, tr);
+        tr = G4Translate3D(-((ArgsPass->GetnResinMachN())+0.05)*mm,0., 0.) * G4Rotate3D(rotm) ;
+        Resin_Sub =new G4SubtractionSolid("Resin_Sub", Resin_Sub, box, tr);
+        /*box = new G4Box("Box_2",3.2*mm, 0.1*mm, RESIN_L*mm+DET_L*mm);
+        tr = G4Translate3D(0.,1.55*mm, 0.) * G4Rotate3D(rotm) ;
+        Resin_Sub =new G4SubtractionSolid("Resin_Sub", Resin_Sub, box, tr);*/
+    }
+    
+    
         //Resin_Sub =new G4SubtractionSolid("Resin_Sub", box, solidDetector, tr);
 } else if (GeomConfig==3){
     G4cout<< " ### GeomConfig 3 LYSO and Resin  "<<G4endl;         
@@ -525,9 +543,14 @@ tr = G4Translate3D(-RESIN_W+DET_TX+0.194*(i+1)*mm+DET_TX*2*i,0.,0.) * G4Rotate3D
     if (ArgsPass->GetnResinMach()>0 || GeomConfig==3){
             G4cout<< " ### SubResin  "<<G4endl;         
         logicResin_Sub = new G4LogicalVolume(Resin_Sub, EPOXY, "logicResin");
+    }else if (ArgsPass->GetnResinMachN()>0 || GeomConfig==3){
+            G4cout<< " ### SubResin  "<<G4endl;         
+        logicResin_Sub = new G4LogicalVolume(Resin_Sub, EPOXY, "logicResin");
     }else{    
         logicResin_Sub = new G4LogicalVolume(solidResin, EPOXY, "logicResin");
     }
+    
+    
 
 	if(ArgsPass->GetSiPMmaterial()==0){
     logicDetector = new G4LogicalVolume(solidDetector, worldMat, "logicDetector"); // Defined outside in class

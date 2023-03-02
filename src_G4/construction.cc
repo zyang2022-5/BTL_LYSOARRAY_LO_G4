@@ -455,9 +455,9 @@ G4int nSiPM=16;
 if(GeomConfig==1 || GeomConfig==2 || GeomConfig==11 ){
     if (ArgsPass->GetnResinMach()==2){
         box = new G4Box("Box_1",0.1*mm, 6.5*mm, RESIN_L*mm+DET_L*mm);
-        tr = G4Translate3D(1.55*mm,0., 0.) * G4Rotate3D(rotm) ;
+        tr = G4Translate3D((LYSO_thick+0.05)*mm,0., 0.) * G4Rotate3D(rotm) ;
         Resin_Sub =new G4SubtractionSolid("Resin_Sub0", solidResin, box, tr);
-        tr = G4Translate3D(-1.55*mm,0., 0.) * G4Rotate3D(rotm) ;
+        tr = G4Translate3D(-(LYSO_thick+0.05)*mm,0., 0.) * G4Rotate3D(rotm) ;
         Resin_Sub =new G4SubtractionSolid("Resin_Sub", Resin_Sub, box, tr);
         box = new G4Box("Box_2",1.5*mm, 0.1*mm, RESIN_L*mm+DET_L*mm);
         tr = G4Translate3D(0.,0.8*mm, 0.) * G4Rotate3D(rotm) ;
@@ -466,9 +466,9 @@ if(GeomConfig==1 || GeomConfig==2 || GeomConfig==11 ){
 
     if (ArgsPass->GetnResinMach()==1){
         box = new G4Box("Box_1",0.1*mm, 6.5*mm, RESIN_L*mm+DET_L*mm);
-        tr = G4Translate3D(1.55*mm,0., 0.) * G4Rotate3D(rotm) ;
+        tr = G4Translate3D((LYSO_thick+0.05)*mm,0., 0.) * G4Rotate3D(rotm) ;
         Resin_Sub =new G4SubtractionSolid("Resin_Sub0", solidResin, box, tr);
-        tr = G4Translate3D(-1.55*mm,0., 0.) * G4Rotate3D(rotm) ;
+        tr = G4Translate3D(-(LYSO_thick+0.05)*mm,0., 0.) * G4Rotate3D(rotm) ;
         Resin_Sub =new G4SubtractionSolid("Resin_Sub", Resin_Sub, box, tr);
         /*box = new G4Box("Box_2",3.2*mm, 0.1*mm, RESIN_L*mm+DET_L*mm);
         tr = G4Translate3D(0.,1.55*mm, 0.) * G4Rotate3D(rotm) ;

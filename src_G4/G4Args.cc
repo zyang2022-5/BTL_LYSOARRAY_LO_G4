@@ -215,8 +215,11 @@ MyG4Args :: MyG4Args(int mainargc,char** mainargv)
                 {   
                     NSGAII = 1;
                     G4cout<< " ### Selected NSGAII Config."  <<G4endl;         
-                }
-                else if(strcmp(mainargv[j],"-rad2Y")==0)
+                }else if(strcmp(mainargv[j],"-reflSiPM")==0)
+                {   
+                    reflSiPM = 1;
+                    G4cout<< " ### Selected reflSiPM Config."  <<G4endl;   
+                }else if(strcmp(mainargv[j],"-rad2Y")==0)
                 {   
                     rad2Y = 1;
                     G4cout<< " ### Selected rad2Y Config."  <<G4endl;         

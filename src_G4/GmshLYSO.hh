@@ -66,6 +66,7 @@ std::vector<std::vector<std::size_t> > elemTags, elemNodeTags;
 int Nelem=0;
 
 G4int YSymm=0;
+G4int def=0;
 G4double VolTet=0;
 G4ThreeVector *p1,*p2,*p3,*p4;
 G4Tet *LYSOTet_Solid;

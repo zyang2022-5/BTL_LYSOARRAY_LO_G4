@@ -33,6 +33,8 @@ public:
     G4int GetYSymtrue() const {return NoYSym;}
     G4int Getnrep() const {return nrep;}
     G4int GetZelem() const {return Zelem;}
+    G4int GetReflSiPM() const {return reflSiPM;}
+
     G4double GetLYSO_Yield() const {return LYSOProps[0];}
     G4double GetLYSO_ScaleResolution() const {return LYSOProps[1];}
     G4double GetLYSO_RiseT() const {return LYSOProps[2];}
@@ -208,6 +210,8 @@ private:
     G4int SiPMmaterial=2;
     G4int AreaCte=0;
     G4int Spline=1;
+    G4int reflSiPM=0;
+
     G4double DET_YMAX=3;
     G4double DET_XMAX=3;
 

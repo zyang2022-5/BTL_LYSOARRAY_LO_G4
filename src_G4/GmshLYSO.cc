@@ -286,10 +286,13 @@ void GmshLYSO ::CreateG4LYSO(G4Material *material, G4LogicalVolume *logicWorld){
 
 
 void GmshLYSO ::SurfaceCoating(G4VPhysicalVolume *physWorld, G4OpticalSurface *coating){
-	
+	int ic;
 	for(int i = 0; i < Nelem; i ++){
 		//    G4LogicalBorderSurface *LYSO_Air_Border = new G4LogicalBorderSurface("LYSO_Glue_Border",physLYSO,physWorld,mirrorSurface);   
-		LYSO_Air_Border = new G4LogicalBorderSurface(G4String("ScintillationCoating_")+G4UIcommand::ConvertToString(i),lstPhysTet[i],physWorld,coating);   
+		LYSO_Air_Border = new G4LogicalBorderSurface(G4String("ScintillationCoating_")+G4UIcommand::ConvertToString(i+def),lstPhysTet[i],physWorld,coating);   
+		ic=i;
 		}
-
+		def=ic;
+	
 	}
+	

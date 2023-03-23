@@ -44,6 +44,10 @@ G4bool MySensitiveDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *ROhis
     G4ThreeVector posPhoton = preStepPoint->GetPosition();
     G4ThreeVector momPhoton = preStepPoint->GetMomentum();
 
+    // Get the momentum direction of the track
+    G4ThreeVector momentumDirection = track->GetMomentumDirection();
+    // Normalize the momentum direction to get the unitary direction vector
+    G4ThreeVector direction = momentumDirection.unit();
 
     G4double wlen = (1.239841939*eV/momPhoton.mag())*1E+03;
 
@@ -86,7 +90,10 @@ if (PassArgs->GetTree_Hits() == 1){
                 man->FillNtupleDColumn(1, 7,  PDElim);
                 man->FillNtupleDColumn(1, 8,  wlen);
                 man->FillNtupleDColumn(1, 9,  Tlength/mm);
-                man->AddNtupleRow(1);
+				man->FillNtupleDColumn(1, 10,  direction[0]);// D==double
+				man->FillNtupleDColumn(1, 11,  direction[1]);
+				man->FillNtupleDColumn(1, 12,  direction[2]);    
+                    man->AddNtupleRow(1);
         }
         countdet=countdet+1;
         //G4cout<< "Photon "<< PassArgs->GetLO() <<" GTiming : " << timeG/ps << G4endl;

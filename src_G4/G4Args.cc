@@ -149,6 +149,16 @@ MyG4Args :: MyG4Args(int mainargc,char** mainargv)
                     Geom_LYSO[2] = atof(mainargv[j+1]);j=j+1;
                     G4cout<< " ### LYSO_L modified to :"<< Geom_LYSO[2]*2 <<G4endl;         
                 }
+                else if(strcmp(mainargv[j],"-SiPM_Z")==0)
+                {   
+                    DET_L = atof(mainargv[j+1]);j=j+1;
+                    G4cout<< " ### SiPM_Z modified to :"<< DET_L*2 <<G4endl;         
+                }     
+                else if(strcmp(mainargv[j],"-RESIN_Z")==0)
+                {   
+                    RESIN_Z = atof(mainargv[j+1]);j=j+1;
+                    G4cout<< " ### RESIN_Z modified to :"<< RESIN_Z*2 <<G4endl;         
+                }        
                 else if(strcmp(mainargv[j],"-Glue_Z")==0)
                 {   
                     Glue_Z = atof(mainargv[j+1]);j=j+1;

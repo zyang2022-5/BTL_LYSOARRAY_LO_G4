@@ -35,6 +35,9 @@ public:
     G4int GetZelem() const {return Zelem;}
     G4int GetReflSiPM() const {return reflSiPM;}
 
+    G4double GetGeom_DET_L() const {return DET_L;}
+    G4double GetGeom_RESIN_L() const {return RESIN_Z;}
+
     G4double GetLYSO_Yield() const {return LYSOProps[0];}
     G4double GetLYSO_ScaleResolution() const {return LYSOProps[1];}
     G4double GetLYSO_RiseT() const {return LYSOProps[2];}
@@ -215,8 +218,11 @@ private:
     G4double DET_YMAX=3;
     G4double DET_XMAX=3;
 
+    G4double DET_L=0.3/2.;
 
     G4double DET_T=3./2;
+    G4double RESIN_Z=0.5;
+
     G4double DET_TX=3./2;
     G4double Glue_Y=3.;
     G4double Glue_Z=0.2;

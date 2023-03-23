@@ -234,7 +234,7 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct()
 ////////////////////
     G4cout<< " ### Volume Initialization. " <<G4endl;         
 
-    G4double DET_L = 0.3*mm;    DET_L=DET_L/2.;    
+    //G4double DET_L = 0.3*mm;    DET_L=DET_L/2.;    
     //G4double RESIN_H =6.5*mm;   RESIN_H=RESIN_H/2.;
     //G4double RESIN_W =3.1*mm;RESIN_W=RESIN_W/2.;
     G4double FR4_L =0.8/2.*mm;     //FR4_L=FR4_L/2.;
@@ -794,6 +794,7 @@ logicDetector->SetSensitiveDetector(sensDet);
 
     void MyDetectorConstruction:: DefaultValues()
 {
+	DET_L = ArgsPass->GetGeom_DET_L();
     LYSO_L = ArgsPass->GetGeom_LYSO_L();
     LYSO_thick=ArgsPass->GetGeom_LYSO_thick();
     //RESIN_W=51.5/2.;
@@ -807,7 +808,8 @@ logicDetector->SetSensitiveDetector(sensDet);
     SiPM_Y=ArgsPass->GetGeom_SiPM_Y();   
     DET_T =ArgsPass->GetGeom_DET_T();
     DET_TX =ArgsPass->GetGeom_DET_TX();
-     RESIN_LNOM=0.5;RESIN_LTol=0.1;
+     RESIN_LNOM=ArgsPass->GetGeom_RESIN_L();
+     RESIN_LTol=0.1;
     if(ArgsPass->GetRnd_Geom()==1)
         {
         GLUE_L = ArgsPass->GetGlueZ()-0.05+0.1*G4UniformRand();   GLUE_L=GLUE_L/2.;

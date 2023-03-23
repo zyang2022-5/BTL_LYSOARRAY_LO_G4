@@ -37,6 +37,9 @@ MyRunAction :: MyRunAction(G4String OutName,MyG4Args* MainArgs)
             man->CreateNtupleDColumn("fPDE");
             man->CreateNtupleDColumn("fwlen");
             man->CreateNtupleDColumn("fMeanPath");
+            man->CreateNtupleDColumn("fdirX");
+            man->CreateNtupleDColumn("fdirY");
+            man->CreateNtupleDColumn("fdirZ");
             man->FinishNtuple(1); // Finish our first tuple or Ntuple number 0
 
         // Tuple containing all information regarding all killed photons

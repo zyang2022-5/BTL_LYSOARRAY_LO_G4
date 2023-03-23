@@ -108,7 +108,7 @@ void MyEventAction::EndOfEventAction(const G4Event *anEvent)
     G4cout<< "Estimated Light Output per SiPM " << PassArgs->GetPhHits()*PDE420/(PassArgs->GetEdep()/MeV) << G4endl;
     G4cout<< "#####################" << G4endl;
     G4cout<< "#####################" << G4endl;
-        }else if (GeomConfig == 3){
+        }else if (GeomConfig == 3 || GeomConfig == 13){
     G4cout<< "#####################" << G4endl;
     G4cout<< "#####################" << G4endl;
     //G4cout<< "Event Nº: " << evt << G4endl; Print Run number!!
@@ -153,7 +153,7 @@ if(PassArgs->GetTree_EndOfEvent()==1){
     man->FillNtupleDColumn(4, 10, YPOS);
     man->FillNtupleDColumn(4, 11, XPOS2);
     man->FillNtupleDColumn(4, 12, YPOS2);
-    if (GeomConfig == 3){
+    if (GeomConfig == 3 || GeomConfig == 13){
     man->FillNtupleDColumn(4, 13, CT);
     man->FillNtupleDColumn(4, 14, CT/(PassArgs->GetEdep()/MeV));}
     //else {man->FillNtupleDColumn(4, 11, 0.);}
@@ -208,7 +208,7 @@ if(PassArgs->GetTree_EndOfEvent()==1){
             //command = "/gun/direction 0. 0. 1."; 
             //G4cout<< command << G4endl;
             //UImanager->ApplyCommand(command); 
-        }else if (GeomConfig == 3){
+        }else if (GeomConfig == 3 || GeomConfig == 13){
             GenX=(-LYSO_T*2.*mm-0.194/2*mm+LYSO_T*mm*2*G4UniformRand()+PassArgs->GetPartXDispl())/1000.;
             GenZ=(-LYSO_L+LYSO_L*2*G4UniformRand())/1000.;
             command = "/gun/position "+std::to_string(GenX)+" 0.05 "+std::to_string(GenZ)+" m"; 

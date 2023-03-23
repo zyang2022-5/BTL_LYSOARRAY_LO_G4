@@ -38,6 +38,7 @@ public:
     ~GmshLYSO();
     
     void CreateG4LYSO(G4Material*, G4LogicalVolume*);
+    void CreateG4LYSO_GC3(G4Material*, G4LogicalVolume*, G4double);
 	void SurfaceCoating(G4VPhysicalVolume* , G4OpticalSurface* );
 
 	std::vector<G4LogicalVolume*> GetScoringVolumeVec() const {return fScoringVolumeVec;}

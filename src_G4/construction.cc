@@ -454,7 +454,7 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct()
 		G4cout <<"Gmsh::" << G4endl;
 		GCgmsh = new GmshLYSO(ArgsPass);
 		G4cout <<"Gmsh to G4Tet::" << G4endl;
-		GCgmsh->CreateG4LYSO_GC3(scintillator,logicWorld,DET_TX);
+		GCgmsh->CreateG4LYSO_GC3(scintillator,logicWorld,LYSO_thick);
 		GCgmsh->SurfaceCoating_GC3(physWorld, mirrorSurface);
 		fScoringVolumeVec = GCgmsh->GetScoringVolumeVec();
 		G4cout <<"Get LYSO Volume:: " <<ArgsPass->GetVolume() << G4endl;
@@ -473,8 +473,15 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct()
 			}
 		}
         G4cout<< " ### LYSO solids. " <<G4endl;         
+	if (GeomConfig==13){
+		solidResin = new G4Box("solidResin", LYSO_thick*8*2*mm+0.2*7*mm+0.2, RESIN_H*mm, RESIN_L*mm+DET_L*mm);
+		solidFR4 = new G4Box("solidFR4", LYSO_thick*8*2*mm+0.2*7*mm+0.2, RESIN_H*mm, FR4_L);
 
-    solidResin = new G4Box("solidResin", RESIN_W*mm, RESIN_H*mm, RESIN_L*mm+DET_L*mm);
+	}else{
+		solidResin = new G4Box("solidResin", RESIN_W*mm, RESIN_H*mm, RESIN_L*mm+DET_L*mm);
+		solidFR4 = new G4Box("solidFR4", RESIN_W*mm, RESIN_H*mm, FR4_L);
+
+		}
 
     solidDetector = new G4Box("solidDetector", DET_TX*mm, DET_T*mm, DET_L);
 
@@ -557,7 +564,6 @@ tr = G4Translate3D(-RESIN_W+DET_TX+0.194*(i+1)*mm+DET_TX*2*i,0.,0.) * G4Rotate3D
 }
         G4cout<< " ### Resin and SiPM solids. " <<G4endl;         
 
-    solidFR4 = new G4Box("solidFR4", RESIN_W*mm, RESIN_H*mm, FR4_L);
 
 
 ////////////////////
@@ -756,7 +762,7 @@ physResin2 = new G4PVPlacement(rM,G4ThreeVector(XposTol2*mm,YposTol2*mm+RESIN_Y*
 	G4double Xtrans=-8;
 	
 	for (int i = 0; i < 16; i += 1) {
-		XposGC3[i]=-DET_TX*2*7-0.2*7-0.1-DET_TX+(DET_TX*2+0.2)*i;
+		XposGC3[i]=-LYSO_thick*2*7-0.2*7-0.1-LYSO_thick+(LYSO_thick*2+0.2)*i;
 		}
 	for(int i = 0; i < nSiPM; i++){
 				G4cout<< " ### SiPM Positioning Left"<< i<<G4endl;          

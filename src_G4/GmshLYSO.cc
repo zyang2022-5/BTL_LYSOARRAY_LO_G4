@@ -289,7 +289,7 @@ void GmshLYSO ::CreateG4LYSO(G4Material *material, G4LogicalVolume *logicWorld){
 // from the gmsh mesh
 void GmshLYSO ::CreateG4LYSO_GC3(G4Material *material, G4LogicalVolume *logicWorld, G4double Det_X){
 //	LocalArgs->SetVolume(0);
-
+	G4cout <<"### DET_X used in CreateG4LYSO_GC3"<< Det_X << G4endl;
 	int etag[4], gidx;
 	double x[4],y[4],z[4];
 	gidx = 1000;
@@ -298,11 +298,13 @@ void GmshLYSO ::CreateG4LYSO_GC3(G4Material *material, G4LogicalVolume *logicWor
 	degeneracyFlag=0;
 	LocalArgs->InitVolume();
 	G4double* XposGC3 = new G4double[16];
-	G4double Xtrans;
+	G4double Xtrans=-8;
+	
 	for (int i = 0; i < 16; i += 1) {
-		XposGC3[i]=-Det_X*8-Det_X/2+Det_X*i;
+		XposGC3[i]=-Det_X*2*7-0.2*7-0.1-Det_X+(Det_X*2+0.2)*i;
 		}
 	for (int j = 0; j < 16; j += 1) {
+		G4cout <<"### Translation: "<< XposGC3[j] << G4endl;
 		Xtrans=XposGC3[j];
 		for(int i = 0; i < elemNodeTags[0].size(); i += 4) {
 		//for(int i = 0; i < 1; i += 4) {

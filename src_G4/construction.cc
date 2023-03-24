@@ -234,7 +234,7 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct()
 ////////////////////
     G4cout<< " ### Volume Initialization. " <<G4endl;         
 
-    //G4double DET_L = 0.3*mm;    DET_L=DET_L/2.;    
+    G4double DET_L = 0.3*mm;    DET_L=DET_L/2.;    
     //G4double RESIN_H =6.5*mm;   RESIN_H=RESIN_H/2.;
     //G4double RESIN_W =3.1*mm;RESIN_W=RESIN_W/2.;
     G4double FR4_L =0.8/2.*mm;     //FR4_L=FR4_L/2.;
@@ -485,9 +485,6 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct()
     //G4Transform3D tr1 = G4Transform3D(rotm,position1);
     G4Box* box = new G4Box("Box_1",RESIN_W*mm, RESIN_H*mm, RESIN_L*mm+DET_L);
 G4int nSiPM=16;
-        //////////////////////
-        // Resin cutouts, not for GC 3 or 13??
-        //////////////////////
 if(GeomConfig==1 || GeomConfig==2 || GeomConfig==11 ){
     if (ArgsPass->GetnResinMach()==2){
                     G4cout<< " ### Selected Resin Machined number: "<< ArgsPass->GetnResinMach()  <<G4endl;  
@@ -529,10 +526,7 @@ if(GeomConfig==1 || GeomConfig==2 || GeomConfig==11 ){
     
     
         //Resin_Sub =new G4SubtractionSolid("Resin_Sub", box, solidDetector, tr);
-        //////////////////////
-        // Creating extra SiPM
-        //////////////////////
-} else if (GeomConfig==3 || GeomConfig==13){
+} else if (GeomConfig==3){
     G4cout<< " ### GeomConfig 3 LYSO and Resin  "<<G4endl;         
     tr = G4Translate3D(-RESIN_W+DET_TX+0.194*mm, +0.5*mm+DET_T-RESIN_H, RESIN_L*mm) * G4Rotate3D(rotm) ;
     Resin_Sub =new G4SubtractionSolid("Resin_Sub", box, solidDetector, tr);
@@ -742,8 +736,11 @@ physFR42 = new G4PVPlacement(rM,G4ThreeVector(XposTol2*mm,YposTol2*mm+RESIN_Y,-1
     	            G4cout<< " ### Phys Glue Volume 11"<<G4endl;          
 
 			}
+
+//////////////
+// GEOM TYPE 2
 }//////////////
-// GEOM TYPE 13
+// GEOM TYPE 11
 else if(GeomConfig == 13 ){
 G4RotationMatrix* rM = new G4RotationMatrix();
   rM->rotateY(180.*deg);
@@ -755,17 +752,21 @@ physResin2 = new G4PVPlacement(rM,G4ThreeVector(XposTol2*mm,YposTol2*mm+RESIN_Y*
 //physResin1 = new G4PVPlacement(0     ,G4ThreeVector(XposTol*mm,YposTol*mm+(RESIN_H-0.5*mm-LYSO_thick),+1*(+LYSO_L*mm+GLUE_L*mm*2+RESIN_L*mm+DET_L)),logicResin_Sub,"physResin1",logicWorld,false,0,true); 
 //physResin2 = new G4PVPlacement(rM,G4ThreeVector(XposTol2*mm,YposTol2*mm+(RESIN_H-0.5*mm-LYSO_thick),-1*(+LYSO_L*mm+GLUE_L*mm*2+RESIN_L*mm+DET_L)),logicResin_Sub,"physResin2",logicWorld,false,0,true); 
     //physDetector = new G4PVPlacement(0,G4ThreeVector(XposTol*mm,YposTol*mm,+1*(+LYSO_L*mm+RESIN_L*mm*2+2*GLUE_L*mm+DET_L)),logicDetector,"physDetector",logicWorld,false,0,true); 
+	G4double* XposGC3 = new G4double[16];
+	G4double Xtrans=-8;
+	
+	for (int i = 0; i < 16; i += 1) {
+		XposGC3[i]=-DET_TX*2*7-0.2*7-0.1-DET_TX+(DET_TX*2+0.2)*i;
+		}
+	for(int i = 0; i < nSiPM; i++){
+				G4cout<< " ### SiPM Positioning Left"<< i<<G4endl;          
+		//physDetector = new G4PVPlacement(0,G4ThreeVector(XposTol*mm-RESIN_W+DET_TX+0.194*(i+1)*mm+DET_TX*2*i,YposTol2*mm+SiPM_Y,+1*(+RESIN_L*mm)),logicResin_Sub,"physDetector",logicWorld,false,i-1,true); 
+    physDetector = new G4PVPlacement(0,G4ThreeVector(XposTol2*mm+XposGC3[i]*mm,YposTol2*mm+SiPM_Y,+1*(+RESIN_L*mm)),logicDetector,"physDetector",logicResin_Sub,false,i-1,true); 
+    	            G4cout<< " ### Phys Detector Volume 11"<<G4endl;  
+	}
+	
+        
 
-    //physDetector = new G4PVPlacement(0,G4ThreeVector(XposTol2*mm,YposTol2*mm+SiPM_Y,+1*(+RESIN_L*mm)),logicDetector,"physDetector",logicResin_Sub,false,1,true); 
-    //	            G4cout<< " ### Phys Detector Volume 11"<<G4endl;          
-for(int i = 0; i < nSiPM; i++){
-            G4cout<< " ### SiPM Positioning Left"<< i<<G4endl;          
-    physDetector = new G4PVPlacement(0,G4ThreeVector(XposTol*mm-RESIN_W+DET_TX+0.194*(i+1)*mm+DET_TX*2*i,YposTol*mm,+1*(+LYSO_L*mm+RESIN_L*mm*2+2*GLUE_L*mm+DET_L)),logicDetector,"physDetector",logicWorld,false,i-1,true); 
-}
-for(int i = 0; i < nSiPM; i++){   
-            G4cout<< " ### SiPM Positioning Right"<< i<<G4endl;          
-physDetector = new G4PVPlacement(0,G4ThreeVector(XposTol2*mm-RESIN_W+DET_TX+0.194*(i+1)*mm+DET_TX*2*i,YposTol2*mm,-1*(+LYSO_L*mm+RESIN_L*mm*2+2*GLUE_L*mm+DET_L)),logicDetector,"physDetector",logicWorld,false,i+nSiPM-1,true); 
-}
 physFR41 = new G4PVPlacement(0     ,G4ThreeVector(XposTol*mm,YposTol*mm+RESIN_Y,+1*(+LYSO_L*mm+GLUE_L*mm*2+2*(RESIN_L*mm+DET_L)+FR4_L)),logicFR4,"physResin1",logicWorld,false,0,true); 
 physFR42 = new G4PVPlacement(rM,G4ThreeVector(XposTol2*mm,YposTol2*mm+RESIN_Y,-1*(+LYSO_L*mm+GLUE_L*mm*2+2*(RESIN_L*mm+DET_L)+FR4_L)),logicFR4,"physResin2",logicWorld,false,0,true);
     	            G4cout<< " ### Phys Fr4 Volume 11"<<G4endl;   
@@ -793,6 +794,9 @@ physFR42 = new G4PVPlacement(rM,G4ThreeVector(XposTol2*mm,YposTol2*mm+RESIN_Y,-1
     	            G4cout<< " ### Phys Glue Volume 11"<<G4endl;          
 
 			}
+
+//////////////
+// GEOM TYPE 2
 }
             G4cout<< " ### Phys Volumes"<<G4endl;          
 
@@ -870,7 +874,6 @@ logicDetector->SetSensitiveDetector(sensDet);
 
     void MyDetectorConstruction:: DefaultValues()
 {
-	DET_L = ArgsPass->GetGeom_DET_L();
     LYSO_L = ArgsPass->GetGeom_LYSO_L();
     LYSO_thick=ArgsPass->GetGeom_LYSO_thick();
     //RESIN_W=51.5/2.;
@@ -884,8 +887,7 @@ logicDetector->SetSensitiveDetector(sensDet);
     SiPM_Y=ArgsPass->GetGeom_SiPM_Y();   
     DET_T =ArgsPass->GetGeom_DET_T();
     DET_TX =ArgsPass->GetGeom_DET_TX();
-     RESIN_LNOM=ArgsPass->GetGeom_RESIN_L();
-     RESIN_LTol=0.1;
+     RESIN_LNOM=0.5;RESIN_LTol=0.1;
     if(ArgsPass->GetRnd_Geom()==1)
         {
         GLUE_L = ArgsPass->GetGlueZ()-0.05+0.1*G4UniformRand();   GLUE_L=GLUE_L/2.;

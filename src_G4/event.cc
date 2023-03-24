@@ -208,9 +208,19 @@ if(PassArgs->GetTree_EndOfEvent()==1){
             //command = "/gun/direction 0. 0. 1."; 
             //G4cout<< command << G4endl;
             //UImanager->ApplyCommand(command); 
-        }else if (GeomConfig == 3 || GeomConfig == 13){
+        }else if (GeomConfig == 3 ){
             GenX=(-LYSO_T*2.*mm-0.194/2*mm+LYSO_T*mm*2*G4UniformRand()+PassArgs->GetPartXDispl())/1000.;
             GenZ=(-LYSO_L+LYSO_L*2*G4UniformRand())/1000.;
+            command = "/gun/position "+std::to_string(GenX)+" 0.05 "+std::to_string(GenZ)+" m"; 
+            G4cout<< command << G4endl;
+            UImanager->ApplyCommand(command);     
+            //command = "/gun/direction 0. -1. 0."; 
+            //G4cout<< command << G4endl;
+            //UImanager->ApplyCommand(command); 
+        }else if (GeomConfig == 13){
+			LYSO_T=PassArgs->GetGeom_LYSO_thick();
+            GenX=(-LYSO_T*1.99*mm-0.10*mm+LYSO_T*mm*1.98*G4UniformRand()+PassArgs->GetPartXDispl())/1000.;
+            GenZ=(-LYSO_L*0.99+LYSO_L*1.98*G4UniformRand())/1000.;
             command = "/gun/position "+std::to_string(GenX)+" 0.05 "+std::to_string(GenZ)+" m"; 
             G4cout<< command << G4endl;
             UImanager->ApplyCommand(command);     

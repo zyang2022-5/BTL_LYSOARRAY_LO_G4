@@ -368,3 +368,16 @@ void GmshLYSO ::SurfaceCoating(G4VPhysicalVolume *physWorld, G4OpticalSurface *c
 	
 	}
 	
+void GmshLYSO ::SurfaceCoating_GC3(G4VPhysicalVolume *physWorld, G4OpticalSurface *coating){
+	int ic;
+	int def=0;
+	for (int j = 0; j < 16; j += 1) {
+		for(int i = 0; i < Nelem; i ++){
+			//    G4LogicalBorderSurface *LYSO_Air_Border = new G4LogicalBorderSurface("LYSO_Glue_Border",physLYSO,physWorld,mirrorSurface);   
+			LYSO_Air_Border = new G4LogicalBorderSurface(G4String("ScintillationCoating_")+G4UIcommand::ConvertToString(i+def),lstPhysTet[i+def],physWorld,coating);   
+			ic=i;
+			}
+			def=def+ic;
+		}
+	}
+	

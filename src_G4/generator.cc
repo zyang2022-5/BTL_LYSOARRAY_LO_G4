@@ -29,7 +29,7 @@ MyPrimaryGenerator :: MyPrimaryGenerator(MyG4Args* MainArgs)
         }
 
             G4double LT=PassArgs->GetGeom_LYSO_thick();
-                if(PassArgs->GetGeomConfig()==3){
+                if(PassArgs->GetGeomConfig()==3 || PassArgs->GetGeomConfig()==13 ){
                     G4ThreeVector pos(-1*LT*mm,0.05*m,0.*m);
                     fParticleGun->SetParticlePosition (pos);
                 }else{

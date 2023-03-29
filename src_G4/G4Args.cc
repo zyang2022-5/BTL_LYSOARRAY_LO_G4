@@ -127,6 +127,11 @@ MyG4Args :: MyG4Args(int mainargc,char** mainargv)
                     MainTrees[3] = 0;
                     G4cout<< " ### Not! Storing Tree Tracking" <<G4endl;         
                 }
+                else if(strcmp(mainargv[j],"-FR4refl")==0)
+                {   
+                    FR4refl = 1;
+                    G4cout<< " ### FR4refl" <<G4endl;         
+                }
                 else if(strcmp(mainargv[j],"-nEndOfEvent")==0)
                 {   
                     MainTrees[4] = 0;

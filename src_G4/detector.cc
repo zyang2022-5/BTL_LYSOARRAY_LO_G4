@@ -97,7 +97,7 @@ if (PassArgs->GetTree_Hits() == 1){
         }
         countdet=countdet+1;
         //G4cout<< "Photon "<< PassArgs->GetLO() <<" GTiming : " << timeG/ps << G4endl;
-        if (PassArgs->GetGeomConfig()==3 || PassArgs->GetGeomConfig()==13 && posPhoton[0]/mm>-3.1 && posPhoton[0]/mm<-0.01){
+        if (PassArgs->GetGeomConfig()==3 || PassArgs->GetGeomConfig()==13 && posPhoton[0]/mm>-1*+PassArgs->GetGeom_LYSO_thick()*2+0.1 && posPhoton[0]/mm<-0.01){
             PassArgs->AddLO();
             if(posPhoton[2]/mm>0){
                 PassArgs->AddPhotR();

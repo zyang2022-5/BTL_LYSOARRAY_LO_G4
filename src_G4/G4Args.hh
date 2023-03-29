@@ -78,6 +78,7 @@ public:
     G4double GetnResinMachN() const {return ResinMachN;}
 
     G4int GetSpline() const {return Spline;}
+    G4int GetFR4Refl() const {return FR4refl;}
 
     G4double GetIncr() const {return incr;}
     G4double GetGlueZ() const {return Glue_Z;}
@@ -234,6 +235,7 @@ private:
     char datechar [22];
     int Zelem=10;
     int NoYSym=0;
+    G4int FR4refl=0;
     
     G4double PartDir[3];
     G4double PartDisplX=0;

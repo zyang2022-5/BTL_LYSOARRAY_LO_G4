@@ -191,11 +191,41 @@ if(PassArgs->GetTree_EndOfEvent()==1){
 
             G4cout<< "Event GeomConfig: "<< GeomConfig <<" ,PartRnd. "<< PassArgs->GetRnd_Part() << G4endl;
         if (GeomConfig == 1 || GeomConfig == 11){
+			
+						if (PassArgs->Getrndangle()==1){
+			G4double theta = 39.9+G4UniformRand()*50;
+            G4cout<< "Angle: " << theta-40 << G4endl;
+			theta=theta/180*M_PI;
+			G4double X0 = -1.5-0.1;
+			G4double Y0 = 50;
+			G4double r = G4UniformRand()*0.7;
+            G4cout<< "radius: " << r << G4endl;
+
+			G4double ux = -cos(theta);
+			G4double uy = -sin(theta);
+			G4double x1 = -r*cos(theta);
+			G4double y1 = r*sin(theta);
+			G4double x10 = r*cos(theta)+X0;
+			G4double y10 = r*sin(theta);
+			G4double x2 =(Y0-y1)/tan(theta);
+			
+			GenX=(x2-x10)/1000.;
+			GenZ=(-LYSO_L+LYSO_L*2*G4UniformRand())/1000.;
+            command = "/gun/position "+std::to_string(GenX)+" "+std::to_string(Y0/1000)+" "+std::to_string(GenZ)+" m"; 
+            G4cout<< command << G4endl;
+            UImanager->ApplyCommand(command);  
+            command = "/gun/direction "+std::to_string(ux)+" "+std::to_string(uy)+" 0."; 
+            G4cout<< command << G4endl; 
+            UImanager->ApplyCommand(command);  
+
+			}
+			else{
             GenX=(-LYSO_T+LYSO_T*2*G4UniformRand()+PassArgs->GetPartXDispl())/1000.;
             GenZ=(-LYSO_L+LYSO_L*2*G4UniformRand())/1000.;
             command = "/gun/position "+std::to_string(GenX)+" 0.05 "+std::to_string(GenZ)+" m"; 
             G4cout<< command << G4endl;
-            UImanager->ApplyCommand(command);     
+            UImanager->ApplyCommand(command); 
+			}    
             //command = "/gun/direction 0. -1. 0."; 
             //G4cout<< command << G4endl;
             //UImanager->ApplyCommand(command); 
@@ -209,11 +239,32 @@ if(PassArgs->GetTree_EndOfEvent()==1){
             //G4cout<< command << G4endl;
             //UImanager->ApplyCommand(command); 
         }else if (GeomConfig == 3 ){
+			if (PassArgs->Getrndangle()==1){
+			G4double theta = G4UniformRand()*50/180*M_PI;
+			G4double X0 = -1.5-0.1;
+			G4double Y0 = 0.05;
+			G4double r = G4UniformRand()*0.7;
+			G4double x1 = -r*cos(theta);
+			G4double y1 = r*sin(theta);
+			G4double x10 = r*cos(theta)+X0;
+			G4double y10 = r*sin(theta);
+			G4double x2 =(Y0-y1)/tan(theta);
+			
+			GenX=(x2-x10)/1000.;
+			GenZ=(-LYSO_L+LYSO_L*2*G4UniformRand())/1000.;
+            command = "/gun/position "+std::to_string(GenX)+" 0.05 "+std::to_string(GenZ)+" m"; 
+            G4cout<< command << G4endl;
+            UImanager->ApplyCommand(command);  
+            command = "/gun/direction "+std::to_string(x1)+std::to_string(-y1)+" 0."; 
+            G4cout<< command << G4endl;
+			}
+			else{
             GenX=(-LYSO_T*2.*mm-0.194/2*mm+LYSO_T*mm*2*G4UniformRand()+PassArgs->GetPartXDispl())/1000.;
             GenZ=(-LYSO_L+LYSO_L*2*G4UniformRand())/1000.;
             command = "/gun/position "+std::to_string(GenX)+" 0.05 "+std::to_string(GenZ)+" m"; 
             G4cout<< command << G4endl;
             UImanager->ApplyCommand(command);     
+			}
             //command = "/gun/direction 0. -1. 0."; 
             //G4cout<< command << G4endl;
             //UImanager->ApplyCommand(command); 

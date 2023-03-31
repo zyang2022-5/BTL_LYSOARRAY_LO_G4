@@ -30,6 +30,7 @@ public:
     G4double GetVov() const {return Detection[0];}
     G4int GetSiPMmaterial() const {return SiPMmaterial;}
 
+    G4int Getrndangle() const {return rndangle;}
     G4int GetYSymtrue() const {return NoYSym;}
     G4int Getnrep() const {return nrep;}
     G4int GetZelem() const {return Zelem;}
@@ -240,7 +241,7 @@ private:
     G4double PartDir[3];
     G4double PartDisplX=0;
     G4double PartAngle=0;
-    
+    G4int rndangle=0;
     
 
 

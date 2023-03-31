@@ -229,7 +229,11 @@ MyG4Args :: MyG4Args(int mainargc,char** mainargv)
                 }else if(strcmp(mainargv[j],"-NSGAII")==0)
                 {   
                     NSGAII = 1;
-                    G4cout<< " ### Selected NSGAII Config."  <<G4endl;         
+                    G4cout<< " ### Selected NSGAII Config."  <<G4endl;       
+				}else if(strcmp(mainargv[j],"-rndangle")==0)
+                {   
+                    rndangle = 1;
+                    G4cout<< " ### Selected rndangle Config."  <<G4endl;                    
                 }else if(strcmp(mainargv[j],"-reflSiPM")==0)
                 {   
                     reflSiPM = 1;

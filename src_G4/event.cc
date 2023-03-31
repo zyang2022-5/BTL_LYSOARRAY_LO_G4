@@ -243,9 +243,9 @@ if(PassArgs->GetTree_EndOfEvent()==1){
 			G4double theta = 39.9+G4UniformRand()*50;
             G4cout<< "Angle: " << theta-40 << G4endl;
 			theta=theta/180*M_PI;
-			G4double X0 = -1.5-0.1;
+			G4double X0 = +1.5+0.1;
 			G4double Y0 = 50;
-			G4double r = G4UniformRand()*0.7;
+			G4double r = G4UniformRand()*1;
             G4cout<< "radius: " << r << G4endl;
 
 			G4double ux = -cos(theta);
@@ -276,12 +276,40 @@ if(PassArgs->GetTree_EndOfEvent()==1){
             //G4cout<< command << G4endl;
             //UImanager->ApplyCommand(command); 
         }else if (GeomConfig == 13){
+			
+			if (PassArgs->Getrndangle()==1){
+			G4double theta = 39.9+G4UniformRand()*50;
+            G4cout<< "Angle: " << theta-40 << G4endl;
+			theta=theta/180*M_PI;
+			G4double X0 = +1.5+0.1;
+			G4double Y0 = 50;
+			G4double r = G4UniformRand()*1;
+            G4cout<< "radius: " << r << G4endl;
+
+			G4double ux = -cos(theta);
+			G4double uy = -sin(theta);
+			G4double x1 = -r*cos(theta);
+			G4double y1 = r*sin(theta);
+			G4double x10 = r*cos(theta)+X0;
+			G4double y10 = r*sin(theta);
+			G4double x2 =(Y0-y1)/tan(theta);
+			
+			GenX=(x2-x10)/1000.;
+			GenZ=(-LYSO_L+LYSO_L*2*G4UniformRand())/1000.;
+            command = "/gun/position "+std::to_string(GenX)+" "+std::to_string(Y0/1000)+" "+std::to_string(GenZ)+" m"; 
+            G4cout<< command << G4endl;
+            UImanager->ApplyCommand(command);  
+            command = "/gun/direction "+std::to_string(ux)+" "+std::to_string(uy)+" 0."; 
+            G4cout<< command << G4endl; 
+            UImanager->ApplyCommand(command);  
+			}
+			else{			
 			LYSO_T=PassArgs->GetGeom_LYSO_thick();
             GenX=(-LYSO_T*1.99*mm-0.10*mm+LYSO_T*mm*1.98*G4UniformRand()+PassArgs->GetPartXDispl())/1000.;
             GenZ=(-LYSO_L*0.99+LYSO_L*1.98*G4UniformRand())/1000.;
             command = "/gun/position "+std::to_string(GenX)+" 0.05 "+std::to_string(GenZ)+" m"; 
             G4cout<< command << G4endl;
-            UImanager->ApplyCommand(command);     
+            UImanager->ApplyCommand(command);   }  
             //command = "/gun/direction 0. -1. 0."; 
             //G4cout<< command << G4endl;
             //UImanager->ApplyCommand(command); 

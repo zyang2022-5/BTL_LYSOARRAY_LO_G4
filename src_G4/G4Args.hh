@@ -63,6 +63,7 @@ public:
     G4int GetTree_Tracking() const {return MainTrees[3];}
     G4int GetTree_EndOfEvent() const {return MainTrees[4];}
     G4int GetTree_EndOfRun() const {return MainTrees[5];}
+    G4int SaveMesh() const {return SaveSTL;}
     G4int GetGeomConfig() const {return GeomConfig;}
     G4int GetVis() const {return VisTrue;}
     G4int GetStepSize() const {return StepSize;}
@@ -242,6 +243,7 @@ private:
     G4double PartDisplX=0;
     G4double PartAngle=0;
     G4int rndangle=0;
+    G4int SaveSTL=0;
     
 
 

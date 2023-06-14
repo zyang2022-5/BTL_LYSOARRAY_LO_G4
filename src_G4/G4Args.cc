@@ -205,7 +205,11 @@ MyG4Args :: MyG4Args(int mainargc,char** mainargv)
                 }else if(strcmp(mainargv[j],"-KillLT")==0)
                 {   
                     KillLTTrue = 1;KillLTime = atof(mainargv[j+1]);j=j+1;
-                    G4cout<< " ### Killing photons after "<< KillLTime <<" ps" <<G4endl;         
+                    G4cout<< " ### Killing photons after "<< KillLTime <<" ps" <<G4endl;      
+                }else if(strcmp(mainargv[j],"-SaveSTL")==0)
+                {   
+                    SaveSTL = 1;
+                    G4cout<< " ### Save STL " <<G4endl;    
                 }else if(strcmp(mainargv[j],"-Znode")==0)
                 {   
                     Znode = atoi(mainargv[j+1]);j=j+1;

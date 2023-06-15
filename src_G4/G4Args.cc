@@ -214,6 +214,10 @@ MyG4Args :: MyG4Args(int mainargc,char** mainargv)
                 {   
                     scint = 2;
                     G4cout<< " ### Save STL " <<G4endl; 
+                }else if(strcmp(mainargv[j],"-BC408")==0)
+                {   
+                    scint = 3;
+                    G4cout<< " ### Save STL " <<G4endl; 
 				}else if(strcmp(mainargv[j],"-noESR")==0)
                 {   
                     ESR = 0;

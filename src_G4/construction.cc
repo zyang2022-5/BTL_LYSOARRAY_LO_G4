@@ -93,6 +93,9 @@ void MyDetectorConstruction::DefineMaterial()
         } else if(ArgsPass->GetScintMat()==2 ){
 			        G4cout<< " * BC400. " <<G4endl;         
     scintillator = get_BC400(BC400_YIELD,BC400_RT1,LYSO_SCALERESOLUTION);
+	}else if(ArgsPass->GetScintMat()==3 ){
+			        G4cout<< " * BC408. " <<G4endl;         
+    scintillator = get_BC408(BC400_YIELD,BC400_RT1,LYSO_SCALERESOLUTION);
 	}
         G4cout<< " * LYSO. " <<G4endl;         
     H = nist1->FindOrBuildElement("H");

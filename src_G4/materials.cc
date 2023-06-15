@@ -154,6 +154,71 @@ G4Material *get_BC400(double light_yield, double rise_time, double scale_resolut
     return scintillator;
 }
 
+
+G4Material *get_BC408(double light_yield, double rise_time, double scale_resolution)
+{
+   int n;
+
+    G4NistManager *nist = G4NistManager::Instance();
+
+    G4double prelude_density = 1.032*g/cm3;
+    G4Material *scintillator = new G4Material("prelude", prelude_density, 2);
+    scintillator->AddElement(nist->FindOrBuildElement("H"),1104);
+    scintillator->AddElement(nist->FindOrBuildElement("C"),1000);
+
+
+    G4MaterialPropertiesTable *mptScint = new G4MaterialPropertiesTable();
+
+    G4double lyso_rindex_ene[1000], lyso_rindex_values[1000];
+
+    n = read_tsv_file("BC408_rindex.dat", lyso_rindex_ene, lyso_rindex_values, eV, 1);
+
+    if (n == -1) {
+        fprintf(stderr, "error reading lyso_rindex.dat!\n");
+        exit(1);
+    }
+
+    mptScint->AddProperty("RINDEX", lyso_rindex_ene, lyso_rindex_values, n);
+
+    G4double lyso_spectrum_ene[1000], lyso_spectrum_values[1000];
+
+    n = read_tsv_file("BC408_scintillation_spectrum.dat", lyso_spectrum_ene, lyso_spectrum_values, eV, 1);
+
+    if (n == -1) {
+        fprintf(stderr, "error reading lyso_scintillation_spectrum.dat!\n");
+        exit(1);
+    }
+
+    mptScint->AddProperty("SCINTILLATIONCOMPONENT1", lyso_spectrum_ene, lyso_spectrum_values, n);
+
+    G4double lyso_absorption_length_ene[1000], lyso_absorption_length_values[1000];
+
+    n = read_tsv_file("BC408_absorption_length.dat", lyso_absorption_length_ene, lyso_absorption_length_values, eV, mm);
+
+    if (n == -1) {
+        fprintf(stderr, "error reading lyso_absorption_length.dat!\n");
+        exit(1);
+    }
+
+    mptScint->AddProperty("ABSLENGTH", lyso_absorption_length_ene, lyso_absorption_length_values, n);
+    mptScint->AddConstProperty("SCINTILLATIONYIELD", 11091/MeV);
+
+	// Set the Birks constant value
+	double birksCoefficient = 0.0155; // Adjust this value according to your scintillator material
+	//mptScint->AddConstProperty("BIRKS_CONSTANT", birksCoefficient);
+
+    G4double lyso_scattering_length_ene[1000], lyso_scattering_length_values[1000];
+
+    mptScint->AddConstProperty("RESOLUTIONSCALE", scale_resolution);
+    mptScint->AddConstProperty("SCINTILLATIONTIMECONSTANT1", 2.1 * ns);
+    mptScint->AddConstProperty("SCINTILLATIONYIELD1", 1.0);
+    mptScint->AddConstProperty("SCINTILLATIONRISETIME1", 900*ps);
+    scintillator->SetMaterialPropertiesTable(mptScint);
+    scintillator->GetIonisation()->SetBirksConstant(0.0155*cm/MeV);
+
+    return scintillator;
+}
+
 /* Returns a G4Material representing the Silicone RTV used to glue the LYSO
  * array to the SiPMs. Right now we correctly specify the molecular
  * composition, the refractive index, and the absorption length.

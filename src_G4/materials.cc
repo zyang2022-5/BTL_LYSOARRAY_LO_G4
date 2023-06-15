@@ -102,16 +102,10 @@ G4Material *get_BC400(double light_yield, double rise_time, double scale_resolut
     G4NistManager *nist = G4NistManager::Instance();
 
     G4double prelude_density = 1.032*g/cm3;
-    G4Material *prelude = new G4Material("prelude", prelude_density, 4);
-    prelude->AddElement(nist->FindOrBuildElement("Lu"),71.96*perCent);
-    prelude->AddElement(nist->FindOrBuildElement("Si"),6.35*perCent);
-    prelude->AddElement(nist->FindOrBuildElement("O"),18.08*perCent);
-    prelude->AddElement(nist->FindOrBuildElement("Y"),3.62*perCent);
-    
-    G4double Cecont = 0.0019;
-    G4Material *scintillator = new G4Material("scintillator", prelude_density ,2);
-    scintillator->AddMaterial(prelude,(100-Cecont*100)*perCent);
-    scintillator->AddElement(nist->FindOrBuildElement("Ce"), (Cecont*100)*perCent);
+    G4Material *scintillator = new G4Material("prelude", prelude_density, 2);
+    scintillator->AddElement(nist->FindOrBuildElement("H"),52.3*perCent);
+    scintillator->AddElement(nist->FindOrBuildElement("C"),47.7*perCent);
+
 
     G4MaterialPropertiesTable *mptScint = new G4MaterialPropertiesTable();
 

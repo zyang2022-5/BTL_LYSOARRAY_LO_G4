@@ -439,7 +439,9 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct()
 		GCgmsh = new GmshLYSO(ArgsPass);
 		G4cout <<"Gmsh to G4Tet::" << G4endl;
 		GCgmsh->CreateG4LYSO(scintillator,logicWorld);
-		GCgmsh->SurfaceCoating(physWorld, mirrorSurface);
+		if(ArgsPass->GetESRTrue()==1){
+			GCgmsh->SurfaceCoating(physWorld, mirrorSurface);
+		}
 		fScoringVolumeVec = GCgmsh->GetScoringVolumeVec();
 		G4cout <<"Get LYSO Volume:: " <<ArgsPass->GetVolume() << G4endl;
 

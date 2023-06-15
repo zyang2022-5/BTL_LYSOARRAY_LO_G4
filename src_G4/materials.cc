@@ -103,8 +103,8 @@ G4Material *get_BC400(double light_yield, double rise_time, double scale_resolut
 
     G4double prelude_density = 1.032*g/cm3;
     G4Material *scintillator = new G4Material("prelude", prelude_density, 2);
-    scintillator->AddElement(nist->FindOrBuildElement("H"),52.3*perCent);
-    scintillator->AddElement(nist->FindOrBuildElement("C"),47.7*perCent);
+    scintillator->AddElement(nist->FindOrBuildElement("H"),1103);
+    scintillator->AddElement(nist->FindOrBuildElement("C"),1000);
 
 
     G4MaterialPropertiesTable *mptScint = new G4MaterialPropertiesTable();

@@ -214,7 +214,11 @@ MyG4Args :: MyG4Args(int mainargc,char** mainargv)
                 {   
                     scint = 2;
                     G4cout<< " ### Save STL " <<G4endl; 
-                }else if(strcmp(mainargv[j],"-Znode")==0)
+				}else if(strcmp(mainargv[j],"-noESR")==0)
+                {   
+                    ESR = 0;
+                    G4cout<< " ### No ESR " <<G4endl;                 
+                    }else if(strcmp(mainargv[j],"-Znode")==0)
                 {   
                     Znode = atoi(mainargv[j+1]);j=j+1;
                     G4cout<< " ### The Number of sections for the LYSO crystal is:  "<< Znode <<G4endl;         

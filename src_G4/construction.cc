@@ -934,7 +934,7 @@ logicDetector->SetSensitiveDetector(sensDet);
 
     GeomConfig=ArgsPass->GetGeomConfig();
     perincr=ArgsPass->GetIncr();
-    ESRtrue=1;
+    ESRtrue=ArgsPass->GetESRTrue();
     LYSO_SC1=ArgsPass->GetLYSO_DecayT();
     LYSO_RT1=ArgsPass->GetLYSO_RiseT();
     BC400_RT1=900;

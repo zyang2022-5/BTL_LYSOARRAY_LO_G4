@@ -32,6 +32,7 @@ public:
 
     G4int GetScintMat() const {return scint;}
 
+	G4int GetESRTrue() const {return ESR;}
     G4int Getrndangle() const {return rndangle;}
     G4int GetYSymtrue() const {return NoYSym;}
     G4int Getnrep() const {return nrep;}
@@ -247,6 +248,7 @@ private:
     G4int rndangle=0;
     G4int SaveSTL=0;
     G4int scint=1;
+    G4int ESR=1;
 
 
 

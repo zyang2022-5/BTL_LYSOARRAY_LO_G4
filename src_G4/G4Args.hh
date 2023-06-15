@@ -30,6 +30,8 @@ public:
     G4double GetVov() const {return Detection[0];}
     G4int GetSiPMmaterial() const {return SiPMmaterial;}
 
+    G4int GetScintMat() const {return scint;}
+
     G4int Getrndangle() const {return rndangle;}
     G4int GetYSymtrue() const {return NoYSym;}
     G4int Getnrep() const {return nrep;}
@@ -244,7 +246,8 @@ private:
     G4double PartAngle=0;
     G4int rndangle=0;
     G4int SaveSTL=0;
-    
+    G4int scint=1;
+
 
 
 };    

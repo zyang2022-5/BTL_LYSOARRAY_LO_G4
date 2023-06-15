@@ -87,7 +87,13 @@ void MyDetectorConstruction::DefineMaterial()
     
 
     RTV3145 = get_rtv();
+        if(ArgsPass->GetScintMat()==1  ){
+			        G4cout<< " * LYSO. " <<G4endl;         
     scintillator = get_lyso(LYSO_YIELD,LYSO_RT1,LYSO_SCALERESOLUTION);
+        } else if(ArgsPass->GetScintMat()==2 ){
+			        G4cout<< " * BC400. " <<G4endl;         
+    scintillator = get_BC400(BC400_YIELD,BC400_RT1,LYSO_SCALERESOLUTION);
+	}
         G4cout<< " * LYSO. " <<G4endl;         
     H = nist1->FindOrBuildElement("H");
     Si = nist1->FindOrBuildElement("Si");
@@ -898,6 +904,7 @@ logicDetector->SetSensitiveDetector(sensDet);
     Glue_Y =ArgsPass->Get_GLUE_Y();Glue_Y=Glue_Y/2;
     RESIN_W=ArgsPass->GetGeom_Resin_width();
     LYSO_YIELD=ArgsPass->GetLYSO_Yield();
+    BC400_YIELD=11265;
     LYSO_SCALERESOLUTION=ArgsPass->GetLYSO_ScaleResolution();
     XYTol=0.16;
     RESIN_H =ArgsPass->GetGeom_RESIN_H();   
@@ -930,6 +937,8 @@ logicDetector->SetSensitiveDetector(sensDet);
     ESRtrue=1;
     LYSO_SC1=ArgsPass->GetLYSO_DecayT();
     LYSO_RT1=ArgsPass->GetLYSO_RiseT();
+    BC400_RT1=900;
+
 }
     void MyDetectorConstruction:: DefineMessengers()
 {

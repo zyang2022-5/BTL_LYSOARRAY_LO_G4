@@ -920,12 +920,12 @@ logicDetector->SetSensitiveDetector(sensDet);
      RESIN_LNOM=0.5;RESIN_LTol=0.1;
     if(ArgsPass->GetRnd_Geom()==1)
         {
-        GLUE_L = ArgsPass->GetGlueZ()-0.05+0.1*G4UniformRand();   GLUE_L=GLUE_L/2.;
-        RESIN_L =(RESIN_LNOM-RESIN_LTol)+RESIN_LTol*2*G4UniformRand();   RESIN_L=RESIN_L/2.;
-        XposTol = -0.05+G4UniformRand()*XYTol;
-        YposTol = -0.05+G4UniformRand()*XYTol;
-        XposTol2 = -0.05+G4UniformRand()*XYTol;
-        YposTol2 = -0.05+G4UniformRand()*XYTol;
+        GLUE_L = G4RandGauss::shoot(ArgsPass->GetGlueZ(), 0.1);;   GLUE_L=GLUE_L/2.;
+        RESIN_L =G4RandGauss::shoot(RESIN_LNOM, RESIN_LTol*2);
+        XposTol = G4RandGauss::shoot(0., XYTol);
+        YposTol = G4RandGauss::shoot(0., XYTol);
+        XposTol2 = G4RandGauss::shoot(0., XYTol);
+        YposTol2 = G4RandGauss::shoot(0., XYTol);       
         }
     else{
         GLUE_L = ArgsPass->GetGlueZ();   GLUE_L=GLUE_L/2.;

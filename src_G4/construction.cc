@@ -919,13 +919,46 @@ logicDetector->SetSensitiveDetector(sensDet);
     DET_TX =ArgsPass->GetGeom_DET_TX();
      RESIN_LNOM=0.5;RESIN_LTol=0.1;
     if(ArgsPass->GetRnd_Geom()==1)
-        {
+        { 
+			if (ArgsPass->GetGeomIndv(0)==0){
+                    G4cout<< " ### ALL RANDOM : " << GLUE_L <<G4endl;         
+
         GLUE_L = G4RandGauss::shoot(ArgsPass->GetGlueZ(), 0.1);;   GLUE_L=GLUE_L/2.;
         RESIN_L =G4RandGauss::shoot(RESIN_LNOM, RESIN_LTol*2);
         XposTol = G4RandGauss::shoot(0., XYTol);
         YposTol = G4RandGauss::shoot(0., XYTol);
         XposTol2 = G4RandGauss::shoot(0., XYTol);
-        YposTol2 = G4RandGauss::shoot(0., XYTol);       
+        YposTol2 = G4RandGauss::shoot(0., XYTol); 
+        }else if( ArgsPass->GetGeomIndv(2)==1){
+        GLUE_L = G4RandGauss::shoot(ArgsPass->GetGlueZ(), 0.1);;   GLUE_L=GLUE_L/2.;
+                    G4cout<< " ### Random Glue L : " << GLUE_L <<G4endl;         
+        RESIN_L =RESIN_LNOM;   RESIN_L=RESIN_L/2.;
+        XposTol = 0.;
+        YposTol = 0.;
+        XposTol2 = 0.;
+        YposTol2 = 0.;
+        }else if( ArgsPass->GetGeomIndv(3)==1){
+        GLUE_L = ArgsPass->GetGlueZ();   GLUE_L=GLUE_L/2.;
+        RESIN_L =G4RandGauss::shoot(RESIN_LNOM, RESIN_LTol*2);
+        XposTol = 0.;
+        YposTol = 0.;
+        XposTol2 = 0.;
+        YposTol2 = 0.;
+        }else if( ArgsPass->GetGeomIndv(4)==1){
+        GLUE_L = ArgsPass->GetGlueZ();   GLUE_L=GLUE_L/2.;
+        RESIN_L =RESIN_LNOM;   RESIN_L=RESIN_L/2.;
+        XposTol = G4RandGauss::shoot(0., XYTol);
+        YposTol = 0.;
+        XposTol2 = 0.;
+        YposTol2 = 0.;
+        }else if( ArgsPass->GetGeomIndv(5)==1){
+        GLUE_L = ArgsPass->GetGlueZ();   GLUE_L=GLUE_L/2.;
+        RESIN_L =RESIN_LNOM;   RESIN_L=RESIN_L/2.;
+        XposTol = 0.;
+        YposTol = G4RandGauss::shoot(0., XYTol);
+        XposTol2 = 0.;
+        YposTol2 = 0.;
+			}      
         }
     else{
         GLUE_L = ArgsPass->GetGlueZ();   GLUE_L=GLUE_L/2.;

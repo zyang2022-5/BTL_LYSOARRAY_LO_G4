@@ -163,6 +163,10 @@ public:
     G4double GetYvecincr(int ind) const {return yvincr[ind];}
     G4double* GetYincr() const {return yincr;}
     G4int GetYstr() const {return Ystr;}
+    
+    G4double GetGeomIndv(G4int runid) const {return RndGenIndv[runid];}  
+
+    
 private:
 
     // Default values modifiable by arguments and able to be returned!!!
@@ -249,6 +253,7 @@ private:
     G4int SaveSTL=0;
     G4int scint=1;
     G4int ESR=1;
+   G4int RndGenIndv[6] = {0};
 
 
 

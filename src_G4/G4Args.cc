@@ -87,6 +87,13 @@ MyG4Args :: MyG4Args(int mainargc,char** mainargv)
                     MainTrees[0] = 1;
                     G4cout<< " ### Storing Tree Detected" <<G4endl;         
                 }
+                else if(strcmp(mainargv[j],"-rndGi")==0)
+                {   
+                    RndGenIndv[0] = 1;
+                    RndGenIndv[atoi(mainargv[j+1])] = 1;j=j+1;
+
+                    G4cout<< " ### rndGi" <<G4endl;         
+                }
                 else if(strcmp(mainargv[j],"-Detected")==0)
                 {   
                     MainTrees[1] = 1;

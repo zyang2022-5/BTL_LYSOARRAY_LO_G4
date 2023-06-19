@@ -84,8 +84,8 @@ void MySteppingAction::UserSteppingAction(const G4Step *step)
         //if(volume != fScoringVolume)
         //    return;
         TranslVol     =  preStepPoint->GetPosition();
-        if (PassArgs->GetGeomConfig()==3){
-            if(TranslVol[0]/mm<-0.9&&  TranslVol[0]/mm>-3.11){
+        if (PassArgs->GetGeomConfig()==3 || PassArgs->GetGeomConfig()==13){
+            if(TranslVol[0]/mm<-0.01&&  TranslVol[0]/mm>-1*(PassArgs->GetGeom_LYSO_thick())*2){
                 G4double edep = step->GetTotalEnergyDeposit();  
                 PassArgs->AddEdep(edep);
                 PassArgs->AddNEdep();

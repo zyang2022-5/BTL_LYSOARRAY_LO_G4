@@ -63,7 +63,7 @@ private: // it is not accessed from outside
     G4GenericMessenger *fMessenger,*fMessenger_thick, *fMessenger_SR, *fMessenger_YIELD, *fMessenger_vov, *fMessenger_GlueL, *fMessenger_ResinL, *fMessenger_ResinW, *fMessenger_XPos, *fMessenger_YPos, *fMessenger_GC, *fMessenger_pi, *fMessenger_ESR, *fMessenger_SR1, *fMessenger_RT1, *fMessenger_XPos2, *fMessenger_YPos2;
 
     // Geometry
-    G4Box *box, *solidWorld, *solidDetector, *solidGlue, *solidGlueSiPM, *solidResin, *solidFR4;
+    G4Box *box, *solidWorld, *solidDetector, *solidGlue, *solidGlueSiPM, *solidResin, *solidFR4,*solidResin2;
     G4UnionSolid *solidLYSO;
 
     G4SubtractionSolid *Resin_Sub, *LYSOCover_Sub, *Glue_Sub;
@@ -71,7 +71,7 @@ private: // it is not accessed from outside
     G4UnionSolid *LYSOAll_Add;
 
     G4LogicalVolume *logicDetector; // We need to refer to this volume. Needs to be outside of the construction.
-    G4LogicalVolume *logicWorld, *logicLYSO, *logicGlue, *logicGlueSiPM, *logicResin, *logicResin_Sub, *logicFR4, *logicLYSOCover;
+    G4LogicalVolume *logicWorld, *logicLYSO, *logicGlue, *logicGlueSiPM, *logicResin, *logicResin_Sub,*logicResin_Sub2, *logicFR4, *logicLYSOCover;
     G4LogicalVolume *fScoringVolume , *fDetectorVolume;
 	std::vector<G4LogicalVolume*> fScoringVolumeVec;
 	

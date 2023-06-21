@@ -85,6 +85,7 @@ public:
     G4int GetSpline() const {return Spline;}
     G4int GetFR4Refl() const {return FR4refl;}
     G4int GetforceBottomLine() const {return forceBottomLine;}
+    G4int GetTile() const {return Tile;}
 
     G4double GetIncr() const {return incr;}
     G4double GetGlueZ() const {return Glue_Z;}

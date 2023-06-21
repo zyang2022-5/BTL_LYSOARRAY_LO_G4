@@ -290,6 +290,10 @@ MyG4Args :: MyG4Args(int mainargc,char** mainargv)
                 {   
                     DET_T = DET_T*atof(mainargv[j+1])/100;j=j+1;
                     G4cout<< " ### The thickness of the SiPM changed to "<< incr <<G4endl;    
+                }else if(strcmp(mainargv[j],"-TileV0")==0)
+                {   
+                    Tile = 1;
+                    G4cout<< " ### TileV0 "<< incr <<G4endl;    
                 }else if(strcmp(mainargv[j],"-incrSiPMW")==0)
                 {   
                     DET_TX = DET_TX*atof(mainargv[j+1])/100;j=j+1;

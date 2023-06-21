@@ -31,11 +31,16 @@ G4cout <<"### Geometry:" << G4endl;
 			for(int i = 0; i < Znode*2+1; i++) {
 				gmsh::model::geo::addPoint(-Xtot/2, +1*ptsYF[i]*1.5,-1*Ztot+dZ*i ,0,
 										   1000 + i);
-				gmsh::model::geo::addPoint(-Xtot/2, -1*ptsYF[i]*1.5,-1*Ztot+dZ*i ,0,
-										   2000 + i);
 				std::cout<<-Xtot/2<< " " <<+1*ptsYF[i]*1.5<< " " <<+-1*Ztot+dZ*i<< std::endl;
 				pp.push_back(1000 + i);
-				pm.push_back(2000 + i);
+				if (MainArgs->GetforceBottomLine()==1) {
+				gmsh::model::geo::addPoint(-Xtot/2, -0.1,-1*Ztot+dZ*i ,0,
+										   2000 + i);
+					pm.push_back(2000 + i);
+				}else{
+				gmsh::model::geo::addPoint(-Xtot/2, -1*ptsYF[i]*1.5,-1*Ztot+dZ*i ,0,  2000 + i);
+					pm.push_back(2000 + i);
+					}
 		}
 	}else{
 		G4cout <<"No Y Symm:" << G4endl;
@@ -63,9 +68,13 @@ G4cout <<"### Geometry:" << G4endl;
 				}
 			
 			for(int i = 0; i < Znode*2+1; i++) {
-				gmsh::model::geo::addPoint(-Xtot/2, -1*ptsYFb[i]*1.5,-1*Ztot+dZ*i ,0,
-										   2000 + i);
-				std::cout<<-Xtot/2<< " " <<+1*ptsYFb[i]*1.5<< " " <<+-1*Ztot+dZ*i<< std::endl;
+				double yCoord = -1 * ptsYFb[i] * 1.5;
+				if (MainArgs->GetforceBottomLine()==1) {
+					yCoord = -0.1; // Force the bottom line at a constant height of -0.1
+				}
+
+				gmsh::model::geo::addPoint(-Xtot/2, yCoord, -1 * Ztot + dZ * i, 0, 2000 + i);
+				std::cout << -Xtot/2 << " " << yCoord << " " << -1 * Ztot + dZ * i << std::endl;
 				pm.push_back(2000 + i);
 			}
 

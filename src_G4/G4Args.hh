@@ -84,6 +84,7 @@ public:
 
     G4int GetSpline() const {return Spline;}
     G4int GetFR4Refl() const {return FR4refl;}
+    G4int GetforceBottomLine() const {return forceBottomLine;}
 
     G4double GetIncr() const {return incr;}
     G4double GetGlueZ() const {return Glue_Z;}
@@ -253,7 +254,9 @@ private:
     G4int SaveSTL=0;
     G4int scint=1;
     G4int ESR=1;
-   G4int RndGenIndv[6] = {0};
+	G4int RndGenIndv[6] = {0};
+	G4int forceBottomLine = 0;
+	G4int Tile = 0;
 
 
 

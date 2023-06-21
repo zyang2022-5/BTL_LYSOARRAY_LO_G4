@@ -315,8 +315,11 @@ MyG4Args :: MyG4Args(int mainargc,char** mainargv)
                 {   
                     Spline=0;
                     G4cout<< " ### Spline "<<G4endl; 
-										
-                 }else if(strcmp(mainargv[j],"-Zelem")==0)
+                }else if(strcmp(mainargv[j],"-ForceBottomLine")==0)
+                {   
+                    forceBottomLine=1;
+                    G4cout<< " ### forceBottomLine "<<G4endl; 
+								                 }else if(strcmp(mainargv[j],"-Zelem")==0)
                 {   
                     Zelem = atoi(mainargv[j+1]);j=j+1;
                     G4cout<< " ### Gmsh divisions along half the Z direction "<< Zelem<<G4endl;      

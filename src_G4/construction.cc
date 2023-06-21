@@ -722,19 +722,24 @@ else if(GeomConfig == 11 ){
 		G4RotationMatrix* rM0 = new G4RotationMatrix();
 		rM0->rotateX(-90.*deg);
 		rM->rotateX(-90.*deg);
+		G4double ZLloc =LYSO_L;
 		
 		G4double RXdispl = 0; 
 		G4double RYdispl = -RESIN_L*2-GLUE_L*2-YposTol2; 
 		G4double RZdispl = 0; 
 		G4cout<< " ### RESIN DISPL "<< RESIN_L<<" "<<GLUE_L <<G4endl;    
 
-		physResin1 = new G4PVPlacement(rM0     ,G4ThreeVector(0,RYdispl,1*(+LYSO_L*mm)),logicResin_Sub,"physResin1",logicWorld,false,0,true); 
-		//physResin2 = new G4PVPlacement(rM,G4ThreeVector(XposTol2*mm,RYdispl,-1*(+LYSO_L*mm)),logicResin_Sub,"physResin2",logicWorld,false,0,true); 		
+		physResin1 = new G4PVPlacement(rM0     ,G4ThreeVector(0,RYdispl,1*(+ZLloc*mm)),logicResin_Sub,"physResin1",logicWorld,false,0,true); 
+		physResin2 = new G4PVPlacement(rM,G4ThreeVector(0*mm,RYdispl,-1*(+ZLloc*mm)),logicResin_Sub,"physResin2",logicWorld,false,0,true); 		
 		
-		/*physFR41 = new G4PVPlacement(rM0     ,G4ThreeVector(XposTol*mm,YposTol*mm+RESIN_Y,+1*(+LYSO_L*mm+GLUE_L*mm*2+2*(RESIN_L*mm+DET_L)+FR4_L)),logicFR4,"physResin1",logicWorld,false,0,true); 
-		physFR42 = new G4PVPlacement(rM,G4ThreeVector(XposTol2*mm,YposTol2*mm+RESIN_Y,-1*(+LYSO_L*mm+GLUE_L*mm*2+2*(RESIN_L*mm+DET_L)+FR4_L)),logicFR4,"physResin2",logicWorld,false,0,true);
+		G4double FXdispl = 0; 
+		G4double FYdispl = -RESIN_L*2-GLUE_L*2-YposTol2-FR4_L*2; 
+		G4double FZdispl = 0; 
+		
+		physFR41 = new G4PVPlacement(rM0     ,G4ThreeVector(0,FYdispl,+1*(+ZLloc)),logicFR4,"physResin1",logicWorld,false,0,true); 
+		physFR42 = new G4PVPlacement(rM,G4ThreeVector(0,FYdispl,-1*(+ZLloc)),logicFR4,"physResin2",logicWorld,false,0,true);
 		physDetector = new G4PVPlacement(0,G4ThreeVector(XposTol2*mm,YposTol2*mm+SiPM_Y,+1*(+RESIN_L*mm)),logicDetector,"physDetector",logicResin_Sub,false,1,true); 
-		*/
+		
 			if (ArgsPass->GetReflSiPM()==1){
 				G4double GXdispl = 0; 
 				G4double GYdispl = -GLUE_L*2-0.1; 
@@ -756,8 +761,8 @@ else if(GeomConfig == 11 ){
 				G4double GXdispl = 0; 
 				G4double GYdispl = -GLUE_L-0.1; 
 				G4double GZdispl = 0; 
-				physGlue1 = new G4PVPlacement(rM0,G4ThreeVector(0.,GYdispl,1*(+LYSO_L+SiPM_Y)),logicGlue,"physGlue1",logicWorld,false,0,true); 
-				physGlue2 = new G4PVPlacement(rM0,G4ThreeVector(0.,GYdispl,-1*(+LYSO_L+SiPM_Y)),logicGlue,"physGlue2",logicWorld,false,0,true); 
+				physGlue1 = new G4PVPlacement(rM0,G4ThreeVector(0.,GYdispl,1*(+ZLloc-RESIN_Y-)),logicGlue,"physGlue1",logicWorld,false,0,true); 
+				physGlue2 = new G4PVPlacement(rM0,G4ThreeVector(0.,GYdispl,-1*(+ZLloc-RESIN_Y)),logicGlue,"physGlue2",logicWorld,false,0,true); 
 				G4cout<< " ### Phys Glue Volume 11"<<G4endl;          
 
 				}

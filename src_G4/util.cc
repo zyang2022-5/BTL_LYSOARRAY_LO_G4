@@ -625,4 +625,3 @@ std::vector<double> generateEquispacedSegments(double Xmin, double Xmax, int num
     return segments;
 }
 
-

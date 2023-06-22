@@ -761,8 +761,8 @@ else if(GeomConfig == 11 ){
 				G4double GXdispl = 0; 
 				G4double GYdispl = -GLUE_L-0.1; 
 				G4double GZdispl = 0; 
-				physGlue1 = new G4PVPlacement(rM0,G4ThreeVector(0.,GYdispl,1*(+ZLloc-RESIN_Y-)),logicGlue,"physGlue1",logicWorld,false,0,true); 
-				physGlue2 = new G4PVPlacement(rM0,G4ThreeVector(0.,GYdispl,-1*(+ZLloc-RESIN_Y)),logicGlue,"physGlue2",logicWorld,false,0,true); 
+				physGlue1 = new G4PVPlacement(rM0,G4ThreeVector(0.,GYdispl,+1*(ZLloc-RESIN_Y)),logicGlue,"physGlue1",logicWorld,false,0,true); 
+				physGlue2 = new G4PVPlacement(rM0,G4ThreeVector(0.,GYdispl,-1*(ZLloc-RESIN_Y)),logicGlue,"physGlue2",logicWorld,false,0,true); 
 				G4cout<< " ### Phys Glue Volume 11"<<G4endl;          
 
 				}

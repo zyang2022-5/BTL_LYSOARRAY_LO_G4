@@ -15,6 +15,12 @@
 #include <ctime>
 #include <G4Types.hh>
 
+#include <set>
+
+// The Gmsh C++ API is entirely defined in the `gmsh.h' header (which contains
+// the full documentation of all the functions in the API):
+#include <gmsh.h>
+
 #include <sstream>
 #include <iterator>
 
@@ -384,4 +390,239 @@ double TetraVolume(G4double *x,G4double *y,G4double *z){
 		std::cout<< "Vol: "<< vol<< std::endl;
 		return vol;
 }
+
+
+std::vector<std::vector<double>> appendReversedInitialVector(const std::vector<std::vector<double>>& inputVector)
+{
+    std::vector<std::vector<double>> result = inputVector;  // Make a copy of the input vector
+
+    if (!result.empty())
+    {
+        std::vector<double>& initialVector = result.front();  // Get a reference to the initial vector
+
+        if (initialVector.size() > 1)
+        {
+            std::reverse(initialVector.begin(), initialVector.end() - 1);  // Reverse the initial vector excluding its last value
+        }
+    }
+
+    return result;  // Return the modified vector
+}
+
+std::vector<std::vector<double>> reverseSubvectors(const std::vector<std::vector<double>>& inputVector) {
+    std::vector<std::vector<double>> resultVector = inputVector; // Create a copy of the input vector
+    
+    std::reverse(resultVector.begin(), resultVector.end()); // Reverse the order of the subvectors
+    
+    return resultVector; // Return the resulting vector of vectors
+}
+
+std::vector<std::vector<double>> combineAllIndices(const std::vector<double>& vec1, const std::vector<double>& vec2) {
+    std::vector<std::vector<double>> combinedVector;
+    
+    size_t size = vec1.size();
+    
+    for (size_t n = 0; n < size; ++n) {
+        std::vector<double> innerVec;
+        innerVec.push_back(vec2[n]);
+        innerVec.push_back(vec2[(n + 1) % size]);
+        innerVec.push_back(vec1[(n + 1) % size]);
+        innerVec.push_back(vec1[n]);
+        
+        combinedVector.push_back(innerVec);
+    }
+    
+    return combinedVector;
+}
+
+std::vector<std::vector<int>> combineAllIndicesint(const std::vector<int>& vec1, const std::vector<int>& vec2) {
+    std::vector<std::vector<int>> combinedVector;
+    
+    size_t size = vec1.size();
+    
+    for (size_t n = 0; n < size; ++n) {
+        std::vector<int> innerVec;
+        innerVec.push_back(vec1[n]);
+        innerVec.push_back(vec1[(n + 1) % size]);
+        innerVec.push_back(vec2[(n + 1) % size]);
+        innerVec.push_back(vec2[n]);
+        
+        combinedVector.push_back(innerVec);
+    }
+    
+    return combinedVector;
+}
+std::vector<std::vector<double>> calculatePoints(const std::vector<double>& Y, double Xin, double Zmin, double Zmax, double Yzero)
+{
+    std::vector<std::vector<double>> points;
+
+    // Calculate the step size for Z values
+    double step = (Zmax - Zmin) / (Y.size() - 1);
+
+    // Create symmetrical points with respect to Zmin
+    for (int i = Y.size() - 1; i >= 1; --i)
+    {
+        double Z = Zmin - (i ) * step;  // Symmetrical Z values
+        points.push_back({Xin, Y[i], Z});
+        std::cout<< Xin<< " "<< Y[i]<< " "<< Z<< std::endl;
+    }
+
+    for (size_t i = 0; i < Y.size(); ++i)
+    {
+        double Z = Zmin + i * step;
+        points.push_back({Xin, Y[i], Z});
+        std::cout<< Xin<< " "<< Y[i]<< " "<< Z<< std::endl;
+    }
+
+
+    std::vector<std::vector<double>> additionalPoints = {{Xin, Yzero, Zmax}, {Xin, Yzero, -Zmax}};
+    points.insert(points.end(), additionalPoints.begin(), additionalPoints.end());
+
+    return points;
+}
+
+std::vector<int> createGmshPoints(const std::vector<std::vector<double>>& points, int taginit)
+{
+    std::vector<int> pointTags;
+
+    // Create points
+    int count = 1 ;
+    for (const auto& point : points)
+    {
+        double x = point[0];
+        double y = point[1];
+        double z = point[2];
+
+        int tag;
+        tag = taginit+count;
+        gmsh::model::geo::addPoint(x, y, z, 0.0, tag);
+        pointTags.push_back(tag);
+        count=count+1;
+    }
+
+    return pointTags;
+}
+
+std::vector<int> createGmshLines(const std::vector<int>& pointTags, int taginit, const std::set<int>& excludedIndices = {})
+{
+    std::vector<int> lineTags;
+    int lineTag;
+
+    int count = 1;
+    int pointCount = pointTags.size();
+
+    // Create lines between successive points, excluding the lines with excluded indices
+    for (int i = 0; i < pointCount - 1; i++)
+    {
+        if (excludedIndices.count(i) > 0)
+            continue;
+
+        lineTag = taginit + count;
+        std::cout<<lineTag<<" ";
+        gmsh::model::geo::addLine(pointTags[i], pointTags[i + 1], lineTag);
+        lineTags.push_back(lineTag);
+        count++;
+    }
+
+    // Create line between the last and first points, excluding the line with the excluded index
+    if (pointCount > 1 && excludedIndices.count(pointCount - 1) == 0)
+    {
+        lineTag = taginit + count;
+        std::cout<<lineTag<<" ";
+        gmsh::model::geo::addLine(pointTags[pointCount - 1], pointTags[0], lineTag);
+        lineTags.push_back(lineTag);
+    }
+	std::cout<<std::endl;
+    return lineTags;
+}
+
+
+int createGmshSurface(const std::vector<int>& lineTags, int taginit)
+{
+    int surfaceTag = taginit;
+
+    // Create line loop
+    int lineLoopTag = surfaceTag;
+    gmsh::model::geo::addCurveLoop(lineTags, lineLoopTag);
+
+    // Create surface
+    gmsh::model::geo::addPlaneSurface({lineLoopTag}, surfaceTag);
+
+    return surfaceTag;
+}
+std::vector<double> extractRange(const std::vector<double>& Y_all, int sec, int nodesec)
+{
+    std::vector<double> Y(Y_all.begin() + sec*nodesec, Y_all.begin() + sec*nodesec + nodesec);
+    return Y;
+}
+void printVectorOfVectors(const std::vector<std::vector<int>>& vec)
+{
+	int i=0;
+    for (const auto& innerVec : vec)
+    {
+		std::cout<< i<< " ";
+        for (const auto& value : innerVec)
+        {
+            std::cout << value << " ";
+        }
+        std::cout << std::endl;
+        i++;
+    }
+}
+
+void printVector(const std::vector<int>& vec)
+{
+    for (const auto& value : vec)
+    {
+        std::cout << value << " ";
+    }
+    std::cout << std::endl;
+}
+void printVectordouble(const std::vector<double>& vec)
+{
+    for (const auto& value : vec)
+    {
+        std::cout << value << " ";
+    }
+    std::cout << std::endl;
+}
+std::vector<int> getElementsAtIndex(const std::vector<std::vector<int>>& vec, int index, int a, int b)
+{
+    std::vector<int> result;
+
+    for (int i = a; i <= b; ++i)
+    {
+        if (i >= 0 && i < vec.size())
+        {
+            const auto& subvector = vec[i];
+            if (index >= 0 && index < subvector.size())
+            {
+                result.push_back(subvector[index]);
+            }
+        }
+    }
+
+    return result;
+}
+
+std::vector<double> generateEquispacedSegments(double Xmin, double Xmax, int numElements)
+{
+    std::vector<double> segments;
+
+    if (numElements <= 1)
+    {
+        segments.push_back(Xmin);
+        return segments;
+    }
+
+    double step = (Xmax - Xmin) / (numElements - 1);
+    for (int i = 0; i < numElements; ++i)
+    {
+        double X = Xmin + i * step;
+        segments.push_back(X);
+    }
+
+    return segments;
+}
+
 

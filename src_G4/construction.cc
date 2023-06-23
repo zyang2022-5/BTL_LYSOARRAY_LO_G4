@@ -722,7 +722,8 @@ else if(GeomConfig == 11 ){
 		G4RotationMatrix* rM0 = new G4RotationMatrix();
 		rM0->rotateX(-90.*deg);
 		rM->rotateX(-90.*deg);
-		G4double ZLloc =LYSO_L;
+		G4double ZLloc =LYSO_L*ArgsPass->GetSZloc();
+		if (ZLloc<4){ZLloc=4;}
 		
 		G4double RXdispl = 0; 
 		G4double RYdispl = -RESIN_L*2-GLUE_L*2-YposTol2; 

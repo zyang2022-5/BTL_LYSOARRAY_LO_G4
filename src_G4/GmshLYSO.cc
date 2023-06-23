@@ -401,8 +401,8 @@ gmsh::model::geo::mesh::setTransfiniteCurve(splm,nsecmesh*2+1);
 
 void GmshLYSO ::MakeTile(){
 
-	int nX=2;
-	int nodesec=3;
+	int nX=3;
+	int nodesec=4;
 
     std::vector<double> Y_all;
     for (int i = 0; i < (nodesec)*nX; i++) {

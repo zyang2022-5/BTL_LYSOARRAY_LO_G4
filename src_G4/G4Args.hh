@@ -167,6 +167,7 @@ public:
     G4int GetYstr() const {return Ystr;}
     
     G4double GetGeomIndv(G4int runid) const {return RndGenIndv[runid];}  
+    G4double GetSZloc(){return SZ_loc;}
 
     
 private:
@@ -258,7 +259,7 @@ private:
 	G4int RndGenIndv[6] = {0};
 	G4int forceBottomLine = 0;
 	G4int Tile = 0;
-
+    G4double SZ_loc=0.5;
 
 
 };    

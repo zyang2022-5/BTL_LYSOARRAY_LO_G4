@@ -165,7 +165,8 @@ public:
     G4double GetYvecincr(int ind) const {return yvincr[ind];}
     G4double* GetYincr() const {return yincr;}
     G4int GetYstr() const {return Ystr;}
-    
+    G4int GetGmshView() const {return GmshView;}
+
     G4double GetGeomIndv(G4int runid) const {return RndGenIndv[runid];}  
     G4double GetSZloc(){return SZ_loc;}
 
@@ -260,6 +261,7 @@ private:
 	G4int forceBottomLine = 0;
 	G4int Tile = 0;
     G4double SZ_loc=0.5;
+    G4int GmshView = 0;
 
 
 };    

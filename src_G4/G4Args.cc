@@ -298,6 +298,10 @@ MyG4Args :: MyG4Args(int mainargc,char** mainargv)
                 {   
                     Tile = 1;
                     G4cout<< " ### TileV0 "<< incr <<G4endl;    
+                }else if(strcmp(mainargv[j],"-GmshView")==0)
+                {   
+                    GmshView = 1;
+                    G4cout<< " ### GmshView "<< incr <<G4endl;   
                 }else if(strcmp(mainargv[j],"-incrSiPMW")==0)
                 {   
                     DET_TX = DET_TX*atof(mainargv[j+1])/100;j=j+1;

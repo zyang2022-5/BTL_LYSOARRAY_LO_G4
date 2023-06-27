@@ -18,6 +18,13 @@ gmsh::model::geo::synchronize();
 gmsh::model::mesh::generate(3);
 
 // Export mesh to STL if MainArgs->GetMesh() is 1
+if (MainArgs->GetGmshView() == 1) {
+    gmsh::model::geo::synchronize();
+	gmsh::fltk::run();
+	gmsh::finalize();
+}
+
+// Export mesh to STL if MainArgs->GetMesh() is 1
 if (MainArgs->SaveMesh() == 1) {
     std::string stlFilename = "mesh.stl";
     gmsh::write(stlFilename);

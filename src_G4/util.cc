@@ -508,7 +508,7 @@ std::vector<int> createGmshLines(const std::vector<int>& pointTags, int taginit,
     std::vector<int> lineTags;
     int lineTag;
 
-    int count = 1;
+    int count = 1,l0;
     int pointCount = pointTags.size();
 
     // Create lines between successive points, excluding the lines with excluded indices
@@ -519,7 +519,9 @@ std::vector<int> createGmshLines(const std::vector<int>& pointTags, int taginit,
 
         lineTag = taginit + count;
         std::cout<<lineTag<<" ";
-        gmsh::model::geo::addLine(pointTags[i], pointTags[i + 1], lineTag);
+        l0=gmsh::model::geo::addLine(pointTags[i], pointTags[i + 1], lineTag);
+        gmsh::model::geo::mesh::setTransfiniteCurve(l0,2);
+
         lineTags.push_back(lineTag);
         count++;
     }

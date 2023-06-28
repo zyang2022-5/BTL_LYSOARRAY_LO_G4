@@ -48,6 +48,10 @@ void printVector(const std::vector<int>& vec);
 void printVectordouble(const std::vector<double>& vec);
 std::vector<int> getElementsAtIndex(const std::vector<std::vector<int>>& vec, int index, int a, int b);
 std::vector<double> generateEquispacedSegments(double Xmin, double Xmax, int numElements);
+std::vector<double> convertArrayToVector(const double* arr, size_t size);
+std::vector<int> getOddElementsAtIndex(const std::vector<std::vector<int>>& vec, int index, int a, int b);
+std::vector<int> getEvenElementsAtIndex(const std::vector<std::vector<int>>& vec, int index, int a, int b);
+std::vector<int> getValuesAtIndices(const std::vector<int>& vec, const std::vector<int>& indices);
 
 
 

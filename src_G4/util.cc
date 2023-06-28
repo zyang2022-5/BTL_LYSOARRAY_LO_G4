@@ -627,3 +627,56 @@ std::vector<double> generateEquispacedSegments(double Xmin, double Xmax, int num
     return segments;
 }
 
+std::vector<int> getOddElementsAtIndex(const std::vector<std::vector<int>>& vec, int index, int a, int b)
+{    
+	std::vector<int> result;
+
+    for (int i = a; i <= b; ++i)
+    {
+        if (i >= 0 && i < vec.size())
+        {
+            const auto& subvector = vec[i];
+            if (index >= 0 && index < subvector.size())
+            {
+                if (i % 2 != 0) // Check if the value is odd
+                {
+                    result.push_back(subvector[index]);
+                }
+            }
+        }
+    }
+
+    return result;
+}
+
+std::vector<int> getEvenElementsAtIndex(const std::vector<std::vector<int>>& vec, int index, int a, int b)
+{    
+	std::vector<int> result;
+
+    for (int i = a; i <= b; ++i)
+    {
+        if (i >= 0 && i < vec.size())
+        {
+            const auto& subvector = vec[i];
+            if (index >= 0 && index < subvector.size())
+            {
+                if (i % 2 == 0) // Check if the value is odd
+                {
+                    result.push_back(subvector[index]);
+                }
+            }
+        }
+    }
+
+    return result;
+}
+
+std::vector<int> getValuesAtIndices(const std::vector<int>& vec, const std::vector<int>& indices) {
+    std::vector<int> result;
+    for (int index : indices) {
+        if (index >= 0 && index < vec.size()) {
+            result.push_back(vec[index]);
+        }
+    }
+    return result;
+}

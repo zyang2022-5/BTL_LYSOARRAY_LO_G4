@@ -520,7 +520,7 @@ std::vector<int> createGmshLines(const std::vector<int>& pointTags, int taginit,
         lineTag = taginit + count;
         std::cout<<lineTag<<" ";
         l0=gmsh::model::geo::addLine(pointTags[i], pointTags[i + 1], lineTag);
-        gmsh::model::geo::mesh::setTransfiniteCurve(l0,2);
+        //gmsh::model::geo::mesh::setTransfiniteCurve(l0,2);
 
         lineTags.push_back(lineTag);
         count++;

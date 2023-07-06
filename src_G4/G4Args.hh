@@ -51,6 +51,9 @@ public:
     G4double GetGeom_Resin_width() const {return Geom_Resin[1];}
     G4double GetGeom_DET_T() const {return DET_T;}
     G4double GetGeom_DET_TX() const {return DET_TX;}
+    G4double GetGeom_DET_TX_tol() const {return DET_TX_tol;}
+    G4double GetGeom_DET_TY_tol() const {return DET_TY_tol;}
+
     G4double GetGeom_RESIN_H() const {return RESIN_H;}
     G4double GetGeom_RESIN_Y() const {return RESIN_Y;}
     G4double GetGeom_SiPM_Y() const {return SiPM_Y;}
@@ -238,6 +241,9 @@ private:
     G4double RESIN_Z=0.5;
 
     G4double DET_TX=3./2;
+    G4double DET_TX_tol=0.;
+    G4double DET_TY_tol=0.;
+
     G4double Glue_Y=3.;
     G4double Glue_Z=0.2;
     G4double RESIN_H=6.5/2;

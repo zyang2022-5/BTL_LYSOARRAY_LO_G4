@@ -969,7 +969,7 @@ logicDetector->SetSensitiveDetector(sensDet);
     SiPM_Y=ArgsPass->GetGeom_SiPM_Y();   
     DET_T =ArgsPass->GetGeom_DET_T();
     DET_TX =ArgsPass->GetGeom_DET_TX();
-     RESIN_LNOM=0.5;RESIN_LTol=0.1;
+     RESIN_LNOM=ArgsPass->GetGeom_RESIN_L();RESIN_LTol=0.1;
     if(ArgsPass->GetRnd_Geom()==1)
         { 
 			if (ArgsPass->GetGeomIndv(0)==0){
@@ -1015,8 +1015,8 @@ logicDetector->SetSensitiveDetector(sensDet);
     else{
         GLUE_L = ArgsPass->GetGlueZ();   GLUE_L=GLUE_L/2.;
         RESIN_L =RESIN_LNOM;   RESIN_L=RESIN_L/2.;
-        XposTol = 0.;
-        YposTol = 0.;
+        XposTol = ArgsPass->GetGeom_DET_TX_tol();
+        YposTol = ArgsPass->GetGeom_DET_TX_tol();;
         XposTol2 = 0.;
         YposTol2 = 0.;
         }

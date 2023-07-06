@@ -87,7 +87,19 @@ MyG4Args :: MyG4Args(int mainargc,char** mainargv)
                     MainTrees[0] = 1;
                     G4cout<< " ### Storing Tree Detected" <<G4endl;         
                 }
-                else if(strcmp(mainargv[j],"-rndGi")==0)
+                else if(strcmp(mainargv[j],"-DetX_tol")==0)
+                {   
+                    DET_TX_tol=atof(mainargv[j+1])/1000;j=j+1;
+
+                    G4cout<< " ### rndGi" <<G4endl;         
+                }
+                else if(strcmp(mainargv[j],"-DetY_tol")==0)
+                {   
+                    DET_TY_tol=atof(mainargv[j+1])/1000;j=j+1;
+
+                    G4cout<< " ### rndGi" <<G4endl;         
+                }
+                else if(strcmp(mainargv[j],"-Gi")==0)
                 {   
                     RndGenIndv[0] = 1;
                     RndGenIndv[atoi(mainargv[j+1])] = 1;j=j+1;
@@ -170,10 +182,20 @@ MyG4Args :: MyG4Args(int mainargc,char** mainargv)
                 {   
                     RESIN_Z = atof(mainargv[j+1]);j=j+1;
                     G4cout<< " ### RESIN_Z modified to :"<< RESIN_Z*2 <<G4endl;         
+                }     
+                else if(strcmp(mainargv[j],"-RESIN_Z1000")==0)
+                {   
+                    RESIN_Z = atof(mainargv[j+1])/1000;j=j+1;
+                    G4cout<< " ### RESIN_Z modified to :"<< RESIN_Z*2 <<G4endl;         
                 }        
                 else if(strcmp(mainargv[j],"-Glue_Z")==0)
                 {   
                     Glue_Z = atof(mainargv[j+1]);j=j+1;
+                    G4cout<< " ### Glue_Z modified to :"<< Glue_Z <<G4endl;         
+                }
+                else if(strcmp(mainargv[j],"-Glue_Z1000")==0)
+                {   
+                    Glue_Z = atof(mainargv[j+1])/1000;j=j+1;
                     G4cout<< " ### Glue_Z modified to :"<< Glue_Z <<G4endl;         
                 }
                 else if(strcmp(mainargv[j],"-RESIN_W")==0)

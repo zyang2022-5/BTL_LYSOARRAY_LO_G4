@@ -239,7 +239,7 @@ private:
     G4double DET_L=0.3/2.;
 
     G4double DET_T=3./2;
-    G4double RESIN_Z=0.5;
+    G4double RESIN_Z=0.25;
 
     G4double DET_TX=3./2;
     G4double DET_TX_tol=0.;

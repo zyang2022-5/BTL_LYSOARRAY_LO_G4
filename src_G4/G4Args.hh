@@ -84,6 +84,7 @@ public:
     G4int GetnEvents() const {return nEvents;}
     G4int GetnResinMach() const {return ResinMach;}
     G4double GetnResinMachN() const {return ResinMachN;}
+    G4int GetESRFinish() const {return ESRFinish;}
 
     G4int GetSpline() const {return Spline;}
     G4int GetFR4Refl() const {return FR4refl;}
@@ -268,6 +269,8 @@ private:
 	G4int Tile = 0;
     G4double SZ_loc=0.5;
     G4int GmshView = 0;
+    
+    G4int ESRFinish=0;
 
 
 };    

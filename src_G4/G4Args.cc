@@ -99,6 +99,18 @@ MyG4Args :: MyG4Args(int mainargc,char** mainargv)
 
                     G4cout<< " ### rndGi" <<G4endl;         
                 }
+                else if(strcmp(mainargv[j],"-ESRbackpainted")==0)
+                {   
+                    ESRFinish=1;
+
+                    G4cout<< " ### ESRFinish backpainted" <<G4endl;         
+                }
+                else if(strcmp(mainargv[j],"-ESRdefaultmodel")==0)
+                {   
+                    ESRFinish=2;
+
+                    G4cout<< " ### ESRFinish ESRdefaultmodel" <<G4endl;         
+                }
                 else if(strcmp(mainargv[j],"-Gi")==0)
                 {   
                     RndGenIndv[0] = 1;

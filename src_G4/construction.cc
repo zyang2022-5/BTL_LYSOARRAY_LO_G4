@@ -174,19 +174,48 @@ G4double energymirror0[34] ={1.387638658*eV,1.414514446*eV,1.442584622*eV,1.4756
        1.23859418*cm, 1.19172294*cm, 1.14473815*cm, 1.09502845*cm, 1.0599705*cm ,
        1.02676536*cm, 0.98029928*cm, 0.93696289*cm, 0.8959285*cm , 0.87300369*cm};
 
-    G4MaterialPropertiesTable *mptMirror = new G4MaterialPropertiesTable();
-    mptMirror->AddProperty("REFLECTIVITY", energymirror0, reflectivity0,34); // fraction of the light reflected (all=1)
-    //mptMirror->AddProperty("SPECULARLOBECONSTANT", pp, specularlobe,2); 
-    //mptMirror->AddProperty("SPECULARSPIKECONSTANT", pp, specularspike,2); 
-    //mptMirror->AddProperty("BACKSCATTERCONSTANT", pp, backscatter,2); 
-    mptMirror->AddProperty("RINDEX", RTV_ene, RTV_RINDEX,numRTV); // fraction of the light reflected (all=1)
+    
+    
+    if (ArgsPass->GetESRFinish()==1){
+				G4MaterialPropertiesTable *mptMirror = new G4MaterialPropertiesTable();
+				mptMirror->AddProperty("REFLECTIVITY", energymirror0, reflectivity0,34); // fraction of the light reflected (all=1)
+				mirrorSurface = new G4OpticalSurface("mirrorSurface");
 
-    // Surface
-    mirrorSurface = new G4OpticalSurface("mirrorSurface");
-    mirrorSurface -> SetMaterialPropertiesTable(mptMirror);
-    mirrorSurface -> SetType(dielectric_metal);
-    mirrorSurface -> SetFinish(polished);//-backpainted
-    mirrorSurface -> SetModel(unified);
+				G4cout<< " *### backpainted. " <<G4endl;        
+				G4double pp[2] = {2.0*eV, 3.0*eV}; // Photon energies
+				G4double specularlobe[2] = {1, 1}; // Specular lobe constants
+				G4double specularspike[2] = {0., 0.}; // Specular spike constants
+				G4double backscatter[2] = {0., 0.}; // Backscatter constants
+
+				mptMirror -> AddProperty("RINDEX",energyWorld,rindexWorld,2);
+				mptMirror -> AddProperty("SPECULARLOBECONSTANT",pp,specularlobe,2);
+				mptMirror -> AddProperty("SPECULARSPIKECONSTANT",pp,specularspike,2);
+				mptMirror -> AddProperty("BACKSCATTERCONSTANT",pp,backscatter,2);
+				mirrorSurface -> SetMaterialPropertiesTable(mptMirror);
+				mirrorSurface -> SetFinish(polishedbackpainted);
+
+		}	else if(ArgsPass->GetESRFinish()==0){
+			    G4cout<< " *### coated. " <<G4endl;     
+				G4MaterialPropertiesTable *mptMirror = new G4MaterialPropertiesTable();
+				mptMirror->AddProperty("REFLECTIVITY", energymirror0, reflectivity0,34); // fraction of the light reflected (all=1)
+				mptMirror->AddProperty("RINDEX", RTV_ene, RTV_RINDEX,numRTV); // fraction of the light reflected (all=1)
+
+				// Surface
+				mirrorSurface = new G4OpticalSurface("mirrorSurface");
+				mirrorSurface -> SetMaterialPropertiesTable(mptMirror);
+				mirrorSurface -> SetType(dielectric_metal);
+				mirrorSurface -> SetFinish(polished);//-backpainted
+				mirrorSurface -> SetModel(unified);
+					}	else {
+				G4MaterialPropertiesTable *mptMirror = new G4MaterialPropertiesTable();
+				mptMirror->AddProperty("REFLECTIVITY", energymirror0, reflectivity0,34); // fraction of the light reflected (all=1)
+				mirrorSurface = new G4OpticalSurface("mirrorSurface");
+
+				G4cout<< " *### default. " <<G4endl;         
+				mirrorSurface -> SetFinish(  polishedvm2000air);}
+    
+    
+    
         G4cout<< " * ESR. " <<G4endl;         
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // FR4 Interface  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

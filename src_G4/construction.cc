@@ -206,6 +206,7 @@ G4double energymirror0[34] ={1.387638658*eV,1.414514446*eV,1.442584622*eV,1.4756
 				mirrorSurface -> SetType(dielectric_metal);
 				mirrorSurface -> SetFinish(polished);//-backpainted
 				mirrorSurface -> SetModel(unified);
+				
 					}	else {
 				G4MaterialPropertiesTable *mptMirror = new G4MaterialPropertiesTable();
 				mptMirror->AddProperty("REFLECTIVITY", energymirror0, reflectivity0,34); // fraction of the light reflected (all=1)
@@ -1045,7 +1046,7 @@ logicDetector->SetSensitiveDetector(sensDet);
         GLUE_L = ArgsPass->GetGlueZ();   GLUE_L=GLUE_L/2.;
         RESIN_L =RESIN_LNOM;   RESIN_L=RESIN_L/2.;
         XposTol = ArgsPass->GetGeom_DET_TX_tol();
-        YposTol = ArgsPass->GetGeom_DET_TX_tol();;
+        YposTol = ArgsPass->GetGeom_DET_TY_tol();;
         XposTol2 = 0.;
         YposTol2 = 0.;
         }

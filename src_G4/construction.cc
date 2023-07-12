@@ -1006,7 +1006,7 @@ logicDetector->SetSensitiveDetector(sensDet);
                     G4cout<< " ### ALL RANDOM : " << GLUE_L <<G4endl;         
 
         GLUE_L = G4RandGauss::shoot(ArgsPass->GetGlueZ(), 0.1);;   GLUE_L=GLUE_L/2.;
-        RESIN_L =G4RandGauss::shoot(RESIN_LNOM, RESIN_LTol*2);RESIN_L=RESIN_L/2.;
+        RESIN_L =G4RandGauss::shoot(0.125, 0.2);RESIN_L=RESIN_L/2.;
         XposTol = G4RandGauss::shoot(0., XYTol);
         YposTol = G4RandGauss::shoot(0., XYTol);
         XposTol2 = G4RandGauss::shoot(0., XYTol);

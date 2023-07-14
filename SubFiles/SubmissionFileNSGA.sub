@@ -1,12 +1,11 @@
 ### Submission File
 Universe = vanilla
-executable = /storage/af/user/greales/simG4/BTL_LYSOARRAY_LO_G4/JobFiles/JobActionGC1FLResinMuonIncr.sh
-#arguments ="-a $(Item)_$(Cluster)_$(Process)_ -s $(Item)"
-arguments ="-a Generation_$(gen)_$(indv) -v $(var) -z$(sections)"
-#arguments ="-a $(Cluster)_$(Process)_ -s $ARGSUB"
-Output  = /storage/af/user/greales/simG4/outputs/Out_job$(Cluster).out
-Error   = /storage/af/user/greales/simG4/errors/error_job$(Cluster).out
-Log     = /storage/af/user/greales/simG4/logs/log_job$(Cluster).out
+executable = /storage/af/user/greales/simG4/BTL_LYSOARRAY_LO_G4/JobFiles/JobActionNSGATest.sh
+arguments ="-a NSGAIITest_V513_SiPM3x3_ESRBP_$(Cluster)_$(Process)_ -v {0.9967216066486967-0.8639613794507455-2.032505755727091-1.37280054752994-2.25-0.9332862867002583-2.032192357443836-0.8247632918859735-1.4100511350861886-1.060386018378169} -z 4 -l 19.545562701472406"
+
+Output  = /storage/af/user/greales/simG4/outputs/Out_NSGATest_$(Cluster).out
+Error   = /storage/af/user/greales/simG4/errors/error_NSGATest_$(Cluster).out
+Log     = /storage/af/user/greales/simG4/logs/log_NSGATest_$(Cluster).out
 
 requirements = Machine =!= LastRemoteHost
 #Requirements = (TARGET.OpSysAndVer == "CentOS70" && regexp("blade-.*", TARGET.Machine))
@@ -18,7 +17,9 @@ WHEN_TO_TRANSFER_OUTPUT = ON_EXIT_OR_EVICT
 +RunAsOwner = True
 +InteractiveUser = True
 +SingularityBindCVMFS = True
-+SingularityImage = "/cvmfs/singularity.opensciencegrid.org/cmssw/cms:rhel7"
++SingularityImage="/storage/af/user/greales/SingDir/sandG4Gmsh"
+
+#+SingularityImage = "/cvmfs/singularity.opensciencegrid.org/cmssw/cms:rhel7"
 #+SingularityImage = "/cvmfs/singularity.opensciencegrid.org/opensciencegrid/osgvo-el8:latest"
 #+SingularityImage = "/storage/af/user/greales/SingDir/G4SingCont.sif"
 #+SingularityBindCVMFS = True
@@ -39,9 +40,4 @@ should_transfer_files = Yes
 max_retries = 3
 #requirements = Machine =!= LastRemoteHost
 #universe = vanilla
-Queue var, indv, gen, sections from (
-{1-1}, 1, 0, 1
-{0.8-1.2-2},2,1,2
-)
-#Queue from seq 100 120 |
-#Queue 1
+Queue 1

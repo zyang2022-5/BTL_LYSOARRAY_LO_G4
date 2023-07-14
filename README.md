@@ -52,7 +52,21 @@ Set your respective proxy: `voms-proxy-init -voms cms -rfc -valid 192:0 --bits 2
 
 Run using one of the example submission and job files in their respective folders.
 
-### Running numerical optimization
+### Running numerical optimization (Runs In TierII)
+
+First you will need to update the submodule git project. If it's **the first time** you check-out a repo you need to use `--init` first:
+
+```
+git submodule update --init --recursive
+```
+
+For **git 1.8.2** or above, the option `--remote` was added to support updating to latest tips of remote branches:
+
+```
+git submodule update --recursive --remote
+```
+
+The new submodule will be downloaded in NSGAII/PyNSGA/NSGA-II, from where the optimization needs to be run, `cd NSGAII/PyNSGA/NSGA-II`.
 
 We need to have root in our python environment
 ```
@@ -93,6 +107,7 @@ The commands work as follow `-command argument`, in `[]` we set the number of op
 -Muon : sets the particle impact to 2MeV Muons.
 
 -ESRbackpainted : changes the surface coating model so that there is an air gap between the ESR and the LYSO
+-ESRdefaultmodel: changes the default G4 model with a polished LYSO, air gap and ESR (LUT DAVIS)
 -noESR : no ESR coating is applied to the crystal
 
 -LYSO_L [28.5] : where the number given is half the lenght of the LYSO crystal along Z

@@ -37,12 +37,14 @@ done
 #echo "*** Sourcing G4:"
 #. $BASEDIR/G4SourceCVMFS.sh
 
-echo "Running Simulation" 
+echo "Running Simulation NSGA Gmsh JobFile" 
 OutPut=$OutPut$Sopt
 echo $Sopt
 cd $BASEDIR
 #./$SimName -o $OutPut -GeomConfig 11 -runevt 1 -Muon -nDetected -Znode $Nsections -Ypos $Vars -Volume
-./$SimName -o $OutPut -GeomConfig 11 -Muon -nDetected -Volume -LYSO_L $LYSOLen -rnd 0 -runevt 56 -gunmesh 4 16 -Zelem 10 -incrSiPM 125 -Znode $Nsections -Ypos $Vars
+
+
+./$SimName -o $OutPut -GeomConfig 11 -Muon -nDetected -Volume -LYSO_L $LYSOLen -rnd 0 -runevt 60 -gunmesh 4 15 -Zelem 8 -NoYSym -Znode $Nsections -Ypos $Vars -incrSiPM 100 -ESRbackpainted -Acte
 #./$SimName -o $OutPut -GeomConfig 11 -runevt 1 -Muon -nDetected -Znode $Nsections -Ypos $Vars -Volume
 
 

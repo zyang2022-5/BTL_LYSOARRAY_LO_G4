@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 #Default values for optional arguments
 #BASEDIR=$(pwd)          # Current folder where the G4 files can be found
 BASEDIR="/storage/af/user/greales/simG4/BTL_LYSOARRAY_LO_G4/"
@@ -9,12 +10,16 @@ OutPut=""   # Name of the Root output files from the G4 executable
 Vars="{1.0-1.0}"
 Nsections="1"
 LYSOLen="28.5"
+rndg="0"
 
-while getopts "a:n:s:v:z:l:" arg; do
+while getopts "a:g:n:s:v:z:l:" arg; do
     case $arg in
         a) OutPut=$OutPut$OPTARG
             echo "*** Change of OutputName"
             echo $simargsprev;; # Change G4 source directory
+        g) rndg=$OutPut$OPTARG
+            echo "*** Change of OutputName"
+            echo $rndg;; # Change G4 source directory 
         n) SimName=$OPTARG
             echo "*** Change of Simulation Name"
             echo $SimName;; # Change G4 source directory
@@ -41,7 +46,7 @@ OutPut=$OutPut$Sopt
 echo $Sopt
 cd $BASEDIR
 
-
-./$SimName -o $OutPut -GeomConfig 11 -rnd 1 1 0 -RESIN_W 1.6 -Znode 1 -Zelem 1 -Ypos {1-1} -ESRbackpainted -runevt 10 -Muon
-
-#./$SimName -o $OutPut -GeomConfig 1 -RESIN_W 1.6 -m run.mac -Muon
+# ./sim -GeomConfig 13 -rnd 1 1 1 -Znode 1 -Ypos {1-1} -rndGi 2 -runevt 10 -Muon
+./$SimName -o $OutPut -GeomConfig 13 -rnd 1 0 1 -Znode 1 -Ypos {1-1} -rndGi 3 -runevt 64 -gunmesh 4 16 -Muon
+#./$SimName -o $OutPut -GeomConfig 13 -Muon  -rnd 1 1 1 -runevt 10 -Znode 1 -Ypos $Vars -rndGi $rndg
+#./$SimName -o $OutPut -GeomConfig 3 -m run.mac -Muon

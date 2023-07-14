@@ -1,3 +1,5 @@
+
+#!/usr/bin/env bash
 #Default values for optional arguments
 #BASEDIR=$(pwd)          # Current folder where the G4 files can be found
 BASEDIR="/storage/af/user/greales/simG4/BTL_LYSOARRAY_LO_G4/"
@@ -41,7 +43,10 @@ OutPut=$OutPut$Sopt
 echo $Sopt
 cd $BASEDIR
 
+./$SimName -o $OutPut -GeomConfig 1 -Muon -incrV $Sopt -nDetected -rnd 0 -runevt 60 -gunmesh 4 15 -incrSiPM 100 -ESRbackpainted
 
-./$SimName -o $OutPut -GeomConfig 11 -rnd 1 1 0 -RESIN_W 1.6 -Znode 1 -Zelem 1 -Ypos {1-1} -ESRbackpainted -runevt 10 -Muon
+#cd $BASEDIR
+#./$SimName -o $OutPut -GeomConfig 13  -rnd 0 -runevt 64 -gunmesh 4 16 -Zelem 1 -Znode 1 -Ypos {1-1} -RESIN_Z1000 $Nsections -Muon -ESRbackpainted 
+#./sim -o test -GeomConfig 13 -rnd 0 -Znode 1 -Ypos {1-1} -Glue_Z1000 100 -gunmesh 4 16 -Muon -Zelem 1 -RESIN_Z1000 100
 
-#./$SimName -o $OutPut -GeomConfig 1 -RESIN_W 1.6 -m run.mac -Muon
+#./$SimName -o $OutPut -GeomConfig 3 -m run1000.mac 

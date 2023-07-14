@@ -30,5 +30,5 @@ OutPut=$OutPut$Sopt
 echo $Sopt
 cd $BASEDIR
 #./$SimName -o $OutPut -GeomConfig 1 -m run200.mac -Muon -incrV $Sopt -nDetected
-./$SimName -o $OutPut -GeomConfig 1 -Muon -incrV $Sopt -nDetected -rnd 1 1 0 -runevt 100 -gunmesh 5 20 -incrSiPM $Sopt
+./$SimName -o $OutPut -GeomConfig 1 -Muon -incrV $Sopt -nDetected -rnd 1 1 0 -runevt 60 -gunmesh 4 15 -incrSiPM $Sopt
 

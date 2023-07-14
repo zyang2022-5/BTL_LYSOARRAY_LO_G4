@@ -1,7 +1,11 @@
 ### Submission File
 Universe = vanilla
 executable = /storage/af/user/greales/simG4/BTL_LYSOARRAY_LO_G4/JobFiles/JobActionGC1FLResin.sh
-arguments ="-a $(Cluster)_$(Process)_"
+
+#arguments ="-a Rst_GCFL_500_$(Cluster)_$(Process)_"
+#arguments ="-a Rst_GCFL_500_$(Cluster)_$(Process)_"
+arguments ="-a Rst_GC1_FL_Na_ESRBP_$(Cluster)_$(Process)_0"
+
 Output  = /storage/af/user/greales/simG4/outputs/Out_job$(Cluster).out
 Error   = /storage/af/user/greales/simG4/errors/error_job$(Cluster).out
 Log     = /storage/af/user/greales/simG4/logs/log_job$(Cluster).out
@@ -16,7 +20,8 @@ WHEN_TO_TRANSFER_OUTPUT = ON_EXIT_OR_EVICT
 +RunAsOwner = True
 +InteractiveUser = True
 +SingularityBindCVMFS = True
-+SingularityImage = "/cvmfs/singularity.opensciencegrid.org/cmssw/cms:rhel7"
++SingularityImage="/storage/af/user/greales/SingDir/sandG4Gmsh"
+#+SingularityImage = "/cvmfs/singularity.opensciencegrid.org/cmssw/cms:rhel7"
 #+SingularityImage = "/cvmfs/singularity.opensciencegrid.org/opensciencegrid/osgvo-el8:latest"
 #+SingularityImage = "/storage/af/user/greales/SingDir/G4SingCont.sif"
 #+SingularityBindCVMFS = True
@@ -37,4 +42,6 @@ should_transfer_files = Yes
 max_retries = 3
 #requirements = Machine =!= LastRemoteHost
 #universe = vanilla
+#Queue from seq 200 300 |
+#
 Queue 1

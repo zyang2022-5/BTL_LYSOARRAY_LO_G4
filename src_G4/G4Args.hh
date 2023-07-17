@@ -149,6 +149,10 @@ public:
     void SetRadiusVect(G4double*, G4int, G4int);
     G4double GetLOAvg(G4int runid) const {return nRuntLOAvg[runid];}  
     G4double GetLOStd(G4int runid) const {return nRuntLOStd[runid];}  
+    
+    G4double GetLOP50(G4int runid) const {return nRuntLOP50[runid];}  
+    G4double GetLCP50(G4int runid) const {return nRuntLCP50[runid];}  
+    
     G4double GetLDAvg(G4int runid) const {return nRuntLDAvg[runid];}  
     G4double GetLDStd(G4int runid) const {return nRuntLDStd[runid];}  
     G4double GetTimAvg(G4int runid) const {return nRunTimingAvg[runid];}  
@@ -200,7 +204,7 @@ private:
     G4double KillLTime=200;
     G4int KillLTTrue=0;
     G4int nEvents=0;
-    G4double *nEventTiming, *nEventLO, *nEventLD, *nRunTimingAvg, *nRuntLOAvg, *nRuntLDAvg, *nRunTimingStd, *nRuntLOStd, *nRuntLDStd, *nGunPosX, *nGunPosY, *xv, *yv, *yincr, *yvincr;        
+    G4double *nEventTiming, *nEventLO, *nEventLD, *nRunTimingAvg, *nRuntLOAvg,*nRuntLOP50,*nRuntLCP50, *nRuntLDAvg, *nRunTimingStd, *nRuntLOStd, *nRuntLDStd, *nGunPosX, *nGunPosY, *xv, *yv, *yincr, *yvincr;        
     G4int *nEdepEvts;
     G4double incr=0;
     G4double incrS=0;

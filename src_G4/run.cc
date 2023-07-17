@@ -91,6 +91,8 @@ MyRunAction :: MyRunAction(G4String OutName,MyG4Args* MainArgs)
             man->CreateNtupleDColumn("fLCAvg");
             man->CreateNtupleDColumn("fLCStd");
             man->CreateNtupleDColumn("fVolume");
+            man->CreateNtupleDColumn("fLCP50");
+            man->CreateNtupleDColumn("fLOP50");
             man->FinishNtuple(5); // Finish our first tuple or Ntuple number 0
         }
 }
@@ -192,7 +194,10 @@ void MyRunAction::EndOfRunAction(const G4Run* run)
                 man->FillNtupleDColumn(5, 6, PassArgs->GetLDAvg(j));
                 man->FillNtupleDColumn(5, 7, PassArgs->GetLDStd(j));
                 man->FillNtupleDColumn(5, 8, PassArgs->GetVolume());
+                man->FillNtupleDColumn(5, 6, PassArgs->GetLCP50(j));
+                man->FillNtupleDColumn(5, 7, PassArgs->GetLOP50(j));
                 //man->FillNtupleDColumn(5, 6, PassArgs->GetIncr());
+
                 man->AddNtupleRow(5);
             }
         }
@@ -201,7 +206,9 @@ void MyRunAction::EndOfRunAction(const G4Run* run)
     if(PassArgs->GetVis()==0){
     G4cout<<"* Run ID: " << runid <<G4endl;
     G4cout<<"* Average LC: " << PassArgs->GetLDAvg(runid) <<G4endl;
+    G4cout<<"* P50 LC: " << PassArgs->GetLCP50(runid) <<G4endl;
     G4cout<<"* Average LO: " << PassArgs->GetLOAvg(runid) <<G4endl;
+    G4cout<<"* P50 LO: " << PassArgs->GetLOP50(runid) <<G4endl;
     G4cout<<"* Std LO: " << PassArgs->GetLOStd(runid) <<G4endl;
     G4cout<<"* Average LD: " << PassArgs->GetLDAvg(runid) <<G4endl;
     G4cout<<"* Std LD: " << PassArgs->GetLDStd(runid) <<G4endl;

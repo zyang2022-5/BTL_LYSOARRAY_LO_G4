@@ -194,8 +194,8 @@ void MyRunAction::EndOfRunAction(const G4Run* run)
                 man->FillNtupleDColumn(5, 6, PassArgs->GetLDAvg(j));
                 man->FillNtupleDColumn(5, 7, PassArgs->GetLDStd(j));
                 man->FillNtupleDColumn(5, 8, PassArgs->GetVolume());
-                man->FillNtupleDColumn(5, 6, PassArgs->GetLCP50(j));
-                man->FillNtupleDColumn(5, 7, PassArgs->GetLOP50(j));
+                man->FillNtupleDColumn(5, 9, PassArgs->GetLCP50(j));
+                man->FillNtupleDColumn(5, 10, PassArgs->GetLOP50(j));
                 //man->FillNtupleDColumn(5, 6, PassArgs->GetIncr());
 
                 man->AddNtupleRow(5);

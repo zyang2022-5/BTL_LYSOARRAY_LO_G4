@@ -417,7 +417,7 @@ void GmshLYSO ::MakeTile(){
 	 * */
 	 
 	 // Currently we use a fixed number of nodes of 3x4 = 12. For this reason we need the argument -Znode <n> with n>=11 to read at least 12 values from Ypos.
-     // TODO: make the number of sections and nodes an input parameter
+     // TODO: make the number of sections and nodes an input parameter. Add as well debugging comments in case Znode is not set properly etc... Do this with G4Args.cc\\.hh where there are example of commands (.cc) and defined values and functions to extract them (.hh) . G4Args is accessible in this class through 'MainArgs->function();'
 	int nX=3; 		// Fixed sections through X
 	int nodesec=4; 	// Fixed number of nodes along Z
 	
@@ -486,6 +486,7 @@ void GmshLYSO ::MakeTile(){
     int nodesec1=nodesec*2-1; // modif of nodesec at flag for the total number of nodes using Z=0 symmetry
 	std::cout<<"nodesec iter: "<<nodesec1<<std::endl;
 
+	// TODO: Add triangle symmetry at X=0 and Z=0
 	for (int sec = 0; sec < Xins.size()*2-2; sec++) { // loop over the total number of sections including X=0 symmetry
 		combinedpts =combineAllIndicesint(PointTagSecs[sec], PointTagSecs[sec+1]); // returns a vector of vectors with the points of 2 consecutive sections making up all quadrilaterals between 2 consecutive sections
 		for (int surf = 0; surf < nodesec1+2; surf++) { // loop over quadrilateral surface and division into triangles

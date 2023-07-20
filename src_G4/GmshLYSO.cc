@@ -409,44 +409,66 @@ gmsh::model::geo::mesh::setTransfiniteCurve(splm,nsecmesh*2+1);
 
 void GmshLYSO ::MakeTile(){
 
-	int nX=3;
-	int nodesec=4;
+	/*
+	 * This function creates the Tile Detector configuration with a parametrized top surface and a flat bottom where the SiPMs are glued
+	 * The commands to run it are: -TileV0 -Forcebottomline -Znode 11 -Ypos{1-1-1-1-1-1-1-1-1-1-1-1}
+	 * Where the top surface has 2 symmetries trough Z=0 and X=0.
+	 * The points parametrized by the Y height value in Ypos determine the height of 4 points in each of 3 planes across a given X value by the width of the crystal starting from the middle of the crystal 
+	 * */
+	 
+	 // Currently we use a fixed number of nodes of 3x4 = 12. For this reason we need the argument -Znode <n> with n>=11 to read at least 12 values from Ypos.
+     // TODO: make the number of sections and nodes an input parameter
+	int nX=3; 		// Fixed sections through X
+	int nodesec=4; 	// Fixed number of nodes along Z
+	
 
-    std::vector<double> Y_all;
+    std::vector<double> Y_all; // reading the -Ypos value into a vector rather than an array 
     for (int i = 0; i < (nodesec)*nX; i++) {
 		Y_all.push_back(ptsY[i]);
 		std::cout<<Y_all[i]<<" "<<ptsY[i]<< " ";
 	}
 	std::cout<<std::endl;
-	double Xmin=-Xtot/2, Zmin=0., Yzero=-0.1;	
+	
+	// Setting parameters
+	// Yzero is the bottom constant value for the flat crystal surface [mm].
+	// Xmin sets the starting point for the first section or first 4 points, the rest are determined through a number of divisions unitl X=0 (symmetry plane).
+	// Zmin sets the starting point each point in each section until Zmax.
+	double Xmin=-Xtot/2, Zmin=0., Yzero=-0.1;	 
 	double Zmax=Ztot;
 	double Xmax=0.;
 
 	std::cout<< Zmin<< " "<< Zmax<< " "<< Xmin<< " "<<Xmax<< " "<<Yzero<< " "<<nX<< " "<<nodesec<< std::endl;
+	
+	// The Z value of each Ypos value is given equispaced segments from Xmin to Xmax 
     std::vector<double> Xins = generateEquispacedSegments(Xmin, Xmax, nX);
+    // The symmetric values of X, by X=0, are given by XSym. We need one less point given the middle point was already defined (nX-1), for this same reason the initial point is one segment further (Xins[1]-Xins[0]). 
     std::vector<double> XSym = generateEquispacedSegments(Xmax+(Xins[1]-Xins[0]), Xmax+(Xmax-Xmin), nX-1);
-	std::reverse(XSym.begin(), XSym.end());
+	std::reverse(XSym.begin(), XSym.end()); // we reverse so that we can add both, Xins and Xsym, and go from the largest X to the smallest X values.
 	
 	printVectordouble(Xins);
 	printVectordouble(XSym);
 	
-	std::vector<int> tr1,tr2,ptsv;
-    int surfaceTagi,idx;
+	// initialization of tags and vectors of tags
+	std::vector<int> tr1,tr2,ptsv; 
+    int surfaceTagi,idx; 
 	std::vector<std::vector<int>> lineTagSecs,lineTag4Surf,PointTagSecs,combinedpts;
 	std::vector<int> SurfTagSecs, lineTags1,lineTags2, pointTags, line4;
+	// initialization of tags to a large value
 	int ptc=1000,ltc=2000,stc=3000;
 	
-
-	for (int sec = 0; sec < Xins.size(); sec++) {
+	
+	// Point creation
+	for (int sec = 0; sec < Xins.size(); sec++) {// loop over each section = X=cte values of 4 pts
 		std::vector<double> Y = extractRange(Y_all, sec, nodesec);
 		double Xin = Xins[sec];
 
-		std::vector<std::vector<double>> points = calculatePoints(Y, Xin, Zmin, Zmax, Yzero);
-		pointTags = createGmshPoints(points, ptc);
-		PointTagSecs.push_back(pointTags);
-		ptc=pointTags.back();
+		std::vector<std::vector<double>> points = calculatePoints(Y, Xin, Zmin, Zmax, Yzero); // returns a vector of vectors of the location of the points of each section (given by Y) including the bottom surface poitns as the last 2 vectors. This includes the Z=0 symmetry of each section.
+		pointTags = createGmshPoints(points, ptc); 	// Create Gmsh point starting from tag ptc
+		PointTagSecs.push_back(pointTags);			// vector of vectors storing point tags of each section. This includes for each section a new list of nX*2-1+2 equispaced pts from highest Z=LYSO_L to min Z=-LYSO_L and 2 extra points for the bottom surface
+		ptc=pointTags.back();						// store the latest tag used to start from the following section tags
 	}
 	
+	// Symmetrical X=0 point creation
 	for (int sec = Xins.size()-2; sec > -1 ; sec--) {
 		std::vector<double> Y = extractRange(Y_all, sec, nodesec);
 		double Xin = XSym[sec];
@@ -456,31 +478,32 @@ void GmshLYSO ::MakeTile(){
 		PointTagSecs.push_back(pointTags);
 		ptc=pointTags.back();
 	}    
-		//////////////////
+	
+	//////////////////
     // Creating Lines
     //////////////////
 	std::cout<<"nodesec iter: "<<nodesec<<std::endl;
-    int nodesec1=nodesec*2-1;
+    int nodesec1=nodesec*2-1; // modif of nodesec at flag for the total number of nodes using Z=0 symmetry
 	std::cout<<"nodesec iter: "<<nodesec1<<std::endl;
 
-	for (int sec = 0; sec < Xins.size()*2-2; sec++) {
-		combinedpts =combineAllIndicesint(PointTagSecs[sec], PointTagSecs[sec+1]);
-		for (int surf = 0; surf < nodesec1+2; surf++) {
-			if (sec==0 && surf==0){
-				ptsv=combinedpts[surf];
-				tr1 = getValuesAtIndices(ptsv,{0,1,2});
-				tr2 = getValuesAtIndices(ptsv,{0,2,3});
+	for (int sec = 0; sec < Xins.size()*2-2; sec++) { // loop over the total number of sections including X=0 symmetry
+		combinedpts =combineAllIndicesint(PointTagSecs[sec], PointTagSecs[sec+1]); // returns a vector of vectors with the points of 2 consecutive sections making up all quadrilaterals between 2 consecutive sections
+		for (int surf = 0; surf < nodesec1+2; surf++) { // loop over quadrilateral surface and division into triangles
+			if (sec==0 && surf==0){ 	// condition for the first section and first quadrilateral
+				ptsv=combinedpts[surf]; 	// points of the quadrilateral
+				tr1 = getValuesAtIndices(ptsv,{0,1,2}); // returns the points at the given locations of the quadrilateral making the first triangle of the quadrilateral
+				tr2 = getValuesAtIndices(ptsv,{0,2,3}); // returns the points at the given locations of the quadrilateral making the second triangle of the quadrilateral
 
-				lineTags1 = createGmshLines(tr1, ltc,{});
-				line4=lineTags1;
-				lineTag4Surf.push_back(line4);
-				ltc=lineTags1.back();
+				lineTags1 = createGmshLines(tr1, ltc,{}); 	// the function takes the points of the first triangle and makes all lines with the consequtive points : [0-1],[1-2],[2-0] lines
+				line4=lineTags1;							// intermediate storage of the tags of the lines created (better code visualization)
+ 				lineTag4Surf.push_back(line4);				// store the tags of the lines in vector of vectors used to create each triangle surface, the lines need to be oriented with the orientation, right hand rule, pointing outside of the final volume
+				ltc=lineTags1.back();						// store latest tag to start following line tags
 
-				lineTags2 = createGmshLines(tr2, ltc,{0});
-				line4={-lineTags1[2],lineTags2[0],lineTags2[1]};
-				lineTag4Surf.push_back(line4);
+				lineTags2 = createGmshLines(tr2, ltc,{0});	// the function takes the points of the second triangle and makes all lines, except the first one {0} which was already created with the previous triangle, with the consequtive points : [1-2],[2-0] lines
+				line4={-lineTags1[2],lineTags2[0],lineTags2[1]}; // The second triangle uses a line in opposite direction [- sign] of the first triangle and both new lines in lineTags2 from the second triangle
+				lineTag4Surf.push_back(line4);				// store the tags of the lines in vector of vectors used to create each triangle surface, the lines need to be oriented with the orientation, right hand rule, pointing outside of the final volume
 				ltc=lineTags2.back();
-			}else if (sec==0 && surf<nodesec1+1){
+			}else if (sec==0 && surf<nodesec1+1){// condition for the first section and follow up quadrilaterals with exception of the last one
 				ptsv=combinedpts[surf];
 				tr1 = getValuesAtIndices(ptsv,{0,1,2});
 				tr2 = getValuesAtIndices(ptsv,{0,2,3});
@@ -491,11 +514,11 @@ void GmshLYSO ::MakeTile(){
 				ltc=lineTags1.back();
 
 				lineTags2 = createGmshLines(tr2, ltc,{0,2});
-				line4={-lineTags1[2],lineTags2[0],-lineTag4Surf[(surf-1)*2+0][1]};
+				line4={-lineTags1[2],lineTags2[0],-lineTag4Surf[(surf-1)*2+0][1]};// The second triangle uses a line in opposite direction [- sign] of the first trianglethe new line in lineTags2 from the second triangle and a line from the previous quadrilateral whose tag is stored in the vector of vector to make all triangle surfaces
 				lineTag4Surf.push_back(line4);
 				ltc=lineTags2.back();
 			
-			}else if(sec==0 && surf==nodesec1+1){
+			}else if(sec==0 && surf==nodesec1+1){// condition for the first section last quadrilateral closing the section
 				ptsv=combinedpts[surf];
 				tr1 = getValuesAtIndices(ptsv,{0,1,2});
 				tr2 = getValuesAtIndices(ptsv,{0,2,3});
@@ -510,7 +533,7 @@ void GmshLYSO ::MakeTile(){
 				lineTag4Surf.push_back(line4);
 				ltc=lineTags2.back();
 				
-			}else if(sec > 0  && surf==0){
+			}else if(sec > 0  && surf==0){// condition for the first quadrilateral of sections different from the first one
 				ptsv=combinedpts[surf];
 				tr1 = getValuesAtIndices(ptsv,{0,1,2});
 				tr2 = getValuesAtIndices(ptsv,{0,2,3});
@@ -525,7 +548,7 @@ void GmshLYSO ::MakeTile(){
 				lineTag4Surf.push_back(line4);
 				ltc=lineTags2.back();
 				 
-			}else if(sec > 0 && surf<nodesec1+1){
+			}else if(sec > 0 && surf<nodesec1+1){// condition for follow up quadrilaterals with exception of the last one for sections different from the first one
 				
 				ptsv=combinedpts[surf];
 				tr1 = getValuesAtIndices(ptsv,{0,1,2});
@@ -541,7 +564,7 @@ void GmshLYSO ::MakeTile(){
 				lineTag4Surf.push_back(line4);
 				ltc=lineTags2.back();
 				
-			}else if(sec > 0  && surf==nodesec1+1){
+			}else if(sec > 0  && surf==nodesec1+1){// condition for the last quadrilateral closing the section for sections different than the first one
 				ptsv=combinedpts[surf];
 				tr1 = getValuesAtIndices(ptsv,{0,1,2});
 				tr2 = getValuesAtIndices(ptsv,{0,2,3});
@@ -569,23 +592,25 @@ void GmshLYSO ::MakeTile(){
 	for (const auto& group : lineTag4Surf)
 	{
 		// Create surface using the four point tags in the group
-		createGmshSurface(group,stc);SurfTagSecs.push_back(stc);stc++;
+		createGmshSurface(group,stc);
+		SurfTagSecs.push_back(stc); // storage of surface tags
+		stc++;
 	}
 
-	
-	std::vector<int> s1 = getEvenElementsAtIndex(lineTag4Surf,0, 0, nodesec1*2+2);
+	// add lateral surfaces to X=Xmin and X=Xmax to close the volume
+	std::vector<int> s1 = getEvenElementsAtIndex(lineTag4Surf,0, 0, nodesec1*2+2); // return lines created for the first section corresponding to X=Xmin
 	std::cout<<"s1: "<<std::endl;
 	printVector(s1);
     std::reverse(s1.begin(), s1.end()); // Reverse the copy
 	createGmshSurface(s1,stc);SurfTagSecs.push_back(stc);stc++;
 
 	
-	std::vector<int> s2 = getOddElementsAtIndex(lineTag4Surf,1, lineTag4Surf.size()-(nodesec1*2+3), lineTag4Surf.size()+1);
+	std::vector<int> s2 = getOddElementsAtIndex(lineTag4Surf,1, lineTag4Surf.size()-(nodesec1*2+3), lineTag4Surf.size()+1); // return lines created for the last section corresponding to X=Xmax
 	std::cout<<"s2: "<<std::endl;
 	printVector(s2);	
 	createGmshSurface(s2,stc);SurfTagSecs.push_back(stc);stc++;
 	
-    gmsh::model::geo::synchronize();
+    gmsh::model::geo::synchronize(); // upload to gmsh the geometry defined previously, allows visualization and further operations
     //////////////////
     // Creating Solid
     //////////////////
@@ -595,5 +620,7 @@ void GmshLYSO ::MakeTile(){
 
     // Create a volume from the surface loop
     int volume = gmsh::model::geo::addVolume({surfaceLoop});
+    
+   // after this the class meshes automatically the volume and the created tetrahedrons are converted to G4 structures. 
 
 }

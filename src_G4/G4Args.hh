@@ -141,8 +141,12 @@ public:
     G4double GetPartXDispl(){return PartDisplX;}
 
     void FillEvtLO(G4int evt, G4double val){nEventLO[evt]=val;}  
+    void FillEvtLSt(G4int evt, G4double val){nEventLSt[evt]=val;}  
+
     void FillEvtLD(G4int evt, G4double val){nEventLD[evt]=val;}  
     G4double GetEvtLO(G4int evt) const {return nEventLO[evt];}  
+    G4double GetEvtLSt(G4int evt) const {return nEventLSt[evt];}  
+
     void FillEvtTim(G4int evt, G4double val){nEventTiming[evt]=val;}  
     G4double GetEvtTim(G4int evt) const {return nEventLO[evt];}  
     void FillAvgTim(G4int);
@@ -156,6 +160,8 @@ public:
     
     G4double GetLOP50(G4int runid) const {return nRuntLOP50[runid];}  
     G4double GetLCP50(G4int runid) const {return nRuntLCP50[runid];}  
+    G4double GetLStAvg(G4int runid) const {return nRuntLStAvg[runid];}  
+    G4double GetLStP50(G4int runid) const {return nRuntLStP50[runid];}  
     
     G4double GetLDAvg(G4int runid) const {return nRuntLDAvg[runid];}  
     G4double GetLDStd(G4int runid) const {return nRuntLDStd[runid];}  
@@ -211,7 +217,7 @@ private:
     G4double KillLTime=200;
     G4int KillLTTrue=0;
     G4int nEvents=0;
-    G4double *nEventTiming, *nEventLO, *nEventLD, *nRunTimingAvg, *nRuntLOAvg,*nRuntLOP50,*nRuntLCP50, *nRuntLDAvg, *nRunTimingStd, *nRuntLOStd, *nRuntLDStd, *nGunPosX, *nGunPosY, *xv, *yv, *yincr, *yvincr;        
+    G4double *nEventTiming, *nEventLO,*nEventLSt, *nEventLD, *nRunTimingAvg, *nRuntLOAvg,*nRuntLOP50,*nRuntLCP50,*nRuntLStAvg,*nRuntLStP50, *nRuntLDAvg, *nRunTimingStd, *nRuntLOStd, *nRuntLDStd, *nGunPosX, *nGunPosY, *xv, *yv, *yincr, *yvincr;        
     G4int *nEdepEvts;
     G4double incr=0;
     G4double incrS=0;

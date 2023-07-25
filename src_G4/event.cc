@@ -141,6 +141,8 @@ void MyEventAction::EndOfEventAction(const G4Event *anEvent)
     if(PassArgs->Getnrep()>0){
     PassArgs->FillEvtLO(evt, PC/(PassArgs->GetEdep()/MeV)/2.);
     PassArgs->FillEvtLD(evt, PC);
+    PassArgs->FillEvtLSt(evt, PC/(PassArgs->GetEdep()/MeV)/2.*PassArgs->GetMuonLYSOTrackLength());
+
     if(PassArgs->GetTimeTrue()==1){PassArgs->FillEvtTim(evt,  PassArgs->GetPhotTiming());}
     }   
 

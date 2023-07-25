@@ -418,7 +418,7 @@ void GmshLYSO ::MakeTile(){
 	 
 	 // Currently we use a fixed number of nodes of 3x4 = 12. For this reason we need the argument -Znode <n> with n>=11 to read at least 12 values from Ypos.
      // TODO: make the number of sections and nodes an input parameter. Add as well debugging comments in case Znode is not set properly etc... Do this with G4Args.cc\\.hh where there are example of commands (.cc) and defined values and functions to extract them (.hh) . G4Args is accessible in this class through 'MainArgs->function();'
-	int nX=3; 		// Fixed sections through X
+	int nX=2; 		// Fixed sections through X
 	int nodesec=4; 	// Fixed number of nodes along Z
 	
 
@@ -521,16 +521,16 @@ void GmshLYSO ::MakeTile(){
 			
 			}else if(sec==0 && surf==nodesec1+1){// condition for the first section last quadrilateral closing the section
 				ptsv=combinedpts[surf];
-				tr1 = getValuesAtIndices(ptsv,{0,1,2});
-				tr2 = getValuesAtIndices(ptsv,{0,2,3});
+				tr1 = getValuesAtIndices(ptsv,{1,2,3});
+				tr2 = getValuesAtIndices(ptsv,{0,1,3});
 
-				lineTags1 = createGmshLines(tr1, ltc,{1});
-				line4={lineTags1[0],-lineTag4Surf[1][2],lineTags1[1]};
+				lineTags1 = createGmshLines(tr1, ltc,{0});
+				line4={-lineTag4Surf[1][2],lineTags1[1],lineTags1[0]};
 				lineTag4Surf.push_back(line4);
 				ltc=lineTags1.back();
 
-				lineTags2 = createGmshLines(tr2, ltc,{0,2});
-				line4={-lineTags1[1],lineTags2[0],-lineTag4Surf[(surf-1)*2+0][1]};
+				lineTags2 = createGmshLines(tr2, ltc,{1,2});
+				line4={lineTags2[0],-lineTag4Surf[(surf-1)*2+0][1], -lineTags1[1]};
 				lineTag4Surf.push_back(line4);
 				ltc=lineTags2.back();
 				

@@ -19,6 +19,16 @@ gmsh::model::geo::synchronize();
 
 // Export mesh to STL if MainArgs->GetMesh() is 1
 if (MainArgs->GetGmshView() == 1) {
+	
+	gmsh::model::geo::addPoint(0,1.5,28.5,0,10001);
+	gmsh::model::geo::addPoint(0,1.5,-28.5,0,10002);
+	gmsh::model::geo::addPoint(0,-1.5,-28.5,0,10003);
+	gmsh::model::geo::addPoint(0,-1.5,28.5,0,10004);
+	gmsh::model::geo::addLine(10001,10002);
+	gmsh::model::geo::addLine(10002,10003);
+	gmsh::model::geo::addLine(10003,10004);
+	gmsh::model::geo::addLine(10004,10001);
+
     gmsh::model::geo::synchronize();
 	gmsh::fltk::run();
 	gmsh::finalize();
@@ -172,6 +182,7 @@ void GmshLYSO ::CreateG4LYSO(G4Material *material, G4LogicalVolume *logicWorld){
 			*/
 			LYSOTet_Logic = new G4LogicalVolume(LYSOTet_Solid, material, tetname+ G4String("logical_")+G4UIcommand::ConvertToString(gidx));
 			fScoringVolumeVec.push_back(LYSOTet_Logic);
+			LocalArgs->PushfScoringVolumeVec(LYSOTet_Logic);
 			//G4cout <<"Phys Tet "<< i/4 << G4endl;
 			LYSOTet_Phys = new G4PVPlacement(0,G4ThreeVector(0.,0.,0.),LYSOTet_Logic,tetname+ G4String("phys_")+G4UIcommand::ConvertToString(gidx),logicWorld,false,0,true);       
 			lstPhysTet.push_back(LYSOTet_Phys);
@@ -254,7 +265,21 @@ void GmshLYSO ::CreateG4LYSO_GC3(G4Material *material, G4LogicalVolume *logicWor
 			G4cout <<"    ### "<< G4endl;
 			G4cout <<"    ### Finished Mesh, Volume = "<< LocalArgs->GetVolume()<< G4endl;
 			G4cout <<"    ### "<< G4endl;
+			
+			LocalArgs->InitfScoringVolumeVec(fScoringVolumeVec);
 	}
+	
+#include <vector>
+
+bool GmshLYSO ::IsVolumeInList(const G4LogicalVolume* volume) {
+    for (const G4LogicalVolume* lv : fScoringVolumeVec) {
+        if (lv == volume) {
+            return true; // The volume is found in the list
+        }
+    }
+    return false; // The volume is not in the list
+}
+
 
 
 

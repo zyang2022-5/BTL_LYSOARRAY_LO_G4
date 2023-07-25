@@ -885,4 +885,11 @@ void MyG4Args ::SetNSGAII(){
                         
 }
 
-
+bool MyG4Args ::IsVolumeInList(const G4LogicalVolume* volume) {
+    for (const G4LogicalVolume* lv : fScoringVolumeVec) {
+        if (lv == volume) {
+            return true; // The volume is found in the list
+        }
+    }
+    return false; // The volume is not in the list
+}

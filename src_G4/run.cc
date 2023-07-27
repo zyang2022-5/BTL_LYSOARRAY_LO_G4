@@ -93,6 +93,8 @@ MyRunAction :: MyRunAction(G4String OutName,MyG4Args* MainArgs)
             man->CreateNtupleDColumn("fVolume");
             man->CreateNtupleDColumn("fLCP50");
             man->CreateNtupleDColumn("fLOP50");
+            man->CreateNtupleDColumn("fLStAvg");
+            man->CreateNtupleDColumn("fLStP50");
             man->FinishNtuple(5); // Finish our first tuple or Ntuple number 0
         }
 }
@@ -196,6 +198,8 @@ void MyRunAction::EndOfRunAction(const G4Run* run)
                 man->FillNtupleDColumn(5, 8, PassArgs->GetVolume());
                 man->FillNtupleDColumn(5, 9, PassArgs->GetLCP50(j));
                 man->FillNtupleDColumn(5, 10, PassArgs->GetLOP50(j));
+                man->FillNtupleDColumn(5, 11, PassArgs->GetLStAvg(j));
+                man->FillNtupleDColumn(5, 12, PassArgs->GetLStP50(j));
                 //man->FillNtupleDColumn(5, 6, PassArgs->GetIncr());
 
                 man->AddNtupleRow(5);
@@ -212,6 +216,8 @@ void MyRunAction::EndOfRunAction(const G4Run* run)
     G4cout<<"* Std LO: " << PassArgs->GetLOStd(runid) <<G4endl;
     G4cout<<"* Average LD: " << PassArgs->GetLDAvg(runid) <<G4endl;
     G4cout<<"* Std LD: " << PassArgs->GetLDStd(runid) <<G4endl;
+    G4cout<<"* Average LSt: " << PassArgs->GetLStAvg(runid) <<G4endl;
+    G4cout<<"* P50 LSt: " << PassArgs->GetLStP50(runid) <<G4endl;
     G4cout<<"* Average Timing: " << PassArgs->GetTimAvg(runid) <<G4endl;
     G4cout<<"* Std Timing: " << PassArgs->GetTimStd(runid) <<G4endl;
     G4cout<<"* Number of events with energy deposition: " << PassArgs->GetnEvtEdep(runid) <<G4endl;

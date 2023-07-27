@@ -51,6 +51,7 @@ public:
     int GetNumberOfNodes() const {return mesh_totalnodes;}
     double GetVolume() const {return Volume;}
 
+	bool IsVolumeInList(const G4LogicalVolume* volume);
 
     
 private:

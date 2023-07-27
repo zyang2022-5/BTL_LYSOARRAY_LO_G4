@@ -90,6 +90,9 @@ void MyEventAction::EndOfEventAction(const G4Event *anEvent)
     G4cout<< "Photons detected in the Right SiPM: " << PassArgs->GetNPhotR() << G4endl;
     G4cout<< "Photons detected in the Left SiPM: " << PassArgs->GetNPhotL() << G4endl;
     G4cout<< "Light Output Average (LO/2.) end of event: " << PC/(PassArgs->GetEdep()/MeV)/2. << G4endl;
+    G4cout<< "Muon Track Length in LYSO: " << PassArgs->GetMuonLYSOTrackLength() << G4endl;
+    G4cout<< "LC / Stopping Power: " << PC/(PassArgs->GetEdep()/MeV)/2.*PassArgs->GetMuonLYSOTrackLength()<< G4endl;
+
     if(PassArgs->GetTimeTrue()==1){G4cout<< "Global Timing: " << PassArgs->GetPhotTiming() << G4endl;}
     G4cout<< "#####################" << G4endl;
     G4cout<< "#####################" << G4endl;
@@ -125,6 +128,9 @@ void MyEventAction::EndOfEventAction(const G4Event *anEvent)
     G4cout<< "Light Output Average (LO/2.) end of event: " << PC/(PassArgs->GetEdep()/MeV)/2. << G4endl;
     G4cout<< "Real Number of Cross-Talk Photons Detected: " << CT << G4endl;
     G4cout<< "Cross-Talk/MeV (nxSiPM) end of event: " << CT/(PassArgs->GetEdep()/MeV) << G4endl;
+    G4cout<< "Muon Track Length in LYSO: " << PassArgs->GetMuonLYSOTrackLength() << G4endl;
+    G4cout<< "LC / Stopping Power: " << PC/(PassArgs->GetEdep()/MeV)/2.*PassArgs->GetMuonLYSOTrackLength()<< G4endl;
+
     if(PassArgs->GetTimeTrue()==1){G4cout<< "Global Timing: " << PassArgs->GetPhotTiming() << G4endl;}
     G4cout<< "#####################" << G4endl;
     G4cout<< "#####################" << G4endl;
@@ -135,6 +141,8 @@ void MyEventAction::EndOfEventAction(const G4Event *anEvent)
     if(PassArgs->Getnrep()>0){
     PassArgs->FillEvtLO(evt, PC/(PassArgs->GetEdep()/MeV)/2.);
     PassArgs->FillEvtLD(evt, PC);
+    PassArgs->FillEvtLSt(evt, PC/(PassArgs->GetEdep()/MeV)/2.*PassArgs->GetMuonLYSOTrackLength());
+
     if(PassArgs->GetTimeTrue()==1){PassArgs->FillEvtTim(evt,  PassArgs->GetPhotTiming());}
     }   
 

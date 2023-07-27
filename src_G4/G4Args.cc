@@ -34,6 +34,7 @@ MyG4Args :: MyG4Args(int mainargc,char** mainargv)
                     nEventTiming = new G4double[nEvents];
                     nEventLO = new G4double[nEvents];
                     nEventLD = new G4double[nEvents];
+                    nEventLSt = new G4double[nEvents];
 
                     nRunTimingAvg = new G4double[nrep];
                     nRuntLOAvg = new G4double[nrep];
@@ -59,12 +60,15 @@ MyG4Args :: MyG4Args(int mainargc,char** mainargv)
                     nEventTiming = new G4double[nEvents];
                     nEventLO = new G4double[nEvents];
                     nEventLD = new G4double[nEvents];
+                    nEventLSt = new G4double[nEvents];
 
                     nRunTimingAvg = new G4double[nrep];
                     nRuntLOAvg = new G4double[nrep];
                     nRuntLDAvg = new G4double[nrep];
                     nRuntLOP50 = new G4double[nrep];
                     nRuntLCP50 = new G4double[nrep];
+                    nRuntLStAvg = new G4double[nrep];
+                    nRuntLStP50 = new G4double[nrep];
                     nRunTimingStd = new G4double[nrep];
                     nRuntLOStd = new G4double[nrep];
                     nRuntLDStd = new G4double[nrep];
@@ -403,12 +407,15 @@ MyG4Args :: MyG4Args(int mainargc,char** mainargv)
                     nEventTiming = new G4double[nEvents];
                     nEventLO = new G4double[nEvents];
                     nEventLD = new G4double[nEvents];
+                    nEventLSt = new G4double[nEvents];
 
                     nRunTimingAvg = new G4double[nrep];
                     nRuntLOAvg = new G4double[nrep];
                     nRuntLDAvg = new G4double[nrep];
                     nRuntLOP50 = new G4double[nrep];
                     nRuntLCP50 = new G4double[nrep];
+                    nRuntLStAvg = new G4double[nrep];
+                    nRuntLStP50 = new G4double[nrep];
                     nRunTimingStd = new G4double[nrep];
                     nRuntLOStd = new G4double[nrep];
                     nRuntLDStd = new G4double[nrep];
@@ -672,11 +679,14 @@ void MyG4Args :: FillAvgLO(G4int runid) {
 
     nRuntLOAvg[runid]=0;
     nRuntLDAvg[runid]=0;
+    nRuntLStAvg[runid]=0;
+
     G4int cnt=0;
     
     // Sort the arrays
     std::sort(nEventLO + 1, nEventLO + nEvents);
     std::sort(nEventLD + 1, nEventLD + nEvents);
+    std::sort(nEventLSt + 1, nEventLSt + nEvents);
     
     // Calculate the index for the 50th percentile
     G4int percentileIndex = static_cast<G4int>(nEvents * 0.5);
@@ -684,20 +694,24 @@ void MyG4Args :: FillAvgLO(G4int runid) {
     // Calculate the P50 values
     G4double p50LO = nEventLO[percentileIndex];
     G4double p50LD = nEventLD[percentileIndex];
-    
+    G4double p50LSt = nEventLSt[percentileIndex];
+
     for (int j = 1; j < nEvents; j=j+1){
         if(nEventLO[j]>0){
             cnt+=1;
             nRuntLOAvg[runid]+=nEventLO[j];    
-            nRuntLDAvg[runid]+=nEventLD[j];        
+            nRuntLDAvg[runid]+=nEventLD[j];       
+            nRuntLStAvg[runid]+=nEventLSt[j];     
         }
     }
     nRuntLOAvg[runid]=nRuntLOAvg[runid]/cnt;
     nRuntLDAvg[runid]=nRuntLDAvg[runid]/cnt;
+    nRuntLStAvg[runid]=nRuntLStAvg[runid]/cnt;
     nEdepEvts[runid]=cnt;
     
     nRuntLOP50[runid]=p50LO;
     nRuntLCP50[runid]=p50LD;
+    nRuntLStP50[runid]=p50LSt;
 }               
 
 void MyG4Args :: FillStdTim(G4int runid){
@@ -863,12 +877,16 @@ void MyG4Args ::SetNSGAII(){
                     nEventTiming = new G4double[nEvents];
                     nEventLO = new G4double[nEvents];
                     nEventLD = new G4double[nEvents];
+                    nEventLSt = new G4double[nEvents];
 
                     nRunTimingAvg = new G4double[nrep];
                     nRuntLOAvg = new G4double[nrep];
                     nRuntLDAvg = new G4double[nrep];
                     nRuntLOP50 = new G4double[nrep];
                     nRuntLCP50 = new G4double[nrep];
+                    nRuntLStAvg = new G4double[nrep];
+                    nRuntLStP50 = new G4double[nrep];
+                    
                     nRunTimingStd = new G4double[nrep];
                     nRuntLOStd = new G4double[nrep];
                     nRuntLDStd = new G4double[nrep];
@@ -894,4 +912,11 @@ void MyG4Args ::SetNSGAII(){
                         
 }
 
-
+bool MyG4Args ::IsVolumeInList(const G4LogicalVolume* volume) {
+    for (const G4LogicalVolume* lv : fScoringVolumeVec) {
+        if (lv == volume) {
+            return true; // The volume is found in the list
+        }
+    }
+    return false; // The volume is not in the list
+}

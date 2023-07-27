@@ -78,6 +78,17 @@ void MySteppingAction::UserSteppingAction(const G4Step *step)
     if(step -> GetTrack() -> GetDefinition() == G4MuonPlus::Definition()) {
             G4double edepM = step->GetTotalEnergyDeposit();  
             PassArgs->AddMuonEdep(edepM);
+            
+        // Calculate track length for muons within the LYSO volume
+        G4LogicalVolume* currentVolume = step->GetPreStepPoint()->GetTouchableHandle()->GetVolume()->GetLogicalVolume();
+        if (PassArgs->GetGeomConfig()==11 || PassArgs->GetGeomConfig()==13){
+
+			if (PassArgs->IsVolumeInList(currentVolume)) {
+				G4double trackLengthMuon = step->GetStepLength();
+				PassArgs->AddMuonLYSOTrackLength(trackLengthMuon);
+				// Use trackLengthMuon for further calculations or store it as needed
+			}
+		}
     }
 
     if(step -> GetTrack() -> GetDefinition() != G4OpticalPhoton::Definition()) {

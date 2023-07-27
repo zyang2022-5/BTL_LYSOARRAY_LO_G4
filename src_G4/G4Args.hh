@@ -15,6 +15,7 @@
 #include <algorithm>
 #include <sstream>
 #include <stdio.h>
+#include "G4LogicalVolume.hh"
 
 
 class MyG4Args 
@@ -99,7 +100,7 @@ public:
     void GeomReinit();
     G4int FindEvents(G4String);
 
-    void InitAllCount(){ArgLO = 0;ArgCrossTalk = 0;TotPh = 0;PhHit=0;Edep=0.;MuonEdep=0.;nPhotL=0;nPhotR=0;PhotTiming[1]=0.;}
+    void InitAllCount(){ArgLO = 0;ArgCrossTalk = 0;TotPh = 0;PhHit=0;Edep=0.;MuonEdep=0.;nPhotL=0;nPhotR=0;PhotTiming[1]=0.;MuonLYSOTrackLength=0.;}
     void InitTotPh(){TotPh = 0;}
     void InitLO(){ArgLO = 0;}
     void InitCT(){ArgCrossTalk = 0;}
@@ -108,6 +109,8 @@ public:
     void AddNEdep(){NEdep += 1;}
     void AddMuonEdep(G4double Edepadd){MuonEdep += Edepadd;}
     void AddEdep(G4double Edepadd){Edep += Edepadd;}
+    void AddMuonLYSOTrackLength(G4double TLadd){MuonLYSOTrackLength += TLadd;}
+
     void AddPhHit(){PhHit += 1;}
     void AddLO(){ArgLO += 1;}
     void AddCT(){ArgCrossTalk += 1;}
@@ -122,6 +125,7 @@ public:
     void InitVolume(){Volume = 0;}
 
 
+    G4double GetMuonLYSOTrackLength() const { return MuonLYSOTrackLength;}
 
     G4int GetLO() const {return ArgLO;}
     G4int GetCT() const {return ArgCrossTalk;}
@@ -137,8 +141,12 @@ public:
     G4double GetPartXDispl(){return PartDisplX;}
 
     void FillEvtLO(G4int evt, G4double val){nEventLO[evt]=val;}  
+    void FillEvtLSt(G4int evt, G4double val){nEventLSt[evt]=val;}  
+
     void FillEvtLD(G4int evt, G4double val){nEventLD[evt]=val;}  
     G4double GetEvtLO(G4int evt) const {return nEventLO[evt];}  
+    G4double GetEvtLSt(G4int evt) const {return nEventLSt[evt];}  
+
     void FillEvtTim(G4int evt, G4double val){nEventTiming[evt]=val;}  
     G4double GetEvtTim(G4int evt) const {return nEventLO[evt];}  
     void FillAvgTim(G4int);
@@ -152,6 +160,8 @@ public:
     
     G4double GetLOP50(G4int runid) const {return nRuntLOP50[runid];}  
     G4double GetLCP50(G4int runid) const {return nRuntLCP50[runid];}  
+    G4double GetLStAvg(G4int runid) const {return nRuntLStAvg[runid];}  
+    G4double GetLStP50(G4int runid) const {return nRuntLStP50[runid];}  
     
     G4double GetLDAvg(G4int runid) const {return nRuntLDAvg[runid];}  
     G4double GetLDStd(G4int runid) const {return nRuntLDStd[runid];}  
@@ -179,6 +189,9 @@ public:
 
     G4double GetGeomIndv(G4int runid) const {return RndGenIndv[runid];}  
     G4double GetSZloc(){return SZ_loc;}
+	bool IsVolumeInList(const G4LogicalVolume* volume);
+    void InitfScoringVolumeVec(std::vector<G4LogicalVolume*> fScoringVolumeVecinit) {fScoringVolumeVec=fScoringVolumeVecinit;}  
+    void PushfScoringVolumeVec(G4LogicalVolume *LYSOTet_Logic) {fScoringVolumeVec.push_back(LYSOTet_Logic);}  
 
     
 private:
@@ -206,7 +219,7 @@ private:
     G4double KillLTime=200;
     G4int KillLTTrue=0;
     G4int nEvents=0;
-    G4double *nEventTiming, *nEventLO, *nEventLD, *nRunTimingAvg, *nRuntLOAvg,*nRuntLOP50,*nRuntLCP50, *nRuntLDAvg, *nRunTimingStd, *nRuntLOStd, *nRuntLDStd, *nGunPosX, *nGunPosY, *xv, *yv, *yincr, *yvincr;        
+    G4double *nEventTiming, *nEventLO,*nEventLSt, *nEventLD, *nRunTimingAvg, *nRuntLOAvg,*nRuntLOP50,*nRuntLCP50,*nRuntLStAvg,*nRuntLStP50, *nRuntLDAvg, *nRunTimingStd, *nRuntLOStd, *nRuntLDStd, *nGunPosX, *nGunPosY, *xv, *yv, *yincr, *yvincr;        
     G4int *nEdepEvts;
     G4double incr=0;
     G4double incrS=0;
@@ -277,8 +290,9 @@ private:
 	G4int Tile = 0;
     G4double SZ_loc=0.5;
     G4int GmshView = 0;
-    
+    G4double MuonLYSOTrackLength=0;
     G4int ESRFinish=0;
+	std::vector<G4LogicalVolume*> fScoringVolumeVec;
 
 
 };    

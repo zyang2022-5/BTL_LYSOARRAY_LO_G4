@@ -159,6 +159,8 @@ public:
     G4double GetTimStd(G4int runid) const {return nRunTimingStd[runid];}  
     G4double GetnEvtEdep(G4int runid) const {return nEdepEvts[runid];}  
     G4int GetZnode() const {return Znode;}
+    G4int GetnX() const {return nX;}
+    G4int Getnodesec() const {return nodesec;}
     G4double GetVolume() const {return Volume;}
     G4int SetVolume(G4double V){Volume=V;}
     G4int GetOnode() const {return Onode;}
@@ -210,6 +212,8 @@ private:
     G4double incrS=0;
     G4double incrV=0;
     G4int Znode=1;
+    G4int nX=3;
+    G4int nodesec=4;
     G4int Onode=5;
     G4double* xv0 = NULL;
     G4int Muon = 0;

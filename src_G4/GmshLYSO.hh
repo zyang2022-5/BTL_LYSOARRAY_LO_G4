@@ -64,7 +64,7 @@ std::vector<double> coord, param;
 std::vector<std::vector<std::size_t> > elemTags, elemNodeTags;
 
 	G4double Ztot,Xtot,*ptsY,*ptsYF,*ptsYFb;
-	G4int Znode;
+	G4int Znode,nX,nodesec;
 	G4String modelname;
 
 int Nelem=0;

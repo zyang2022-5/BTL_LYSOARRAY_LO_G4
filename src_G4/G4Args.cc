@@ -265,14 +265,23 @@ MyG4Args :: MyG4Args(int mainargc,char** mainargv)
                 {   
                     scint = 3;
                     G4cout<< " ### Save STL " <<G4endl; 
-				}else if(strcmp(mainargv[j],"-noESR")==0)
+		}else if(strcmp(mainargv[j],"-noESR")==0)
                 {   
                     ESR = 0;
                     G4cout<< " ### No ESR " <<G4endl;                 
-                    }else if(strcmp(mainargv[j],"-Znode")==0)
+                }else if(strcmp(mainargv[j],"-Znode")==0)
                 {   
                     Znode = atoi(mainargv[j+1]);j=j+1;
-                    G4cout<< " ### The Number of sections for the LYSO crystal is:  "<< Znode <<G4endl;         
+                    G4cout<< " ### The Number of sections for the LYSO crystal is:  "<< Znode <<G4endl;  
+		}else if(strcmp(mainargv[j],"-nX")==0)
+		{
+		    nX = atoi(mainargv[j+1]);j=j+1;
+		    G4cout<< " ### The number of nodes in X for 1 quadrant is:  "<< nX <<G4endl;
+		}else if(strcmp(mainargv[j],"-nodesec")==0)
+		{
+		    nodesec = atoi(mainargv[j+1]);j=j+1;
+		    G4cout<< " ### The number of nodes in Z for 1 quadrant is:  "<< nodesec <<G4endl;
+
                 }else if(strcmp(mainargv[j],"-Muon")==0)
                 {   
                     Muon = 1;

@@ -2,7 +2,6 @@
  CC=gcc
  CXX=g++
  LD=g++
-
  CXXFLAGS=-fdiagnostics-color -O2 -g $(shell geant4-config --cflags) -O2  -L/home/gmsh/lib -lgmsh
  LDLIBS=-Wl,--copy-dt-needed-entries -fdiagnostics-color -lm $(shell geant4-config --libs)  -L/home/gmsh/lib -lgmsh
 

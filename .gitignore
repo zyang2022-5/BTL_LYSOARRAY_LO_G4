@@ -2,6 +2,14 @@
 *.log
 # ignore ALL root files
 *.root
+
+*.msh
+*.tex
+*.g4view
+*.step
+*.geo
+*.pos
+*.png
 # ignore ALL files in ANY directore named temp
 temp/
 # ignore ALL files in the build directory

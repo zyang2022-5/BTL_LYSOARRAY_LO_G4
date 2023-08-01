@@ -81,6 +81,8 @@ The commands work as follow `-command argument`, in `[]` we set the number of op
 -GeomConfig [1 2 3 11 13] : This argument changes the configuration of the detector. Configuration 1-3 provide use the default geometry construction of G4 while 11 and 13 use Gmsh and allow shape changes through splines and the -YPos argument. Config. 3 and 13 use 16 crystals while the rest use a single one.
 -Zelem [8] : number of mesh nodes along half of Z of the LYSO crystal
 -Znode [1] : number of sections of the LYSO mesh
+-nX [3] : number of X nodes in 1 quadrant
+-nodesec [4] : number of Z nodes in 1 quadrant
 -Ypos {-1-1} : value that multiplies the 3mm by default of each spline control node of the mesh.
 -incrV [1-199] : value between 1 and 199 that provides the 1D study of 2 half tetrahedra for the crystal shape decreasing and increasing the LYSO thickness in the middle and edges of the crystal
 

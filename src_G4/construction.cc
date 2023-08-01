@@ -756,7 +756,7 @@ else if(GeomConfig == 11 ){
 		if (ZLloc<4){ZLloc=4;}
 		
 		G4double RXdispl = 0; 
-		G4double RYdispl = -RESIN_L*2-GLUE_L*2-YposTol2; 
+		G4double RYdispl = -(RESIN_L+DET_L)-GLUE_L*2-YposTol2-0.1; 
 		G4double RZdispl = 0; 
 		G4cout<< " ### RESIN DISPL "<< RESIN_L<<" "<<GLUE_L <<G4endl;    
 
@@ -764,7 +764,7 @@ else if(GeomConfig == 11 ){
 		physResin2 = new G4PVPlacement(rM,G4ThreeVector(0*mm,RYdispl,-1*(+ZLloc*mm)),logicResin_Sub,"physResin2",logicWorld,false,0,true); 		
 		
 		G4double FXdispl = 0; 
-		G4double FYdispl = -RESIN_L*2-GLUE_L*2-YposTol2-FR4_L*2; 
+		G4double FYdispl = -0.1*mm - (RESIN_L+DET_L)*2 - GLUE_L*2 - YposTol2 - FR4_L; 
 		G4double FZdispl = 0; 
 		
 		physFR41 = new G4PVPlacement(rM0     ,G4ThreeVector(0,FYdispl,+1*(+ZLloc)),logicFR4,"physResin1",logicWorld,false,0,true); 

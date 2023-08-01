@@ -8,6 +8,8 @@ GmshLYSO :: GmshLYSO(MyG4Args *MainArgs)
     Xtot=MainArgs->GetGeom_LYSO_thick()*2;
 	ptsY=MainArgs->GetYincr();
 	Znode=MainArgs->GetZnode();
+	nX=MainArgs->GetnX();
+	nodesec=MainArgs->Getnodesec();
 	modelname=MainArgs->GetOutName();
 	YSymm=MainArgs->GetYSymtrue();
 
@@ -441,10 +443,8 @@ void GmshLYSO ::MakeTile(){
 	 * The points parametrized by the Y height value in Ypos determine the height of 4 points in each of 3 planes across a given X value by the width of the crystal starting from the middle of the crystal 
 	 * */
 	 
-	 // Currently we use a fixed number of nodes of 3x4 = 12. For this reason we need the argument -Znode <n> with n>=11 to read at least 12 values from Ypos.
-     // TODO: make the number of sections and nodes an input parameter. Add as well debugging comments in case Znode is not set properly etc... Do this with G4Args.cc\\.hh where there are example of commands (.cc) and defined values and functions to extract them (.hh) . G4Args is accessible in this class through 'MainArgs->function();'
-	int nX=3; 		// Fixed sections through X
-	int nodesec=4; 	// Fixed number of nodes along Z
+	 // Use -nX and -nodesec to set X and Z node counts for 1 quandrant. -Znode <n> tells to program to read n values from Ypos. Default nX=3 nodesec=4 so Znode should be 12.
+     // TODO: make the number of sections and nodes an input parameter. (!!!!!!!Done!!!!!!!!) Add as well debugging comments in case Znode is not set properly etc... Do this with G4Args.cc\\.hh where there are example of commands (.cc) and defined values and functions to extract them (.hh) . G4Args is accessible in this class through 'MainArgs->function();'
 	
 
     std::vector<double> Y_all; // reading the -Ypos value into a vector rather than an array 
@@ -511,99 +511,226 @@ void GmshLYSO ::MakeTile(){
     int nodesec1=nodesec*2-1; // modif of nodesec at flag for the total number of nodes using Z=0 symmetry
 	std::cout<<"nodesec iter: "<<nodesec1<<std::endl;
 
-	// TODO: Add triangle symmetry at X=0 and Z=0
-	for (int sec = 0; sec < Xins.size()*2-2; sec++) { // loop over the total number of sections including X=0 symmetry
+	size_t XsecNum = Xins.size() * 2 - 2;
+
+	// TODO: Add triangle symmetry at X=0 and Z=0 (!!!!!!!!!!!!!Done!!!!!!)
+	for (int sec = 0; sec < XsecNum; sec++) { // loop over the total number of sections including X=0 symmetry
 		combinedpts =combineAllIndicesint(PointTagSecs[sec], PointTagSecs[sec+1]); // returns a vector of vectors with the points of 2 consecutive sections making up all quadrilaterals between 2 consecutive sections
 		for (int surf = 0; surf < nodesec1+2; surf++) { // loop over quadrilateral surface and division into triangles
-			if (sec==0 && surf==0){ 	// condition for the first section and first quadrilateral
-				ptsv=combinedpts[surf]; 	// points of the quadrilateral
-				tr1 = getValuesAtIndices(ptsv,{0,1,2}); // returns the points at the given locations of the quadrilateral making the first triangle of the quadrilateral
-				tr2 = getValuesAtIndices(ptsv,{0,2,3}); // returns the points at the given locations of the quadrilateral making the second triangle of the quadrilateral
+			if (sec == 0) {  //first row 
+				if (surf==0){ 	// condition for the first quadrilateral
+					ptsv=combinedpts[surf]; 	// points of the quadrilateral
+					tr1 = getValuesAtIndices(ptsv,{0,1,2}); // returns the points at the given locations of the quadrilateral making the first triangle of the quadrilateral
+					tr2 = getValuesAtIndices(ptsv,{0,2,3}); // returns the points at the given locations of the quadrilateral making the second triangle of the quadrilateral
 
-				lineTags1 = createGmshLines(tr1, ltc,{}); 	// the function takes the points of the first triangle and makes all lines with the consequtive points : [0-1],[1-2],[2-0] lines
-				line4=lineTags1;							// intermediate storage of the tags of the lines created (better code visualization)
- 				lineTag4Surf.push_back(line4);				// store the tags of the lines in vector of vectors used to create each triangle surface, the lines need to be oriented with the orientation, right hand rule, pointing outside of the final volume
-				ltc=lineTags1.back();						// store latest tag to start following line tags
+					lineTags1 = createGmshLines(tr1, ltc,{}); 	// the function takes the points of the first triangle and makes all lines with the consequtive points : [0-1],[1-2],[2-0] lines
+					line4=lineTags1;							// intermediate storage of the tags of the lines created (better code visualization)
+					lineTag4Surf.push_back(line4);				// store the tags of the lines in vector of vectors used to create each triangle surface, the lines need to be oriented with the orientation, right hand rule, pointing outside of the final volume
+					ltc=lineTags1.back();						// store latest tag to start following line tags
 
-				lineTags2 = createGmshLines(tr2, ltc,{0});	// the function takes the points of the second triangle and makes all lines, except the first one {0} which was already created with the previous triangle, with the consequtive points : [1-2],[2-0] lines
-				line4={-lineTags1[2],lineTags2[0],lineTags2[1]}; // The second triangle uses a line in opposite direction [- sign] of the first triangle and both new lines in lineTags2 from the second triangle
-				lineTag4Surf.push_back(line4);				// store the tags of the lines in vector of vectors used to create each triangle surface, the lines need to be oriented with the orientation, right hand rule, pointing outside of the final volume
-				ltc=lineTags2.back();
-			}else if (sec==0 && surf<nodesec1+1){// condition for the first section and follow up quadrilaterals with exception of the last one
-				ptsv=combinedpts[surf];
-				tr1 = getValuesAtIndices(ptsv,{0,1,2});
-				tr2 = getValuesAtIndices(ptsv,{0,2,3});
+					lineTags2 = createGmshLines(tr2, ltc,{0});	// the function takes the points of the second triangle and makes all lines, except the first one {0} which was already created with the previous triangle, with the consequtive points : [1-2],[2-0] lines
+					line4={-lineTags1[2],lineTags2[0],lineTags2[1]}; // The second triangle uses a line in opposite direction [- sign] of the first triangle and both new lines in lineTags2 from the second triangle
+					lineTag4Surf.push_back(line4);				// store the tags of the lines in vector of vectors used to create each triangle surface, the lines need to be oriented with the orientation, right hand rule, pointing outside of the final volume
+					ltc=lineTags2.back();
+				}else if (surf<nodesec-1){// condition for follow up quadrilaterals until the middle section
+					ptsv=combinedpts[surf];
+					tr1 = getValuesAtIndices(ptsv,{0,1,2});
+					tr2 = getValuesAtIndices(ptsv,{0,2,3});
 
-				lineTags1 = createGmshLines(tr1, ltc,{});
-				line4=lineTags1;
-				lineTag4Surf.push_back(line4);
-				ltc=lineTags1.back();
+					lineTags1 = createGmshLines(tr1, ltc,{});
+					line4=lineTags1;
+					lineTag4Surf.push_back(line4);
+					ltc=lineTags1.back();
 
-				lineTags2 = createGmshLines(tr2, ltc,{0,2});
-				line4={-lineTags1[2],lineTags2[0],-lineTag4Surf[(surf-1)*2+0][1]};// The second triangle uses a line in opposite direction [- sign] of the first trianglethe new line in lineTags2 from the second triangle and a line from the previous quadrilateral whose tag is stored in the vector of vector to make all triangle surfaces
-				lineTag4Surf.push_back(line4);
-				ltc=lineTags2.back();
+					lineTags2 = createGmshLines(tr2, ltc,{0,2});
+					line4={-lineTags1[2],lineTags2[0],-lineTag4Surf[(surf-1)*2+0][1]};
+					lineTag4Surf.push_back(line4);
+					ltc=lineTags2.back();
+				
+				}else if (surf==nodesec-1){// condition for first quadrilateral after middle section
+					ptsv=combinedpts[surf];
+					tr1 = getValuesAtIndices(ptsv,{1,2,3});
+					tr2 = getValuesAtIndices(ptsv,{0,1,3});
+
+					lineTags1 = createGmshLines(tr1, ltc,{});
+					line4=lineTags1;
+					lineTag4Surf.push_back(line4);
+					ltc=lineTags1.back();
+
+					lineTags2 = createGmshLines(tr2, ltc,{1,2});
+					line4={lineTags2[0],-lineTag4Surf[(surf-1)*2+0][1],-lineTags1[2]};
+					lineTag4Surf.push_back(line4);
+					ltc=lineTags2.back();
+				
+				}else if (surf>nodesec-1 && surf<nodesec1+1){// condition for follow up quadrilaterals with exception of the last one
+					ptsv=combinedpts[surf];
+					tr1 = getValuesAtIndices(ptsv,{1,2,3});
+					tr2 = getValuesAtIndices(ptsv,{0,1,3});
+
+					lineTags1 = createGmshLines(tr1, ltc,{});
+					line4=lineTags1;
+					lineTag4Surf.push_back(line4);
+					ltc=lineTags1.back();
+
+					lineTags2 = createGmshLines(tr2, ltc,{1,2});
+					line4={lineTags2[0],-lineTag4Surf[(surf-1)*2+0][0],-lineTags1[2]};
+					lineTag4Surf.push_back(line4);
+					ltc=lineTags2.back();
+				
+				}else if(surf==nodesec1+1){// condition for last quadrilateral closing the section
+					ptsv=combinedpts[surf];
+					tr1 = getValuesAtIndices(ptsv,{0,1,2});
+					tr2 = getValuesAtIndices(ptsv,{0,2,3});
+
+					lineTags1 = createGmshLines(tr1, ltc,{1});
+					line4={lineTags1[0],-lineTag4Surf[1][2],lineTags1[1]};
+					lineTag4Surf.push_back(line4);
+					ltc=lineTags1.back();
+
+					lineTags2 = createGmshLines(tr2, ltc,{0,2});
+					line4={-lineTags1[1],-lineTag4Surf[(surf-1)*2+0][0],lineTags2[0]};
+					lineTag4Surf.push_back(line4);
+					ltc=lineTags2.back();	
+				}
+			}else if(sec > 0 && sec < XsecNum / 2) { //follow up sections before the x=0 symmetry lines
 			
-			}else if(sec==0 && surf==nodesec1+1){// condition for the first section last quadrilateral closing the section
-				ptsv=combinedpts[surf];
-				tr1 = getValuesAtIndices(ptsv,{0,1,2});
-				tr2 = getValuesAtIndices(ptsv,{0,2,3});
+				if(surf==0){
+					ptsv=combinedpts[surf];
+					tr1 = getValuesAtIndices(ptsv,{0,1,2});
+					tr2 = getValuesAtIndices(ptsv,{0,2,3});
 
-				lineTags1 = createGmshLines(tr1, ltc,{1});
-				line4={lineTags1[0],-lineTag4Surf[1][2],lineTags1[1]};
-				lineTag4Surf.push_back(line4);
-				ltc=lineTags1.back();
+					lineTags1 = createGmshLines(tr1, ltc,{0});
+					line4={-lineTag4Surf[(sec-1)*(nodesec1+2)*2+surf*2+1][1],lineTags1[0],lineTags1[1]};;
+					lineTag4Surf.push_back(line4);
+					ltc=lineTags1.back();
 
-				lineTags2 = createGmshLines(tr2, ltc,{0,2});
-				line4={-lineTags1[1],lineTags2[0],-lineTag4Surf[(surf-1)*2+0][1]};
-				lineTag4Surf.push_back(line4);
-				ltc=lineTags2.back();
-				
-			}else if(sec > 0  && surf==0){// condition for the first quadrilateral of sections different from the first one
-				ptsv=combinedpts[surf];
-				tr1 = getValuesAtIndices(ptsv,{0,1,2});
-				tr2 = getValuesAtIndices(ptsv,{0,2,3});
+					lineTags2 = createGmshLines(tr2, ltc,{0});
+					line4={-lineTags1[1],lineTags2[0],lineTags2[1]};
+					lineTag4Surf.push_back(line4);
+					ltc=lineTags2.back();
+					 
+				}else if(surf < nodesec-1){
+					
+					ptsv=combinedpts[surf];
+					tr1 = getValuesAtIndices(ptsv,{0,1,2});
+					tr2 = getValuesAtIndices(ptsv,{0,2,3});
 
-				lineTags1 = createGmshLines(tr1, ltc,{0});
-				line4={-lineTag4Surf[(sec-1)*(nodesec1+2)*2+surf*2+1][1],lineTags1[0],lineTags1[1]};;
-				lineTag4Surf.push_back(line4);
-				ltc=lineTags1.back();
+					lineTags1 = createGmshLines(tr1, ltc,{0});
+					line4={-lineTag4Surf[(sec-1)*(nodesec1+2)*2+surf*2+1][1],lineTags1[0],lineTags1[1]};;
+					lineTag4Surf.push_back(line4);
+					ltc=lineTags1.back();
 
-				lineTags2 = createGmshLines(tr2, ltc,{0});
-				line4={-lineTags1[1],lineTags2[0],lineTags2[1]};
-				lineTag4Surf.push_back(line4);
-				ltc=lineTags2.back();
-				 
-			}else if(sec > 0 && surf<nodesec1+1){// condition for follow up quadrilaterals with exception of the last one for sections different from the first one
-				
-				ptsv=combinedpts[surf];
-				tr1 = getValuesAtIndices(ptsv,{0,1,2});
-				tr2 = getValuesAtIndices(ptsv,{0,2,3});
+					lineTags2 = createGmshLines(tr2, ltc,{0,2});
+					line4={-lineTags1[1],lineTags2[0],-lineTag4Surf[(sec)*(nodesec1+2)*2+(surf-1)*2+0][1]};
+					lineTag4Surf.push_back(line4);
+					ltc=lineTags2.back();
+					
+				}else if(surf == nodesec-1){
+					
+					ptsv=combinedpts[surf];
+					tr1 = getValuesAtIndices(ptsv,{1,2,3});
 
-				lineTags1 = createGmshLines(tr1, ltc,{0});
-				line4={-lineTag4Surf[(sec-1)*(nodesec1+2)*2+surf*2+1][1],lineTags1[0],lineTags1[1]};;
-				lineTag4Surf.push_back(line4);
-				ltc=lineTags1.back();
+					lineTags1 = createGmshLines(tr1, ltc,{});
+					line4=lineTags1;
+					lineTag4Surf.push_back(line4);
+					ltc=lineTags1.back();
 
-				lineTags2 = createGmshLines(tr2, ltc,{0,2});
-				line4={-lineTags1[1],lineTags2[0],-lineTag4Surf[(sec)*(nodesec1+2)*2+(surf-1)*2+0][1]};
-				lineTag4Surf.push_back(line4);
-				ltc=lineTags2.back();
-				
-			}else if(sec > 0  && surf==nodesec1+1){// condition for the last quadrilateral closing the section for sections different than the first one
-				ptsv=combinedpts[surf];
-				tr1 = getValuesAtIndices(ptsv,{0,1,2});
-				tr2 = getValuesAtIndices(ptsv,{0,2,3});
+					line4={-lineTags1[2],-lineTag4Surf[(sec-1)*(nodesec1+2)*2+surf*2+0][1],-lineTag4Surf[(sec)*(nodesec1+2)*2+(surf-1)*2+0][1]};
+					lineTag4Surf.push_back(line4);
+					
+				}else if(surf > nodesec-1 && surf < nodesec1+1){
+					ptsv=combinedpts[surf];
+					tr1 = getValuesAtIndices(ptsv,{1,2,3});
 
-				lineTags1 = createGmshLines(tr1, ltc,{0,1});
-				line4={-lineTag4Surf[(sec-1)*(nodesec1+2)*2+surf*2+1][1],-lineTag4Surf[(sec)*(nodesec1+2)*2+surf*0+1][2],lineTags1[0]};;
-				lineTag4Surf.push_back(line4);
-				ltc=lineTags1.back();
+					lineTags1 = createGmshLines(tr1, ltc,{});
+					line4 = lineTags1;
+					lineTag4Surf.push_back(line4);
+					ltc=lineTags1.back();
 
-				lineTags2 = createGmshLines(tr2, ltc,{0,2});
-				line4={-lineTags1[0],lineTags2[0],-lineTag4Surf[(sec)*(nodesec1+2)*2+(surf-1)*2+0][1]};
-				lineTag4Surf.push_back(line4);
-				ltc=lineTags2.back();
+					line4={-lineTags1[2],-lineTag4Surf[(sec-1)*(nodesec1+2)*2+surf*2+0][1],-lineTag4Surf[(sec)*(nodesec1+2)*2+(surf-1)*2+0][0]};
+					lineTag4Surf.push_back(line4);
+	
+				}else if(surf==nodesec1+1){
+					ptsv=combinedpts[surf];
+					tr1 = getValuesAtIndices(ptsv,{0,1,2});
+					tr2 = getValuesAtIndices(ptsv,{0,2,3});
+
+					lineTags1 = createGmshLines(tr1, ltc,{0,1});
+					line4={-lineTag4Surf[(sec-1)*(nodesec1+2)*2+surf*2+1][2],-lineTag4Surf[(sec)*(nodesec1+2)*2 + 1][2],lineTags1[0]};
+					lineTag4Surf.push_back(line4);
+					ltc=lineTags1.back();
+
+					lineTags2 = createGmshLines(tr2, ltc,{0,2});
+					line4={-lineTags1[0],-lineTag4Surf[(sec)*(nodesec1+2)*2+(surf-1)*2+0][0],lineTags2[0]};
+					lineTag4Surf.push_back(line4);
+					ltc=lineTags2.back();	
+				}
+			}else { //rows after x=0 symmetry line
+
+				if(surf==0){// condition for the first quadrilateral 
+					ptsv=combinedpts[surf];
+					tr1 = getValuesAtIndices(ptsv,{0,1,3});
+					tr2 = getValuesAtIndices(ptsv,{1,2,3});
+
+					lineTags1 = createGmshLines(tr1, ltc,{0});
+					line4={-lineTag4Surf[(sec-1)*(nodesec1+2)*2+surf*2+1][1],lineTags1[0],lineTags1[1]};;
+					lineTag4Surf.push_back(line4);
+					ltc=lineTags1.back();
+
+					lineTags2 = createGmshLines(tr2, ltc,{2});
+					line4={lineTags2[0],lineTags2[1],-lineTags1[0]};
+					lineTag4Surf.push_back(line4);
+					ltc=lineTags2.back();
+					 
+				}else if(surf < nodesec-1){// condition for follow up quadrilaterals before the z=0 symmetry line
+					
+					ptsv=combinedpts[surf];
+					tr1 = getValuesAtIndices(ptsv,{0,1,3});
+					tr2 = getValuesAtIndices(ptsv,{1,2,3});
+
+					lineTags1 = createGmshLines(tr1, ltc,{0,2});
+					line4={-lineTag4Surf[(sec-1)*(nodesec1+2)*2+surf*2+1][1],lineTags1[0],-lineTag4Surf[(sec)*(nodesec1+2)*2+(surf-1)*2+1][0]};
+					lineTag4Surf.push_back(line4);
+					ltc=lineTags1.back();
+
+					lineTags2 = createGmshLines(tr2, ltc,{2});
+					line4={lineTags2[0],lineTags2[1],-lineTags1[0]};
+					lineTag4Surf.push_back(line4);
+					ltc=lineTags2.back();
+					
+				}else if(surf >= nodesec-1 && surf <nodesec1+1){// condition for follow up quadrilaterals after the z=0 symmetry line
+					
+					ptsv=combinedpts[surf];
+					tr1 = getValuesAtIndices(ptsv,{0,2,3});
+					tr2 = getValuesAtIndices(ptsv,{0,1,2});
+
+					lineTags1 = createGmshLines(tr1, ltc,{2});
+					line4=lineTags1;
+					line4={lineTags1[0],lineTags1[1],-lineTag4Surf[(sec)*(nodesec1+2)*2+(surf-1)*2+1][0]};;
+					lineTag4Surf.push_back(line4);
+					ltc=lineTags1.back();
+
+					lineTags2 = createGmshLines(tr2, ltc,{0,2});
+					line4={lineTags2[0],-lineTag4Surf[(sec-1)*(nodesec1+2)*2+surf*2+0][1],-lineTags1[0]};
+					lineTag4Surf.push_back(line4);
+					ltc=lineTags2.back();
+					
+	
+				}else if(surf==nodesec1+1){// condition for the last quadrilateral of the rows after x=0 symmetry line
+					ptsv=combinedpts[surf];
+					tr1 = getValuesAtIndices(ptsv,{0,1,3});
+					tr2 = getValuesAtIndices(ptsv,{1,3,2});
+
+					lineTags1 = createGmshLines(tr1, ltc,{0,2});
+					line4={-lineTag4Surf[(sec-1)*(nodesec1+2)*2+surf*2+1][2],-lineTag4Surf[(sec)*(nodesec1+2)*2+(surf-1)*2+1][0],lineTags1[0]};
+					lineTag4Surf.push_back(line4);
+					ltc=lineTags1.back();
+
+					lineTags2 = createGmshLines(tr2, ltc,{0,2});
+					line4={-lineTag4Surf[(sec)*(nodesec1+2)*2][2],-lineTags1[0],-lineTags2[0]};
+					lineTag4Surf.push_back(line4);
+					ltc=lineTags2.back();	
+				}
 			}
  		}
 	}
@@ -624,14 +751,26 @@ void GmshLYSO ::MakeTile(){
 	}
 
 	// add lateral surfaces to X=Xmin and X=Xmax to close the volume
-	std::vector<int> s1 = getEvenElementsAtIndex(lineTag4Surf,0, 0, nodesec1*2+2); // return lines created for the first section corresponding to X=Xmin
+	std::vector<int> s1 = getEvenElementsAtIndex(lineTag4Surf,0, 0, (nodesec-1)*2-1); 
+	std::vector<int> s1Addition = getOddElementsAtIndex(lineTag4Surf, 0, (nodesec-1)*2+1, (nodesec1*2+2)); //added lines after the z=0 symmetry line
+	s1.insert(s1.end(), s1Addition.begin(), s1Addition.end());
+	s1.push_back(lineTag4Surf[nodesec1*2+2][0]);
+	for (size_t i=0; i<s1.size(); i++) {
+		s1[i] = s1[i] * -1;
+	}
 	std::cout<<"s1: "<<std::endl;
 	printVector(s1);
     std::reverse(s1.begin(), s1.end()); // Reverse the copy
 	createGmshSurface(s1,stc);SurfTagSecs.push_back(stc);stc++;
 
 	
-	std::vector<int> s2 = getOddElementsAtIndex(lineTag4Surf,1, lineTag4Surf.size()-(nodesec1*2+3), lineTag4Surf.size()+1); // return lines created for the last section corresponding to X=Xmax
+	std::vector<int> s2 = getOddElementsAtIndex(lineTag4Surf,1, lineTag4Surf.size()-(nodesec1*2+3), lineTag4Surf.size()-(nodesec+2)*2-1); // return lines created for the last section corresponding to X=Xmax
+	std::vector<int> s2Addition = getEvenElementsAtIndex(lineTag4Surf, 1, lineTag4Surf.size()-(nodesec+2)*2, lineTag4Surf.size()-3); //added lines to include after the z=0 symmetry line
+	s2.insert(s2.end(), s2Addition.begin(), s2Addition.end());
+	s2.push_back(lineTag4Surf[lineTag4Surf.size()-1][2]); //last line added 
+	for (size_t i=0; i<s2.size(); i++) {
+		s2[i] = s2[i] * -1;
+	}
 	std::cout<<"s2: "<<std::endl;
 	printVector(s2);	
 	createGmshSurface(s2,stc);SurfTagSecs.push_back(stc);stc++;

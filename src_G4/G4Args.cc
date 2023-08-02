@@ -690,12 +690,20 @@ void MyG4Args :: FillAvgLO(G4int runid) {
     
     // Calculate the index for the 50th percentile
     G4int percentileIndex = static_cast<G4int>(nEvents * 0.5);
-
+    G4int percentileIndex25 = static_cast<G4int>(nEvents * 0.75);
+    G4int percentileIndex75 = static_cast<G4int>(nEvents * 0.25);
+    
     // Calculate the P50 values
+    G4double p25LO = nEventLO[percentileIndex25];
+    G4double p25LD = nEventLD[percentileIndex25];
+    G4double p25LSt = nEventLSt[percentileIndex25];
     G4double p50LO = nEventLO[percentileIndex];
     G4double p50LD = nEventLD[percentileIndex];
     G4double p50LSt = nEventLSt[percentileIndex];
-
+    G4double p75LO = nEventLO[percentileIndex75];
+    G4double p75LD = nEventLD[percentileIndex75];
+    G4double p75LSt = nEventLSt[percentileIndex75];
+    
     for (int j = 1; j < nEvents; j=j+1){
         if(nEventLO[j]>0){
             cnt+=1;
@@ -712,6 +720,11 @@ void MyG4Args :: FillAvgLO(G4int runid) {
     nRuntLOP50[runid]=p50LO;
     nRuntLCP50[runid]=p50LD;
     nRuntLStP50[runid]=p50LSt;
+    
+    IQRLO = p75LO-p25LO;
+    IQRLD = p75LD-p25LD;
+    IQRLSt = p75LSt-p25LSt;
+    
 }               
 
 void MyG4Args :: FillStdTim(G4int runid){

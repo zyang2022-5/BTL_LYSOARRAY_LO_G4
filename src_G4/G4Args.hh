@@ -155,6 +155,11 @@ public:
     void FillStdLO(G4int);
     void DefaultRadiusVect();
     void SetRadiusVect(G4double*, G4int, G4int);
+    
+    G4double GetLOIQR() const {return IQRLO;}  
+    G4double GetLDIQR() const {return IQRLD;}  
+    G4double GetLStIQR() const {return IQRLSt;}  
+
     G4double GetLOAvg(G4int runid) const {return nRuntLOAvg[runid];}  
     G4double GetLOStd(G4int runid) const {return nRuntLOStd[runid];}  
     
@@ -293,7 +298,9 @@ private:
     G4double MuonLYSOTrackLength=0;
     G4int ESRFinish=0;
 	std::vector<G4LogicalVolume*> fScoringVolumeVec;
-
+    G4double IQRLO = 0;
+    G4double IQRLD = 0;
+    G4double IQRLSt = 0;
 
 };    
 

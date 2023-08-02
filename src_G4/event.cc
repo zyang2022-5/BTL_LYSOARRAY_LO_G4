@@ -151,6 +151,7 @@ if(PassArgs->GetTree_EndOfEvent()==1){
     man->FillNtupleDColumn(4, 0, PassArgs->GetEdep()/MeV);
     man->FillNtupleDColumn(4, 1, PassArgs->GetTP());
     man->FillNtupleDColumn(4, 2, PC);
+    //man->FillNtupleDColumn(4, 2, PC/(PassArgs->GetEdep()/MeV)/2.*PassArgs->GetMuonLYSOTrackLength());
     man->FillNtupleDColumn(4, 3, PDE420);
     man->FillNtupleDColumn(4, 4, PC/(PassArgs->GetEdep()/MeV)/2.);
     man->FillNtupleDColumn(4, 5, GenX);
@@ -161,15 +162,18 @@ if(PassArgs->GetTree_EndOfEvent()==1){
     man->FillNtupleDColumn(4, 10, YPOS);
     man->FillNtupleDColumn(4, 11, XPOS2);
     man->FillNtupleDColumn(4, 12, YPOS2);
+    //man->FillNtupleDColumn(4, 13, PC/(PassArgs->GetEdep()/MeV)/2.*PassArgs->GetMuonLYSOTrackLength());
+
     if (GeomConfig == 3 || GeomConfig == 13){
     man->FillNtupleDColumn(4, 13, CT);
     man->FillNtupleDColumn(4, 14, CT/(PassArgs->GetEdep()/MeV));}
+    
     //else {man->FillNtupleDColumn(4, 11, 0.);}
     man->FillNtupleDColumn(4, 15, PassArgs->GetPhotTiming());
     man->FillNtupleDColumn(4, 16, PassArgs->GetNPhotL());
     man->FillNtupleDColumn(4, 17, PassArgs->GetNPhotR());
-    man->FillNtupleDColumn(4, 18, evt);
-    man->FillNtupleDColumn(4, 19, PC/(PassArgs->GetEdep()/MeV)/2.*PassArgs->GetMuonLYSOTrackLength());
+    man->FillNtupleDColumn(4, 19, evt);
+    man->FillNtupleDColumn(4, 20, PC/(PassArgs->GetEdep()/MeV)/2.*PassArgs->GetMuonLYSOTrackLength());
     /*get ev number from detector!!!*/
     /*Write down particle gun position and angle (x,z,alpha_yz)*/
     man->AddNtupleRow(4);

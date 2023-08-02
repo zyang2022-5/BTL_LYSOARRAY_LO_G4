@@ -96,6 +96,9 @@ MyRunAction :: MyRunAction(G4String OutName,MyG4Args* MainArgs)
             man->CreateNtupleDColumn("fLOP50");
             man->CreateNtupleDColumn("fLStAvg");
             man->CreateNtupleDColumn("fLStP50");
+            man->CreateNtupleDColumn("fLOIQR");
+            man->CreateNtupleDColumn("fLDIQR");
+            man->CreateNtupleDColumn("fLStIQR");
             man->FinishNtuple(5); // Finish our first tuple or Ntuple number 0
         }
 }
@@ -201,6 +204,9 @@ void MyRunAction::EndOfRunAction(const G4Run* run)
                 man->FillNtupleDColumn(5, 10, PassArgs->GetLOP50(j));
                 man->FillNtupleDColumn(5, 11, PassArgs->GetLStAvg(j));
                 man->FillNtupleDColumn(5, 12, PassArgs->GetLStP50(j));
+                man->FillNtupleDColumn(5, 13, PassArgs->GetLOIQR());
+                man->FillNtupleDColumn(5, 14, PassArgs->GetLDIQR());
+                man->FillNtupleDColumn(5, 15, PassArgs->GetLStIQR());
                 //man->FillNtupleDColumn(5, 6, PassArgs->GetIncr());
 
                 man->AddNtupleRow(5);

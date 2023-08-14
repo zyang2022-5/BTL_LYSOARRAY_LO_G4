@@ -753,7 +753,7 @@ else if(GeomConfig == 11 ){
 		rM0->rotateX(-90.*deg);
 		rM->rotateX(-90.*deg);
 		G4double ZLloc =LYSO_L*ArgsPass->GetSZloc();
-		if (ZLloc<4){ZLloc=4;}
+		if (ZLloc<3.3){ZLloc=3.3;}
 		
 		G4double RXdispl = 0; 
 		G4double RYdispl = -(RESIN_L+DET_L)-GLUE_L*2-YposTol2-0.1; 

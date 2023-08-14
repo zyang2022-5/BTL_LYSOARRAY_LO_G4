@@ -482,20 +482,24 @@ G4cout<< " * imax: "<< imax<< " jmax: "<< jmax <<G4endl;
         
     if (Ystr==1 && NoYSym==0){
 						yincr = Str2DChar(YposStr, Znode+1);
-                        if(Geom_LYSO[0]*yincr[0]>=DET_T){
+                        if(Geom_LYSO[0]*yincr[0]>=DET_T && Tile==0){
                         G4cout<< " ### LYSO : "<< Geom_LYSO[0]*yincr[0] << " larger than SiPM : "<<DET_T <<G4endl;                             
 
 							Glue_Y=Glue_Y*yincr[0];
 							RESIN_H=(2.*Geom_LYSO[0]*yincr[0]+3.5)/2;
 							RESIN_Y=RESIN_H-0.5-Geom_LYSO[0]*yincr[0];
 							SiPM_Y=-RESIN_H+Geom_LYSO[0]*yincr[0]+0.5;
-						}else{
+						}else if (Tile==0){
                         G4cout<< " ### LYSO : "<< Geom_LYSO[0]*yincr[0] << " smaller than SiPM : "<<DET_T <<G4endl;                             
 							Glue_Y=Glue_Y*yincr[0];
 							RESIN_H=(DET_T*2+3.5)/2;
 							RESIN_Y=RESIN_H-0.5-DET_T;
 							SiPM_Y=-3.5/2+0.5;
-							}
+							}else if (Tile==1){
+								Glue_Y=Glue_Y;
+								RESIN_H=RESIN_H;
+								SiPM_Y=-3.5/2+0.5;
+								}
 	}else if (Ystr==1 && NoYSym==1){
 						yincr = Str2DChar(YposStr, (Znode+1)*2);
                         G4cout<< " ### LYSO : "<< Geom_LYSO[0]*yincr[0] << " cte position no matter what: "<<DET_T <<G4endl;                             

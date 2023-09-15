@@ -1,10 +1,21 @@
 #include "construction.hh"
 #include "util.hh"
 #include "materials.hh"
+#include "G4Sipm.hh"
+#include "MaterialFactory.hh"
+#include "model/G4SipmModelFactory.hh"
+#include "housing/G4SipmHousing.hh"
+#include "housing/impl/HamamatsuCeramicHousing.hh"
+#include "housing/impl/HamamatsuSmdHousing.hh"
 
 MyDetectorConstruction::MyDetectorConstruction(MyG4Args *MainArgs)
 {// constructor
-    ArgsPass=MainArgs;              
+    ArgsPass=MainArgs;       
+
+// Create SiPM and housing.
+    G4SipmModel* model = createSipmModel("generic");
+    housing = createHousing("default", new G4Sipm(model));
+
         G4cout<< " ### Default Construction Values. " <<G4endl;         
     DefaultValues();
         G4cout<< " ### Default Messengers. " <<G4endl;         
@@ -20,7 +31,52 @@ MyDetectorConstruction::MyDetectorConstruction(MyG4Args *MainArgs)
 }
 
 MyDetectorConstruction::~MyDetectorConstruction()
-{}
+{
+    delete housing;
+}
+
+G4SipmModel* MyDetectorConstruction::createSipmModel(std::string name) const {
+        if (name == "generic") {
+                return G4SipmModelFactory::getInstance()->createGenericSipmModel();
+        }
+        if (name == "HamamatsuS1036211100") {
+                return G4SipmModelFactory::getInstance()->createHamamatsuS1036211100();
+        }
+        if (name == "HamamatsuS1036233100") {
+                return G4SipmModelFactory::getInstance()->createHamamatsuS1036233100();
+        }
+        if (name == "HamamatsuS10985100") {
+                return G4SipmModelFactory::getInstance()->createHamamatsuS10985100();
+        }
+        if (name == "HamamatsuS12651050") {
+                return G4SipmModelFactory::getInstance()->createHamamatsuS12651050();
+        }
+        if (name == "HamamatsuS1036233050") {
+                return G4SipmModelFactory::getInstance()->createHamamatsuS1036233050();
+        }
+        if (name == "HamamatsuS12573100C") {
+                return G4SipmModelFactory::getInstance()->createHamamatsuS12573100C();
+        }
+        if (name == "HamamatsuS12573100X") {
+                return G4SipmModelFactory::getInstance()->createHamamatsuS12573100X();
+        }
+        return G4SipmModelFactory::getInstance()->createConfigFileModel(name);
+}
+G4SipmHousing* MyDetectorConstruction::createHousing(std::string name, G4Sipm* sipm) const {
+        if (name == "ceramic") {
+                return new HamamatsuCeramicHousing(sipm);
+        }
+        if (name == "smd") {
+                return new HamamatsuSmdHousing(sipm);
+        }
+        if (name == "default") {
+                return new G4SipmHousing(sipm);
+        }
+        std::cout << "G4SipmDetectorConstruction::createHousingForName(name = \"" << name
+                        << "\"): housing type does not exist." << std::endl;
+        throw 1;
+}
+
 
 /* Function to define a single time the materials when parametrizing, materials
  * need to be defined in the class header! Definition of the function for the
@@ -769,7 +825,12 @@ else if(GeomConfig == 11 ){
 		
 		physFR41 = new G4PVPlacement(rM0     ,G4ThreeVector(0,FYdispl,+1*(+ZLloc)),logicFR4,"physResin1",logicWorld,false,0,true); 
 		physFR42 = new G4PVPlacement(rM,G4ThreeVector(0,FYdispl,-1*(+ZLloc)),logicFR4,"physResin2",logicWorld,false,0,true);
-		physDetector = new G4PVPlacement(0,G4ThreeVector(XposTol2*mm,YposTol2*mm+SiPM_Y,+1*(+RESIN_L*mm)),logicDetector,"physDetector",logicResin_Sub,false,1,true); 
+
+     		housing->setPosition(G4ThreeVector(XposTol2*mm,YposTol2*mm+SiPM_Y,+1*(+RESIN_L*mm)));
+        	// Build SiPM.
+     		housing->buildAndPlace(physResin1);
+
+	//	physDetector = new G4PVPlacement(0,G4ThreeVector(XposTol2*mm,YposTol2*mm+SiPM_Y,+1*(+RESIN_L*mm)),logicDetector,"physDetector",logicResin_Sub,false,1,true); 
 		
 			if (ArgsPass->GetReflSiPM()==1){
 				G4double GXdispl = 0; 
@@ -823,7 +884,7 @@ else if(GeomConfig == 11 ){
 				}
 		  }
 
-    physDetector = new G4PVPlacement(0,G4ThreeVector(XposTol2*mm,YposTol2*mm+SiPM_Y,+1*(+RESIN_L*mm)),logicDetector,"physDetector",logicResin_Sub,false,1,true); 
+//    physDetector = new G4PVPlacement(0,G4ThreeVector(XposTol2*mm,YposTol2*mm+SiPM_Y,+1*(+RESIN_L*mm)),logicDetector,"physDetector",logicResin_Sub,false,1,true); 
     	            G4cout<< " ### Phys Detector Volume 11"<<G4endl;          
 
 

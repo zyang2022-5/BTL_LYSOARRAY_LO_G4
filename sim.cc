@@ -21,8 +21,8 @@ VISUALIZATION: Everythin in between * Vis -> Visualizer* lines of with it at the
 /////////////////////////////////// PROGRAM START ///////////////////////////////////
 
 //#include "G4RunManager.hh" /* Run */
-#include "src_G4/G4simTierII.hh"
-//#include "src_G4/G4sim.hh"
+//#include "src_G4/G4simTierII.hh"
+#include "src_G4/G4sim.hh"
 #include "src_G4/util.hh"
 #include <iostream>
 #include <string>
@@ -53,11 +53,11 @@ int main(int argc, char** argv) /* argc, argv are the argument passed to the sim
     radinit[0]=1;
     radinit[1]=0.5;
     //G4double radinit[2]={1,2};
-    G4simulationNOVIS *sim = new G4simulationNOVIS(argc, argv);
+   // G4simulationNOVIS *sim = new G4simulationNOVIS(argc, argv);
 
 
     //G4simulationNOVIS *sim1 = new G4simulationNOVIS(runManager,argc, argv, Onode, Znode, radinit);
-    //G4simulation *sim = new G4simulation(argc, argv);
+    G4simulation *sim = new G4simulation(argc, argv);
     // Example on how to pass always the same arguments
 /*
     G4int argc1=3;

@@ -27,6 +27,10 @@
 #include "detector.hh"
 #include "GmshLYSO.hh"
 
+/*G4Sipm Packages*/
+#include "G4Sipm.hh"
+#include "housing/G4SipmHousing.hh"
+
 class MyDetectorConstruction : public G4VUserDetectorConstruction
 {
 public:
@@ -50,8 +54,29 @@ public:
 
 
     virtual G4VPhysicalVolume *Construct(); // call to detector construction function
+    /**
+    * @return G4SipmModel - the SiPM model.
+    */
+    G4SipmModel* getSipmModel() const;
+    /**
+    * @return G4SipmHousing - the housing instance.
+    */
+    G4SipmHousing* getSipmHousing() const;
 private: // it is not accessed from outside
     
+    G4SipmHousing* housing;
+        /**
+         * @param name - the name of the model.
+         * @return G4SipmModel - the new instance.
+         */
+    G4SipmModel* createSipmModel(std::string name) const;
+        /**
+         * @param name - the name of the housing.
+         * @param sipm - the SiPM instance.
+         * @return G4SipmHousing - the new instance.
+         */
+    G4SipmHousing* createHousing(std::string name, G4Sipm* sipm) const;
+
     // Default Values
     G4int nCols, nRows, GeomConfig, ESRtrue;
     G4double LYSO_L, LYSO_YIELD,BC400_YIELD,BC400_RT1, LYSO_SCALERESOLUTION, Vovcon, LYSO_thick, perincr, DET_L;

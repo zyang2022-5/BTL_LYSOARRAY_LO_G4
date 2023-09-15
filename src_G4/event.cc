@@ -1,5 +1,15 @@
 #include "event.hh"
 #include "util.hh"
+#include <G4DigiManager.hh>
+#include <G4HCofThisEvent.hh>
+#include <G4DCofThisEvent.hh>
+#include <G4VHitsCollection.hh>
+#include <G4VDigiCollection.hh>
+#include "hit/G4SipmHit.hh"
+#include "digi/G4SipmDigi.hh"
+#include "digi/G4SipmVoltageTraceDigi.hh"
+#include "model/G4SipmModel.hh"
+#include "model/G4SipmVoltageTraceModel.hh"
 
 MyEventAction::MyEventAction(MyRunAction*, MyG4Args* MainArgs)
 {
@@ -71,10 +81,24 @@ void MyEventAction::EndOfEventAction(const G4Event *anEvent)
     G4int PC = PassArgs->GetLO();
     G4int CT = PassArgs->GetCT();
     
+//digitize the modules
+    if (GeomConfig == 11){
+
+	    G4DigiManager* digiManager = G4DigiManager::GetDMpointer();
+	    G4DCtable* dcTable = digiManager->GetDCtable();
+	    for (int i = 0; i < dcTable->entries(); i++) {
+	       G4String dmName = dcTable->GetDMname(i);
+	       G4VDigitizerModule* dm = digiManager->FindDigitizerModule(dmName);
+	       if (dm) {
+		  dm->Digitize();
+	       }
+            }
+    }
+
     G4int evt = G4RunManager::GetRunManager()->GetCurrentEvent()->GetEventID();
     if(PassArgs->GetEdep()>0){
 
-            if (GeomConfig == 1 || GeomConfig == 11){
+            if (GeomConfig == 1 /* || GeomConfig == 11 */ ){
     G4cout<< "#####################" << G4endl;
     G4cout<< "#####################" << G4endl;
     G4cout<< "Event Nº: " << evt << G4endl;
@@ -163,6 +187,36 @@ if(PassArgs->GetTree_EndOfEvent()==1){
     man->FillNtupleDColumn(4, 11, XPOS2);
     man->FillNtupleDColumn(4, 12, YPOS2);
     //man->FillNtupleDColumn(4, 13, PC/(PassArgs->GetEdep()/MeV)/2.*PassArgs->GetMuonLYSOTrackLength());
+        // Process digi collections.
+        G4DCofThisEvent* dCof = anEvent->GetDCofThisEvent();
+        if (dCof != NULL) {
+                for (int i = 0; i < dCof->GetCapacity(); ++i) {
+                        G4VDigiCollection* dc = dCof->GetDC(i);
+                        if (dc != NULL) {
+                                G4SipmDigiCollection* sipm_dc = dynamic_cast<G4SipmDigiCollection*>(dc);
+				if (sipm_dc) {
+					printf("#####################Validate##########################");
+                                        for (size_t i = 0; i < sipm_dc->GetSize(); i++) {
+						G4SipmDigi* digi = (G4SipmDigi*) sipm_dc->GetDigi(i);
+						if (digi->getTime() >= 0.0 && digi->getTime() < 1000000) {
+							man->FillNtupleDColumn(6, 0, digi->getSipmId());
+							man->FillNtupleDColumn(6, 1, digi->getCellId());
+							man->FillNtupleDColumn(6, 2, digi->getType());
+							man->FillNtupleDColumn(6, 3, digi->getTime());
+							man->FillNtupleDColumn(6, 4, digi->getWeight());
+							man->AddNtupleRow(6);
+						}
+					}
+                                }
+                                G4SipmVoltageTraceDigiCollection* vt = dynamic_cast<G4SipmVoltageTraceDigiCollection*>(dc);
+				if (vt) {
+                                      
+                                }
+                        }
+                }
+        }
+
+
 
     if (GeomConfig == 3 || GeomConfig == 13){
     man->FillNtupleDColumn(4, 13, CT);

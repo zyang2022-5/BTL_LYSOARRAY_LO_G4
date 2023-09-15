@@ -2,9 +2,10 @@
  CC=gcc
  CXX=g++
  LD=g++
- CXXFLAGS=-fdiagnostics-color -O2 -g $(shell geant4-config --cflags) -O2  -L/home/gmsh/lib -lgmsh
- LDLIBS=-Wl,--copy-dt-needed-entries -fdiagnostics-color -lm $(shell geant4-config --libs)  -L/home/gmsh/lib -lgmsh
-
+ CXXFLAGS=-fdiagnostics-color -O2 -g $(shell geant4-config --cflags) -O2  -L/home/Software/gmsh-install/lib64 -lgmsh -I/home/Software/gmsh-install/include -I/home/surf/surf/g4sipm/source/g4sipm/include -I/home/surf/surf/g4sipm/source/g4sipm/externals/jansson/src -I/home/surf/surf/g4sipm/source/g4sipm//externals/gtest/include
+ LDFLAGS=-L/home/Software/gmsh-install/lib64 \
+	 -L/home/surf/surf/g4sipm/build/g4sipm
+ LDLIBS=-Wl,--copy-dt-needed-entries -fdiagnostics-color -lm $(shell geant4-config --libs)  -lgmsh -lg4sipm
 PWD=$(shell pwd)
 
 PREFIX?=$(HOME)/local

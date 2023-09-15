@@ -100,6 +100,16 @@ MyRunAction :: MyRunAction(G4String OutName,MyG4Args* MainArgs)
             man->CreateNtupleDColumn("fLDIQR");
             man->CreateNtupleDColumn("fLStIQR");
             man->FinishNtuple(5); // Finish our first tuple or Ntuple number 0
+
+	    //Tuple containing the digitized Sipm information at the end of each event.
+
+            man->CreateNtuple("Digi Collection","Digi Collection");
+            man->CreateNtupleDColumn("SipmID"); 
+            man->CreateNtupleDColumn("CellID"); 
+            man->CreateNtupleDColumn("TriggerType"); 
+            man->CreateNtupleDColumn("BreakdownTime");
+            man->CreateNtupleDColumn("CellGain");
+	    man->FinishNtuple(6);
         }
 }
 MyRunAction :: ~MyRunAction()

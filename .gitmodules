@@ -5,3 +5,9 @@
 	path = NSGAII/PyNSGA/NSGA-II
 	url = https://github.com/grealesguti/NSGA-II.git
 	branch = greales/dev
+[submodule "src_G4/externals/g4sipm/g4sipm"]
+	path = src_G4/externals/g4sipm/g4sipm
+	url = https://github.com/ntim/g4sipm.git
+[submodule "src_G4/g4sipm"]
+	path = src_G4/g4sipm
+	url = https://github.com/ntim/g4sipm.git

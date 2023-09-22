@@ -441,8 +441,8 @@ G4cout<< " * imax: "<< imax<< " jmax: "<< jmax <<G4endl;
                     for (int i = 0; i < imax; i++){
                         for (int j = 0; j < jmax; j++){
                             index = i*jmax+j;
-                            nGunPosX[index]=(Geom_LYSO[0]-0.01)/imax*(i);
-                            nGunPosY[index]=(Geom_LYSO[2]-0.01)/jmax*(j);
+                            nGunPosX[index]=(Geom_LYSO[0]-0.01)/imax*(i)+0.01;
+                            nGunPosY[index]=(Geom_LYSO[2]-0.01)/jmax*(j)+0.01;
                         G4cout<< " * Gun Pos "<< index <<" , XPos  : " << nGunPosX[index]<<" , YPos  : " << nGunPosY[index]<<G4endl;    
                         }
                     }     
@@ -477,7 +477,10 @@ G4cout<< " * imax: "<< imax<< " jmax: "<< jmax <<G4endl;
                         G4cout<< " ### WARNING: -Ypos with no Znode input" <<G4endl;     
                     }
                         
-                }
+                }else if(strcmp(mainargv[j],"-G4Sipm")==0){   
+                    RealSipm=1;
+                    G4cout<< " ### Realistic Sipm "<<G4endl; 
+		}
         }
         
     if (Ystr==1 && NoYSym==0){

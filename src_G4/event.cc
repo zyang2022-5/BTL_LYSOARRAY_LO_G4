@@ -78,27 +78,87 @@ void MyEventAction::EndOfEventAction(const G4Event *anEvent)
     G4double XPOS2  = detectorConstruction->GetXPOS2();
     G4double YPOS2  = detectorConstruction->GetYPOS2();
     G4int GeomConfig  = detectorConstruction->GetGC();
-    G4int PC = PassArgs->GetLO();
-    G4int CT = PassArgs->GetCT();
-    
+ 
+ 		
+    G4AnalysisManager *man = G4AnalysisManager::Instance();
+    G4int evt = G4RunManager::GetRunManager()->GetCurrentEvent()->GetEventID();
 //digitize the modules
-    if (GeomConfig == 11){
-
+    G4int RealSipm = PassArgs->GetG4SipmState();
+    if (RealSipm){
 	    G4DigiManager* digiManager = G4DigiManager::GetDMpointer();
 	    G4DCtable* dcTable = digiManager->GetDCtable();
 	    for (int i = 0; i < dcTable->entries(); i++) {
 	       G4String dmName = dcTable->GetDMname(i);
 	       G4VDigitizerModule* dm = digiManager->FindDigitizerModule(dmName);
 	       if (dm) {
-		  dm->Digitize();
+		       dm->Digitize();
 	       }
             }
+
+	    G4HCofThisEvent* hCof = anEvent->GetHCofThisEvent();
+	    if (hCof != NULL) {
+			for (int i = 0; i < hCof->GetCapacity(); ++i) {
+				G4VHitsCollection* hc = hCof->GetHC(i);
+				if (hc != NULL) {
+					if (dynamic_cast<G4SipmHitsCollection*>(hc)) {
+						for (size_t j = 0; j < hc->GetSize(); j++) {
+							G4SipmHit* hit = (G4SipmHit*) hc->GetHit(j);
+							G4int sipmId = hit->getSipmId();
+							//G4int pdgId = hit->getPdgId(); //unused
+							G4int trackId = hit->getTrackId();
+							G4double eKin = hit->getEKin();
+							G4double time = hit->getTime();
+							//G4double weight = hit->getWeight(); //unused
+							G4ThreeVector direction = hit->getMomentum();
+							G4ThreeVector posPhoton = hit->getWorldPosition();
+							G4double wlen = 1239.841939*eV/eKin;
+
+							if (PassArgs->GetTree_Detected() == 1){
+								man->FillNtupleIColumn(1, 0,  evt);
+								man->FillNtupleIColumn(1, 1,  trackId);
+								man->FillNtupleDColumn(1, 2,  posPhoton[0]/mm);// D==double
+								man->FillNtupleDColumn(1, 3,  posPhoton[1]/mm);
+								man->FillNtupleDColumn(1, 4,  posPhoton[2]/mm);
+								man->FillNtupleDColumn(1, 5,  time/ps);
+								man->FillNtupleDColumn(1, 8,  wlen);
+								man->FillNtupleDColumn(1, 10,  direction[0]);// D==double
+								man->FillNtupleDColumn(1, 11,  direction[1]);
+								man->FillNtupleDColumn(1, 12,  direction[2]);    
+								man->AddNtupleRow(1);
+							}
+
+							if (PassArgs->GetGeomConfig()==3 || PassArgs->GetGeomConfig()==13 && posPhoton[0]/mm>-1*(PassArgs->GetGeom_LYSO_thick())*2+0.1 && posPhoton[0]/mm<-0.01){
+								PassArgs->AddLO();
+								if(posPhoton[2]/mm>0){
+									PassArgs->AddPhotR();
+								}else{
+									PassArgs->AddPhotL();
+								}
+							if(PassArgs->GetTimeTrue()==1){PassArgs->AddPhotTiming(posPhoton[2]/mm , time/ps);}
+
+							} else if (PassArgs->GetGeomConfig()==3 || PassArgs->GetGeomConfig()==13 ){PassArgs->AddCT();
+							} else if (PassArgs->GetGeomConfig()==1 || PassArgs->GetGeomConfig()==11){
+								PassArgs->AddLO();
+								if(posPhoton[2]/mm>0){
+									PassArgs->AddPhotR();
+								}else{
+									PassArgs->AddPhotL();
+								}
+								if(PassArgs->GetTimeTrue()==1){PassArgs->AddPhotTiming(posPhoton[2]/mm , time/ps);}
+							}
+						}
+					}
+				}
+			}
+		}    
     }
 
-    G4int evt = G4RunManager::GetRunManager()->GetCurrentEvent()->GetEventID();
+    G4int PC = PassArgs->GetLO();
+    G4int CT = PassArgs->GetCT();
+
     if(PassArgs->GetEdep()>0){
 
-            if (GeomConfig == 1 /* || GeomConfig == 11 */ ){
+            if (GeomConfig == 1 || GeomConfig == 11 ){
     G4cout<< "#####################" << G4endl;
     G4cout<< "#####################" << G4endl;
     G4cout<< "Event Nº: " << evt << G4endl;
@@ -107,9 +167,11 @@ void MyEventAction::EndOfEventAction(const G4Event *anEvent)
     G4cout<< "Energy deposition: " << PassArgs->GetEdep()/MeV << " [MeV] Performed :" << PassArgs->GetNEdep() << " times"<< G4endl;
     G4cout<< "MUON Energy deposition: "  <<PassArgs->GetMuonEdep()/MeV<< " [MeV]"<< G4endl;
     G4cout<< "Photons created end of event: " << PassArgs->GetTP() << G4endl;
-    G4cout<< "Photon Hits end of event: " << PassArgs->GetPhHits() << G4endl;
-    G4cout<< "Estimated PDE (420nm, 3.5OV): " << PDE420 << G4endl;
-    G4cout<< "Estimated Photon Detected (420nm PDE, 3.5OV) end of event: " << PassArgs->GetPhHits()*PDE420 << G4endl;
+	if (!RealSipm) {
+    		G4cout<< "Photon Hits end of event: " << PassArgs->GetPhHits() << G4endl;
+		G4cout<< "Estimated PDE (420nm, 3.5OV): " << PDE420 << G4endl;
+    		G4cout<< "Estimated Photon Detected (420nm PDE, 3.5OV) end of event: " << PassArgs->GetPhHits()*PDE420 << G4endl;
+	}
     G4cout<< "Real Number of Photons Detected: " << PC << G4endl;
     G4cout<< "Photons detected in the Right SiPM: " << PassArgs->GetNPhotR() << G4endl;
     G4cout<< "Photons detected in the Left SiPM: " << PassArgs->GetNPhotL() << G4endl;
@@ -129,10 +191,12 @@ void MyEventAction::EndOfEventAction(const G4Event *anEvent)
     G4cout<< "Primary position command: " << command << G4endl;
     G4cout<< "Energy deposition: " << PassArgs->GetEdep()/MeV << " [MeV] " << G4endl;
     G4cout<< "Photons created end of event: " << PassArgs->GetTP() << G4endl;
-    G4cout<< "Photon Hits end of event: " << PassArgs->GetPhHits() << G4endl;
-    G4cout<< "Estimated PDE (420nm, 3.5OV): " << PDE420 << G4endl;
-    G4cout<< "Photon Detected (420nm PDE, 3.5OV) end of event: " << PassArgs->GetPhHits()*PDE420 << G4endl;
-    G4cout<< "Estimated Light Output per SiPM " << PassArgs->GetPhHits()*PDE420/(PassArgs->GetEdep()/MeV) << G4endl;
+	if (!RealSipm){
+    	G4cout<< "Photon Hits end of event: " << PassArgs->GetPhHits() << G4endl;
+    	G4cout<< "Estimated PDE (420nm, 3.5OV): " << PDE420 << G4endl;
+    	G4cout<< "Photon Detected (420nm PDE, 3.5OV) end of event: " << PassArgs->GetPhHits()*PDE420 << G4endl;
+    	G4cout<< "Estimated Light Output per SiPM " << PassArgs->GetPhHits()*PDE420/(PassArgs->GetEdep()/MeV) << G4endl;
+	}
     G4cout<< "#####################" << G4endl;
     G4cout<< "#####################" << G4endl;
         }else if (GeomConfig == 3 || GeomConfig == 13){
@@ -143,9 +207,11 @@ void MyEventAction::EndOfEventAction(const G4Event *anEvent)
     G4cout<< "Primary position command: " << command << G4endl;
     G4cout<< "Energy deposition: " << PassArgs->GetEdep()/MeV << " [MeV] Performed :" << PassArgs->GetNEdep() << " times"<< G4endl;
     G4cout<< "Photons created end of event: " << PassArgs->GetTP() << G4endl;
-    G4cout<< "Photon Hits end of event: " << PassArgs->GetPhHits() << G4endl;
-    G4cout<< "Estimated PDE (420nm, 3.5OV): " << PDE420 << G4endl;
-    G4cout<< "Estimated Photon Detected (420nm PDE, 3.5OV) end of event: " << PassArgs->GetPhHits()*PDE420 << G4endl;
+    if (!RealSipm){
+    	G4cout<< "Photon Hits end of event: " << PassArgs->GetPhHits() << G4endl;
+    	G4cout<< "Estimated PDE (420nm, 3.5OV): " << PDE420 << G4endl;
+    	G4cout<< "Estimated Photon Detected (420nm PDE, 3.5OV) end of event: " << PassArgs->GetPhHits()*PDE420 << G4endl;
+    }
     G4cout<< "Real Number of Photons Detected: " << PC << G4endl;
     G4cout<< "Photons detected in the Right SiPM: " << PassArgs->GetNPhotR() << G4endl;
     G4cout<< "Photons detected in the Left SiPM: " << PassArgs->GetNPhotL() << G4endl;
@@ -171,7 +237,6 @@ void MyEventAction::EndOfEventAction(const G4Event *anEvent)
     }   
 
 if(PassArgs->GetTree_EndOfEvent()==1){
-    G4AnalysisManager *man = G4AnalysisManager::Instance();
     man->FillNtupleDColumn(4, 0, PassArgs->GetEdep()/MeV);
     man->FillNtupleDColumn(4, 1, PassArgs->GetTP());
     man->FillNtupleDColumn(4, 2, PC);
@@ -187,35 +252,41 @@ if(PassArgs->GetTree_EndOfEvent()==1){
     man->FillNtupleDColumn(4, 11, XPOS2);
     man->FillNtupleDColumn(4, 12, YPOS2);
     //man->FillNtupleDColumn(4, 13, PC/(PassArgs->GetEdep()/MeV)/2.*PassArgs->GetMuonLYSOTrackLength());
-        // Process digi collections.
-        G4DCofThisEvent* dCof = anEvent->GetDCofThisEvent();
-        if (dCof != NULL) {
-                for (int i = 0; i < dCof->GetCapacity(); ++i) {
-                        G4VDigiCollection* dc = dCof->GetDC(i);
-                        if (dc != NULL) {
-                                G4SipmDigiCollection* sipm_dc = dynamic_cast<G4SipmDigiCollection*>(dc);
-				if (sipm_dc) {
-					printf("#####################Validate##########################");
-                                        for (size_t i = 0; i < sipm_dc->GetSize(); i++) {
-						G4SipmDigi* digi = (G4SipmDigi*) sipm_dc->GetDigi(i);
-						if (digi->getTime() >= 0.0 && digi->getTime() < 1000000) {
-							man->FillNtupleDColumn(6, 0, digi->getSipmId());
-							man->FillNtupleDColumn(6, 1, digi->getCellId());
-							man->FillNtupleDColumn(6, 2, digi->getType());
-							man->FillNtupleDColumn(6, 3, digi->getTime());
-							man->FillNtupleDColumn(6, 4, digi->getWeight());
-							man->AddNtupleRow(6);
+
+    if(RealSipm){    
+	// Process digi collections.
+		G4DCofThisEvent* dCof = anEvent->GetDCofThisEvent();
+		if (dCof != NULL) {
+			for (int j = 0; j < dCof->GetCapacity(); ++j) {
+				G4VDigiCollection* dc = dCof->GetDC(j);
+				if (dc != NULL) {
+					G4SipmDigiCollection* sipm_dc = dynamic_cast<G4SipmDigiCollection*>(dc);
+					if (sipm_dc) {
+						for (size_t i = 0; i < sipm_dc->GetSize(); i++) {
+							G4SipmDigi* digi = (G4SipmDigi*) sipm_dc->GetDigi(i);
+							if (digi->getTime() >= 0.0 && digi->getTime() < 1000000) {
+								man->FillNtupleDColumn(6, 0, digi->getSipmId());
+								man->FillNtupleDColumn(6, 1, digi->getCellId());
+								man->FillNtupleDColumn(6, 2, digi->getType());
+								man->FillNtupleDColumn(6, 3, digi->getTime());
+								man->FillNtupleDColumn(6, 4, digi->getWeight());
+								man->AddNtupleRow(6);
+							}
 						}
 					}
-                                }
-                                G4SipmVoltageTraceDigiCollection* vt = dynamic_cast<G4SipmVoltageTraceDigiCollection*>(dc);
-				if (vt) {
-                                      
-                                }
-                        }
-                }
-        }
+					G4SipmVoltageTraceDigiCollection* vt = dynamic_cast<G4SipmVoltageTraceDigiCollection*>(dc);
+					if (vt) {					  
+						for (size_t i = 0; i < vt->GetSize(); i++) {
+							G4SipmVoltageTraceDigi* digi = (G4SipmVoltageTraceDigi*) dc->GetDigi(i);
+							//TODO: Voltage trace charge integration needs to be implemented.
+							//Needs to discuss whether to output charge and time plots or integrated results in numbers.
 
+						}
+					}
+				}
+			}
+		}
+    }
 
 
     if (GeomConfig == 3 || GeomConfig == 13){

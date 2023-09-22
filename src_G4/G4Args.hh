@@ -194,7 +194,10 @@ public:
 
     G4double GetGeomIndv(G4int runid) const {return RndGenIndv[runid];}  
     G4double GetSZloc(){return SZ_loc;}
-	bool IsVolumeInList(const G4LogicalVolume* volume);
+    G4int GetG4SipmState() const {return RealSipm;}
+
+
+    bool IsVolumeInList(const G4LogicalVolume* volume);
     void InitfScoringVolumeVec(std::vector<G4LogicalVolume*> fScoringVolumeVecinit) {fScoringVolumeVec=fScoringVolumeVecinit;}  
     void PushfScoringVolumeVec(G4LogicalVolume *LYSOTet_Logic) {fScoringVolumeVec.push_back(LYSOTet_Logic);}  
 
@@ -301,6 +304,7 @@ private:
     G4double IQRLO = 0;
     G4double IQRLD = 0;
     G4double IQRLSt = 0;
+    G4int RealSipm = 0;
 
 };    
 

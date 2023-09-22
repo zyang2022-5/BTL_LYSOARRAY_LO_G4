@@ -44,6 +44,17 @@ Now introduce the path to the singularity file within your submission file
 To run it locally remember to install singularity:
 https://www.linuxwave.info/2022/02/installing-singularity-in-ubuntu-2004.html
 
+###Installing G4Sipm
+To enable to the realistic Sipm simulation using the G4Sipm package. Install it through source:
+https://github.com/ntim/g4sipm
+
+Since the simulation is running on Geant4 v11. Implement the changes stated in this merge request for the G4Sipm package before building to incorporate Geant4 V11 compatibility:
+https://github.com/ntim/g4sipm/pull/5/commits/53d953ee2427309cfa4d6b94d60f09a28ba1fa20
+
+Update the Dynamic Linker Path to include the directory containing libg4sipm.so (alternatively you can use LD_LIBRARY_PATH)
+
+Run the simulation normally with the added command `-G4Sipm`.
+
 ### Running in TierII
 
 Login into TierII: `username@login-1.hep.caltech.edu`
@@ -116,6 +127,8 @@ The commands work as follow `-command argument`, in `[]` we set the number of op
 -TileV0 : changes configuration from bar to tile. (TODO: right now the design is assymmetrical, the triangulation needs to be changed in Gmsh)
 -ForceBottomLine: To always be used with -TileV0. Forces a given flat bottom surface.
 -SZloc [0-1] : changes the SiPM location along Z at the bottom of the tile as a percentage of LYSO_L.
+
+-G4Sipm : changes the G4VSensitiveDetectors to the ones implemented through G4Sipm package. This realistic simulation of the Sipm allows for digitized results and voltage readouts similar to the output of a real Sipm. The Sipm Can be custom defined to fit the simulation target.
 
 ## How to start the graphical interface
 
